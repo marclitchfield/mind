@@ -1,6 +1,6 @@
 const uuid = require('uuid/v4');
 
-export const resolveEntityMerge = (cypher, alias) => async(args, context) => {
+export const resolveEntityMerge = (cypher, alias) => async(args, context, info) => {
   const session = context.driver.session();
   const props = Object.assign({}, args, {
     id: args.id || uuid()

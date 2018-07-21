@@ -14,7 +14,7 @@ type EventOps {
 extend type Mutation {
   Event: EventOps
 }
-
+ 
 extend type Query {
   Event(id: ID!): Event
 }

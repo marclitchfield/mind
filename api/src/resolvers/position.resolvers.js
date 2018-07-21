@@ -8,5 +8,5 @@ export const Position = () => ({
   createResponse: resolveEntityMerge(`
       MATCH (p:Position {id: $contextPositionId})<-[:CONTAINS]-(s:Space) WITH p, s
       MERGE (p)-[:RESPONSE]->(r:Position {id: $id})<-[:CONTAINS]-(s)
-    `, 'p')
+    `, 'r')
 });
