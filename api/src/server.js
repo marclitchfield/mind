@@ -5,7 +5,9 @@ import { makeExecutableSchema } from "graphql-tools";
 import dotenv from "dotenv";
 import * as fs from 'fs';
 
-const typeDefs = fs.readFileSync(__dirname + '/schema.graphql', 'utf8');
+const typeDefs = fs.readdirSync(__dirname + '/schema')
+  .map(file => fs.readFileSync(__dirname + '/schema/' + file, 'utf8'))
+  .join('\n');
 
 const schema = makeExecutableSchema({
   typeDefs,

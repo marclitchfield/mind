@@ -1,0 +1,36 @@
+input PositionProps {
+  title: String!
+  body: String
+  icon: String
+  type: String
+}
+
+type PositionOps {
+  createForConcept(id: ID = null, conceptId: ID!, input: PositionProps!): Position!
+  createResponse(id: ID = null, contextPositionId: ID!, input: PositionProps!): Position!
+  connectResponse(contextPositionId: ID!, responsePositionId: ID!): Boolean
+  disconnectResponse(contextPositionId: ID!, responsePositionId: ID!): Boolean
+}
+
+extend type Mutation {
+  Position: PositionOps
+}
+
+extend type Query {
+  Position(id: ID!): Position
+}
+
+type Position implements Entity {
+  id: ID!
+  spaces: [Space!] @relation(name: "CONTAINS", direciton: "IN")
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String!
+  icon: String
+  type: String!
+  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direciton: "OUT")
+  contexts(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "RESPONSE", direction: "IN")
+  responses(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "RESPONSE", direction: "OUT")
+  # confidence(mindId: ID!): Float
+  # people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "SUBJECT", direction: "OUT")
+  # items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "SUBJECT", direction: "OUT")
+}

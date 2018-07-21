@@ -1,0 +1,7 @@
+interface Entity {
+  id: ID!
+  spaces: [Space!]
+  created: String!
+  title: String!
+  icon: String
+}

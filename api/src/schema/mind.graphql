@@ -1,0 +1,23 @@
+input MindProps {
+  title: String!
+}
+
+type MindOps {
+  create(id: ID = null, input: MindProps!): Mind!
+}
+
+type Mutation {
+  Mind: MindOps
+}
+
+type Query {
+  Minds: [Mind!]
+  Mind(id: ID!): Mind
+}
+
+type Mind {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  spaces: [Space!] @relation(name: "CONTAINS", direction: "OUT")
+}
+

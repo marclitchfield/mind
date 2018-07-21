@@ -1,0 +1,23 @@
+input SpaceProps {
+  title: String!
+}
+
+type SpaceOps {
+  createInMind(id: ID = null, mindId: ID!, input: SpaceProps!): Space!
+}
+
+extend type Mutation {
+  Space: SpaceOps
+}
+
+extend type Query {
+  Space(id: ID!): Space
+}
+
+type Space {
+  id: ID!
+  minds: [Mind] @relation(name: "CONTAINS", direction: "IN")
+  title: String!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  rootConcepts(first: Int = 10, offset: Int = 0): [Concept!]! @cypher(statement: "MATCH (this)-[:CONTAINS {root:true}]->(c:Concept) RETURN c")
+}

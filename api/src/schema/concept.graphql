@@ -1,0 +1,35 @@
+input ConceptProps {
+  title: String!
+  body: String
+  icon: String
+}
+
+type ConceptOps {
+  createInSpace(id: ID = null, spaceId: ID!, input: ConceptProps!): Concept!
+  createSub(id: ID = null, superConceptId: ID!, input: ConceptProps!): Concept!
+  connectSub(superConceptId: ID!, subConceptId: ID!): Boolean
+  disconnectSub(superConceptId: ID!, subConceptId: ID!): Boolean
+}
+
+extend type Mutation {
+  Concept: ConceptOps
+}
+
+extend type Query {
+  Concept(id: ID!): Concept
+}
+
+type Concept implements Entity {
+  id: ID!
+  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String!
+  icon: String
+  body: String
+  subConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "OUT")
+  superConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "IN")
+  positions(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "CONTAINS", direction: "IN")
+  # people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "CLASS_OF", direction: "IN")
+  # items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "CLASS_OF", direction: "IN")
+  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
+}
