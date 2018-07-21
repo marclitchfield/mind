@@ -10,8 +10,8 @@ type Mutation {
   createSpace(id: ID = null, mindId: ID!, name: String!): Space!
   createSpaceConcept(id: ID = null, spaceId: ID!, title: String!, body: String = null, icon: String = null): Concept!
   createSubConcept(id: ID = null, superConceptId: ID!, title: String!, body: String = null, icon: String = null): Concept!
-  addConceptSub(superId: ID!, subId: ID!): Boolean
-  removeConceptSub(superId: ID!, subId: ID!): Boolean
+  addSubConcept(superConceptId: ID!, subConceptId: ID!): Boolean
+  removeSubConcept(superConceptId: ID!, subConceptId: ID!): Boolean
 }
 
 type Mind {

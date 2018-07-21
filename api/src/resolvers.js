@@ -5,6 +5,7 @@ export const resolvers = {
   Mind: neo4jgraphql,
   Query: {
     allMinds: async(parent, args, context, resolvers) => neo4jgraphql('Mind', args, context, resolvers),
+  
     Mind: neo4jgraphql,
     Space: neo4jgraphql,
     Concept: neo4jgraphql
@@ -66,6 +67,10 @@ export const resolvers = {
       `, props);
       const record = result.records[0];
       return Object.assign({}, record.get('concept').properties, { created: record.get('created') });
+    },
+    addSubConcept: async(parent, args, context, resolvers) => {
+      const session = context.driver.session();
+      await session.run(`MERGE (sup:Concept {id: $superConceptId})-[:SUB]->(sub:Concept {id: $subConceptId})`);
     }
   }
 };
