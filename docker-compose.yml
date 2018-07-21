@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  api:
+    build: ./api
+    volumes:
+      - ./api/src:/app/src
+    ports:
+      - "5000:5000"
+    environment:
+      - NEO4J_URI=bolt://db:7687
+      - GRAPHQL_URI=http://api:5000
+    networks:
+      - back-tier
+
+  ui:
+    build: ./ui
+    volumes:
+      - ./ui/src:/app/src
+      - ./ui/public:/app/public
+    ports:
+      - "4000:4000"
+    networks:
+      - front-tier
+      - back-tier
+
+  db:
+    build: ./db
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes:
+      - db-data:/var/lib/neo4j/data
+    networks:
+      - back-tier
+
+volumes:
+  db-data:
+
+networks:
+  front-tier:
+  back-tier:

@@ -8,7 +8,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={process.env.PUBLIC_URL + '/img/grandstack.png'} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to GRANDstack</h1>
+          <h1 className="App-title">Welcome to GRAND Stack</h1>
         </header>
         
         <UserList />

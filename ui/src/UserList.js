@@ -68,7 +68,7 @@ class UserList extends React.Component {
       >
         {({ loading, error, data }) => {
           if (loading) return <p>Loading...</p>;
-          if (error) return <p>Error</p>;
+          if (error) return <p>Error: {JSON.stringify(error)}</p>;
 
           return (
             <Paper className={this.props.classes.root}>

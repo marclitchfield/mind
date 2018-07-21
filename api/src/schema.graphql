@@ -1,0 +1,117 @@
+type Query {
+  Mind(id: ID!): Mind
+  Space(id: ID!): Space
+  Concept(id: ID!): Concept
+  allMinds: [Mind]
+}
+
+type Mutation {
+  createMind(id: ID = null): Mind!
+  createSpace(id: ID = null, mindId: ID!, name: String!): Space!
+  createSpaceConcept(id: ID = null, spaceId: ID!, title: String!, body: String = null, icon: String = null): Concept!
+  createSubConcept(id: ID = null, superConceptId: ID!, title: String!, body: String = null, icon: String = null): Concept!
+  addConceptSub(superId: ID!, subId: ID!): Boolean
+  removeConceptSub(superId: ID!, subId: ID!): Boolean
+}
+
+type Mind {
+  id: ID!
+  created: String!
+  spaces: [Space]! @relation(name: "CONTAINS", direction: "OUT")
+}
+
+type Space {
+  id: ID!
+  minds: [Mind] @relation(name: "CONTAINS", direction: "IN")
+  name: String!
+  created: String!
+  concepts(first: Int = 10, offset: Int = 0): [Concept!]! @relation(name: "CONTAINS", direction: "OUT")
+}
+
+type Concept {
+  id: ID!
+  spaces: [Space] @relation(name: "CONTAINS", direction: "IN")
+  created: String!
+  title: String!
+  icon: String
+  body: String
+  sub(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direction: "OUT")
+  super(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direction: "IN")
+  # positions(first: Int = 10, offset: Int = 0): [Position!]! @relation(name: "CLASS_OF", direction: "IN")
+  # people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "CLASS_OF", direction: "IN")
+  # items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "CLASS_OF", direction: "IN")
+  # timeline(first: Int = 10, offset: Int = 0): [Event!]! @relation(name: "TIMELINE", direction: "OUT")
+}
+
+# interface Entity {
+#   id: ID!
+#   spaces: [Space!]! @relation(name: "CONTAINS", direction: "IN")
+#   created: Int!
+#   title: String!
+#   icon: String
+# }
+
+# type Position implements Entity, Connections {
+#   id: ID!
+#   spaces: [Space!]! @relation(name: "CONTAINS", direciton: "IN")
+#   created: Int!
+#   title: String!
+#   icon: String
+#   subType: String!
+#   concepts(first: Int = 10, offset: Int = 0): [Concept!]! @relation(name: "CLASS_OF", direciton: "OUT")
+#   contexts(first: Int = 10, offset: Int = 0): [Position!]! @relation(name: "RESPONSE", direction: "IN")
+#   responses(first: Int = 10, offset: Int = 0): [Position!]! @relation(name: "RESPONSE", direction: "OUT")
+#   confidence(mindId: ID!): Float
+#   people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "SUBJECT", direction: "OUT")
+#   items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "SUBJECT", direction: "OUT")
+#   timeline(first: Int = 10, offset: Int = 0): [Event!]! @relation(name: "TIMELINE", direction: "OUT")
+# }
+
+# type Person implements Entity {
+#   id: ID!
+#   spaces: [Space!]! @relation(name: "CONTAINS", direciton: "IN")
+#   created: Int!
+#   title: String!
+#   icon: String
+#   offspring: [Offspring!]! @relation(name: "PARENT", direction: "OUT")
+#   unions: [Union!]! @relation(name: "UNION", direction: "OUT")
+#   timeline(first: Int = 10, offset: Int = 0): [Event!]! @relation(name: "TIMELINE", direction: "OUT")
+# }
+
+# type Offspring {
+#   parents: [Person!]! @relation(name: "PARENT", direction: "IN")
+#   child: Person! @relation(name: "CHILD", direction: "OUT")
+#   event: Event
+# }
+
+# type Union {
+#   participants: [Person!]! @relation(name: "UNION", direction: "IN")
+#   event: Event
+# }
+
+# type Item implements Entity {
+#   id: ID!
+#   spaces: [Space!]! @relation(name: "CONTAINS", direciton: "IN")
+#   created: Int!
+#   title: String!
+#   icon: String
+#   subType: String!
+#   components(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "COMPONENT", direction: "OUT")
+#   containers(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "COMPONENT", direction: "IN")
+#   classes: [Concept!]! @relation(name: "CLASS_OF", direction: "OUT")
+#   timeline(first: Int = 10, offset: Int = 0): [Event!]! @relation(name: "TIMELINE", direction: "OUT")
+# }
+
+# type Event implements Entity {
+#   id: ID!
+#   spaces: [Space!]! @relation(name: "CONTAINS", direciton: "IN")
+#   created: Int!
+#   title: String!
+#   icon: String
+#   subType: String!
+#   description: String
+#   datetime: DateTime
+#   people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "TIMELINE", direction: "IN")
+#   items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "TIMELINE", direction: "IN")
+#   concepts(first: Int = 10, offset: Int = 0): [Concept!]! @relation(name: "TIMELINE", direction: "IN")
+# }
