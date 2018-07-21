@@ -1,8 +1,10 @@
 type Query {
+  allMinds: [Mind]
+
   Mind(id: ID!): Mind
   Space(id: ID!): Space
   Concept(id: ID!): Concept
-  allMinds: [Mind]
+  Position(id: ID!): Position
 }
 
 type Mutation {
@@ -12,6 +14,10 @@ type Mutation {
   createSubConcept(id: ID = null, superConceptId: ID!, title: String!, body: String = null, icon: String = null): Concept!
   addSubConcept(superConceptId: ID!, subConceptId: ID!): Boolean
   removeSubConcept(superConceptId: ID!, subConceptId: ID!): Boolean
+  createConceptPosition(id: ID = null, conceptId: ID!, title: String!, body: String = null, icon: String = null): Position!
+  createResponsePosition(id: ID = null, contextPositionId: ID!, title: String!, body: String = null, icon: String = null): Position!
+  addResponsePosition(contextPositionId: ID!, responsePositionId: ID!): Boolean
+  removeResponsePosition(contextPositionId: ID!, responsePositionId: ID!): Boolean
 }
 
 type Mind {
@@ -25,7 +31,7 @@ type Space {
   minds: [Mind] @relation(name: "CONTAINS", direction: "IN")
   name: String!
   created: String!
-  concepts(first: Int = 10, offset: Int = 0): [Concept!]! @relation(name: "CONTAINS", direction: "OUT")
+  rootConcepts(first: Int = 10, offset: Int = 0): [Concept!]! @cypher(statement: "MATCH (this)-[:CONTAINS {root:true}]->(c:Concept) RETURN c")
 }
 
 type Concept {
@@ -35,9 +41,9 @@ type Concept {
   title: String!
   icon: String
   body: String
-  sub(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direction: "OUT")
-  super(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direction: "IN")
-  # positions(first: Int = 10, offset: Int = 0): [Position!]! @relation(name: "CLASS_OF", direction: "IN")
+  subConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "OUT")
+  superConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "IN")
+  positions(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "CONTAINS", direction: "IN")
   # people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "CLASS_OF", direction: "IN")
   # items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "CLASS_OF", direction: "IN")
   # timeline(first: Int = 10, offset: Int = 0): [Event!]! @relation(name: "TIMELINE", direction: "OUT")
@@ -51,21 +57,21 @@ type Concept {
 #   icon: String
 # }
 
-# type Position implements Entity, Connections {
-#   id: ID!
-#   spaces: [Space!]! @relation(name: "CONTAINS", direciton: "IN")
-#   created: Int!
-#   title: String!
-#   icon: String
-#   subType: String!
-#   concepts(first: Int = 10, offset: Int = 0): [Concept!]! @relation(name: "CLASS_OF", direciton: "OUT")
-#   contexts(first: Int = 10, offset: Int = 0): [Position!]! @relation(name: "RESPONSE", direction: "IN")
-#   responses(first: Int = 10, offset: Int = 0): [Position!]! @relation(name: "RESPONSE", direction: "OUT")
-#   confidence(mindId: ID!): Float
-#   people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "SUBJECT", direction: "OUT")
-#   items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "SUBJECT", direction: "OUT")
-#   timeline(first: Int = 10, offset: Int = 0): [Event!]! @relation(name: "TIMELINE", direction: "OUT")
-# }
+type Position {
+  id: ID!
+  spaces: [Space!]! @relation(name: "CONTAINS", direciton: "IN")
+  created: Int!
+  title: String!
+  icon: String
+  subType: String!
+  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direciton: "OUT")
+  contexts(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "RESPONSE", direction: "IN")
+  responses(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "RESPONSE", direction: "OUT")
+  # confidence(mindId: ID!): Float
+  # people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "SUBJECT", direction: "OUT")
+  # items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "SUBJECT", direction: "OUT")
+  # timeline(first: Int = 10, offset: Int = 0): [Event!]! @relation(name: "TIMELINE", direction: "OUT")
+}
 
 # type Person implements Entity {
 #   id: ID!

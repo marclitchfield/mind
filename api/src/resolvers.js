@@ -8,7 +8,8 @@ export const resolvers = {
   
     Mind: neo4jgraphql,
     Space: neo4jgraphql,
-    Concept: neo4jgraphql
+    Concept: neo4jgraphql,
+    Position: neo4jgraphql
   },
   Mutation: {
     createMind: async(parent, args, context) => {
@@ -45,7 +46,7 @@ export const resolvers = {
       });
       const result = await session.run(`
         MATCH (s:Space {id: $spaceId}) WITH s
-        MERGE (s)-[:CONTAINS]->(c:Concept {id: $id})
+        MERGE (s)-[:CONTAINS {root:true}]->(c:Concept {id: $id})
         ON MATCH SET c.title = $title, c.body = $body, c.icon = $icon
         ON CREATE SET c.title = $title, c.body = $body, c.icon = $icon, c.created = timestamp()
         RETURN c AS concept, apoc.date.format(c.created) AS created
@@ -59,8 +60,8 @@ export const resolvers = {
         id: args.id || uuid()
       });
       const result = await session.run(`
-        MATCH (sc:Concept {id: $superConceptId}) WITH sc
-        MERGE (sc)-[:SUB]->(c:Concept {id: $id})
+        MATCH (sc:Concept {id: $superConceptId})<-[:CONTAINS]-(s:Space) WITH s, sc
+        MERGE (sc)-[:SUB]->(c:Concept {id: $id})<-[:CONTAINS]-(s)
         ON MATCH SET c.title = $title, c.body = $body, c.icon = $icon
         ON CREATE SET c.title = $title, c.body = $body, c.icon = $icon, c.created = timestamp()
         RETURN c AS concept, apoc.date.format(c.created) AS created
@@ -70,7 +71,39 @@ export const resolvers = {
     },
     addSubConcept: async(parent, args, context, resolvers) => {
       const session = context.driver.session();
-      await session.run(`MERGE (sup:Concept {id: $superConceptId})-[:SUB]->(sub:Concept {id: $subConceptId})`);
-    }
+      await session.run(`
+        MERGE (sup:Concept {id: $superConceptId})-[:SUB]->(sub:Concept {id: $subConceptId})
+      `, args);
+    },
+    createConceptPosition: async(parent, args, context, resolvers) => {
+      const session = context.driver.session();
+      const props = Object.assign({}, args, {
+        id: args.id || uuid()
+      });
+      const result = await session.run(`
+        MATCH (c:Concept {id: $conceptId})<-[:CONTAINS]-(s:Space) WITH c, s
+        MERGE (c)<-[:CONTAINS]-(p:Position {id: $id})<-[:CONTAINS]-(s)
+        ON MATCH SET p.title = $title, p.body = $body, p.icon = $icon
+        ON CREATE SET p.title = $title, p.body = $body, p.icon = $icon, p.created = timestamp()
+        RETURN p AS position, apoc.date.format(p.created) AS created
+      `, props);
+      const record = result.records[0];
+      return Object.assign({}, record.get('position').properties, { created: record.get('created') });
+    },
+    createResponsePosition: async(parent, args, context, resolvers) => {
+      const session = context.driver.session();
+      const props = Object.assign({}, args, {
+        id: args.id || uuid()
+      });
+      const result = await session.run(`
+        MATCH (p:Position {id: $contextPositionId})<-[:CONTAINS]-(s:Space) WITH p, s
+        MERGE (p)-[:RESPONSE]->(r:Position {id: $id})<-[:CONTAINS]-(s)
+        ON MATCH SET r.title = $title, r.body = $body, r.icon = $icon
+        ON CREATE SET r.title = $title, r.body = $body, r.icon = $icon, r.created = timestamp()
+        RETURN r AS position, apoc.date.format(r.created) AS created
+      `, props);
+      const record = result.records[0];
+      return Object.assign({}, record.get('position').properties, { created: record.get('created') });
+    },
   }
 };
