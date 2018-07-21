@@ -105,5 +105,35 @@ export const resolvers = {
       const record = result.records[0];
       return Object.assign({}, record.get('position').properties, { created: record.get('created') });
     },
+    createSpaceEvent: async(parent, args, context, resolvers) => {
+      const session = context.driver.session();
+      const props = Object.assign({}, args, {
+        id: args.id || uuid()
+      });
+      const result = await session.run(`
+        MATCH (s:Space {id: $spaceId}) WITH s
+        MERGE (s)-[:CONTAINS]->(e:Event {id: $id})
+        ON MATCH SET e.title = $title, e.icon = $icon, e.body = $body, e.type = $type, e.datetime = $datetime
+        ON CREATE SET e.title = $title, e.icon = $icon, e.body = $body, e.type = $type, e.datetime = $datetime, e.created = timestamp()
+        RETURN e AS event, apoc.date.format(e.created) AS created
+      `, props);
+      const record = result.records[0];
+      return Object.assign({}, record.get('event').properties, { created: record.get('created') });
+    },
+    createConceptEvent: async(parent, args, context, resolvers) => {
+      const session = context.driver.session();
+      const props = Object.assign({}, args, {
+        id: args.id || uuid()
+      });
+      const result = await session.run(`
+        MATCH (c:Concept {id: $conceptId})<-[:CONTAINS]-(s:Space) WITH c, s
+        MERGE (c)<-[:CONTAINS]-(e:Event {id: $id})<-[:CONTAINS]-(s)
+        ON MATCH SET e.title = $title, e.icon = $icon, e.body = $body, e.type = $type, e.datetime = $datetime
+        ON CREATE SET e.title = $title, e.icon = $icon, e.body = $body, e.type = $type, e.datetime = $datetime, e.created = timestamp()
+        RETURN e AS event, apoc.date.format(e.created) AS created
+      `, props);
+      const record = result.records[0];
+      return Object.assign({}, record.get('event').properties, { created: record.get('created') });
+    }
   }
 };
