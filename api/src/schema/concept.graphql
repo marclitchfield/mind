@@ -6,9 +6,11 @@ input ConceptProps {
 
 type ConceptOps {
   createInSpace(id: ID = null, spaceId: ID!, input: ConceptProps!): Concept!
-  createSub(id: ID = null, superConceptId: ID!, input: ConceptProps!): Concept!
-  connectSub(superConceptId: ID!, subConceptId: ID!): Boolean
-  disconnectSub(superConceptId: ID!, subConceptId: ID!): Boolean
+  createSubConcept(id: ID = null, superConceptId: ID!, input: ConceptProps!): Concept!
+  addSubConcept(id: ID!, subConceptId: ID!): Boolean
+  addPerson(id: ID!, personId: ID!): Boolean
+  removeSubConcept(id: ID!, subConceptId: ID!): Boolean
+  removePerson(id: ID!, personId: ID!): Boolean
 }
 
 extend type Mutation {

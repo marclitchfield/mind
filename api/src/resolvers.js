@@ -13,24 +13,24 @@ export const resolvers = {
   Query: {
     Minds: (_parent, args, context, resolvers) => neo4jgraphql('Mind', args, context, resolvers),
     Mind: neo4jgraphql,
-    Space: neo4jgraphql,
-    Concept: neo4jgraphql,
-    Idea: neo4jgraphql,
-    Event: neo4jgraphql,
-    Person: neo4jgraphql,
-    Item: neo4jgraphql,
-    Location: neo4jgraphql,
-    Collection: neo4jgraphql
+    // Space: neo4jgraphql,
+    // Concept: neo4jgraphql,
+    // Idea: neo4jgraphql,
+    // Event: neo4jgraphql,
+    // Person: neo4jgraphql,
+    // Item: neo4jgraphql,
+    // Location: neo4jgraphql,
+    // Collection: neo4jgraphql
   },
   Mutation: {
     Mind,
-    Space,
-    Concept,
-    Idea,
-    Event,
-    Person,
-    Item,
-    Location,
-    Collection
+    // Space,
+    // Concept,
+    // Idea,
+    // Event,
+    // Person,
+    // Item,
+    // Location,
+    // Collection
   }
 };

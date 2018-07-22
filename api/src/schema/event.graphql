@@ -14,6 +14,10 @@ type EventOps {
   createForItem(id: ID = null, itemId: ID!, input: EventProps!): Event!
   createForIdea(id: ID = null, ideaId: ID!, input: EventProps!): Event!
   createForPerson(id: ID = null, personId: ID!, input: EventProps!): Event!
+  addLocation(id: ID!, locationId: ID!): Boolean
+  addConcept(id: ID!, conceptId: ID!): Boolean
+  removeLocation(id: ID!, locationId: ID!): Boolean
+  removeConcept(id: ID!, conceptId: ID!): Boolean
 }
 
 extend type Mutation {

@@ -37,4 +37,19 @@ type Idea implements Entity {
   subjectItems(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "SUBJECT", direction: "OUT")
   linkedItems(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "LINKS_TO", direction: "OUT")
   # confidence(mindId: ID!): Float
+  addEvent(id: ID!, eventId: ID!): Boolean
+  addConcept(id: ID!, conceptId: ID!): Boolean
+  addReesponse(id: ID!, responseIdeaId: ID!): Boolean
+  addLinkedItem(id: ID!, linkedItemId: ID!): Boolean
+  addSubjectItem(id: ID!, subjectItemId: ID!): Boolean
+  addSourcePerson(id: ID!, sourcePersonId: ID!): Boolean
+  addSubjectPerson(id: ID!, subjectPersonId: ID!): Boolean
+
+  removeEvent(id: ID!, eventI: ID!): Boolean
+  removeConcept(id: ID!, conceptId: ID!): Boolean
+  removeResponse(id: ID!, responseIdeaId: ID!): Boolean
+  removeLinkedItem(id: ID!, linkedItemId: ID!): Boolean
+  removeSubjectItem(id: ID!, subjectItemId: ID!): Boolean
+  removeSourcePerson(id: ID!, sourcePersonId: ID!): Boolean
+  removeSubjectPerson(id: ID!, subjectPersonId: ID!): Boolean
 }

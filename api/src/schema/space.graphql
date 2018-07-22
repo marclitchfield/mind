@@ -4,6 +4,22 @@ input SpaceProps {
 
 type SpaceOps {
   createInMind(id: ID = null, mindId: ID!, input: SpaceProps!): Space!
+
+  addCollection(id: ID!, collectionId: ID!): Boolean
+  addConcept(id: ID!, conceptId: ID!): Boolean
+  addEvent(id: ID!, eventId: ID!): Boolean
+  addIdea(id: ID!, ideaId: ID!): Boolean
+  addItem(id: ID!, itemId: ID!): Boolean
+  addLocation(id: ID!, locationId: ID!): Boolean
+  addPerson(id: ID!, personId: ID!): Boolean
+
+  removeCollection(id: ID!, collectionId: ID!): Boolean
+  removeConcept(id: ID!, conceptId: ID!): Boolean
+  removeEvent(id: ID!, eventId: ID!): Boolean
+  removeIdea(id: ID!, ideaId: ID!): Boolean
+  removeItem(id: ID!, itemId: ID!): Boolean
+  removeLocation(id: ID!, locationId: ID!): Boolean
+  removePerson(id: ID!, personId: ID!): Boolean
 }
 
 extend type Mutation {

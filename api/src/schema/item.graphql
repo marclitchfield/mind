@@ -15,6 +15,15 @@ type ItemOps {
   createAtLocation(id: ID = null, locationId: ID!, classConceptId: ID!, input: ItemProps!): Item!
   createWithinCollection(id: ID = null, collectionId: ID!, classConceptId: ID!, input: ItemProps!): Item!
   createForPerson(id: ID = null, personId: ID!, classConceptId: ID!, input: ItemProps!): Item!
+    
+  addEvent(id: ID!, eventId: ID!): Boolean
+  addItem(id: ID!, itemId: ID!): Boolean
+  setLocation(id: ID!, locationId: ID!): Boolean
+  setClass(id: ID!, classConceptId: ID!): Boolean
+
+  removeEvent(id: ID!, eventId: ID!): Boolean
+  removeItem(id: ID!, itemId: ID!): Boolean
+  clearLocation(id: ID!): Boolean
 }
 
 extend type Mutation {

@@ -4,6 +4,9 @@ input MindProps {
 
 type MindOps {
   create(id: ID = null, input: MindProps!): Mind!
+
+  addSpace(id: ID!, spaceId: ID!): Boolean
+  removeSpace(id: ID!, spaceId: ID!): Boolean
 }
 
 type Mutation {

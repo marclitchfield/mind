@@ -8,6 +8,12 @@ type LocationOps {
   createInSpace(id: ID = null, spaceId: ID!, input: LocationProps!): Location!
   createForConcept(id: ID = null, conceptId: ID!, input: LocationProps!): Location!
   createWithinLocation(id: ID = null, outerLocationId: ID!, input: LocationProps!): Location!
+
+  addConcept(id: ID!, conceptId: ID!): Boolean
+  addLocation(id: ID!, locationId: ID!): Boolean
+  
+  removeConcept(id: ID!, conceptId: ID!): Boolean
+  removeLocation(id: ID!, locationId: ID!): Boolean
 }
 
 extend type Mutation {

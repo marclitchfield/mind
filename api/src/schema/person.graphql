@@ -14,6 +14,14 @@ type PersonOps {
   createAtLocation(id: ID = null, locationId: ID!, input: PersonProps!): Person!
   createOffspring(parent1: ID!, parent2: ID!, childId: ID!, eventId: ID!): Boolean
   createUnion(person1: ID!, person2: ID!, eventId: ID!): Boolean
+
+  addItem(id: ID!, itemId: ID!): Boolean
+  addCollection(id: ID!, collectionId: ID!): Boolean
+  setLocation(id: ID!, locationId: ID!): Boolean
+
+  removeItem(id: ID!, itemId: ID!): Boolean
+  removeCollection(id: ID!, collectionId: ID!): Boolean
+  clearLocation(id: ID!): Boolean
 }
 
 extend type Mutation {

@@ -9,6 +9,11 @@ type CollectionOps {
   createInSpace(id: ID = null, spaceId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
   createInstance(id: ID = null, classConceptId: ID!, input: CollectionProps!): Collection!
   createForPerson(id: ID = null, personId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
+  addEvent(id: ID!, eventId: ID!): Boolean
+  setClass(id: ID!, classConceptId: ID!): Boolean
+  setLocation(id: ID!, locationId: ID!): Boolean
+  removeEvent(id: ID!, eventId: ID!): Boolean
+  clearLocation(id: ID!): Boolean
 }
 
 extend type Mutation {
