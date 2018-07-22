@@ -28,4 +28,5 @@ type Collection implements Entity {
   description: String
   class: Concept @relation(name: "INSTANCE_OF", direction: "OUT")
   items: [Item!] @relation(name: "CONTAINS", direction: "OUT")
+  timeline: [Event!] @relation(name: "TIMELINE", direction: "OUT")
 }

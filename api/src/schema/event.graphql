@@ -10,6 +10,10 @@ type EventOps {
   createInSpace(id: ID = null, spaceId: ID!, input: EventProps!): Event!
   createForConcept(id: ID = null, conceptId: ID!, input: EventProps!): Event!
   createAtLocation(id: ID = null, locationId: ID!, input: EventProps!): Event!
+  createForCollection(id: ID = null, collectionId: ID!, input: EventProps!): Event!
+  createForItem(id: ID = null, itemId: ID!, input: EventProps!): Event!
+  createForIdea(id: ID = null, ideaId: ID!, input: EventProps!): Event!
+  createForPerson(id: ID = null, personId: ID!, input: EventProps!): Event!
 }
 
 extend type Mutation {

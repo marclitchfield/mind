@@ -12,5 +12,21 @@ export const Event = () => ({
   createAtLocation: resolveEntityMerge(`
     MATCH (loc:Location {id: $locationId})<-[:CONTAINS]-(s:Space) WITH loc, s
     MERGE (s)-[:CONTAINS]->(e:Event {id: $id})-[:AT]->(loc)
+  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
+  createForCollection: resolveEntityMerge(`
+    MATCH (col:Collection {id: $collectionId})<-[:CONTAINS]-(s:Space) WITH col, s
+    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})<-[:TIMELINE]-(col)
+  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
+  createForItem: resolveEntityMerge(`
+    MATCH (item:Item {id: $itemId})<-[:CONTAINS]-(s:Space) WITH item, s
+    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})<-[:TIMELINE]-(item)
+  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),  
+  createForIdea: resolveEntityMerge(`
+    MATCH (idea:Idea {id: $ideaId})<-[:CONTAINS]-(s:Space) WITH idea, s
+    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})<-[:CONTAINS]-(idea)
+  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
+  createForPerson: resolveEntityMerge(`
+    MATCH (p:Person {id: $personId})<-[:CONTAINS]-(s:Space) WITH p, s
+    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})<-[:TIMELINE]-(p)
   `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) })
 });
