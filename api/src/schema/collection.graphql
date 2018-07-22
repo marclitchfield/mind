@@ -1,0 +1,31 @@
+input CollectionProps {
+  title: String!
+  icon: String
+  type: String
+  description: String
+}
+
+type CollectionOps {
+  createInSpace(id: ID = null, spaceId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
+  createInstance(id: ID = null, classConceptId: ID!, input: CollectionProps!): Collection!
+}
+
+extend type Mutation {
+  Collection: CollectionOps
+}
+
+extend type Query {
+  Collection(id: ID!): Collection
+}
+
+type Collection implements Entity {
+  id: ID!
+  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String!
+  icon: String
+  type: String
+  description: String
+  class: Concept @relation(name: "INSTANCE_OF", direction: "OUT")
+  items: [Item!] @relation(name: "CONTAINS", direction: "OUT")
+}

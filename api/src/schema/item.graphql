@@ -2,16 +2,17 @@ input ItemProps {
   title: String!
   icon: String
   name: String
-  born_at: String
-  died_at: String
+  type: String
+  description: String
 }
 
 type ItemOps {
   createInSpace(id: ID = null, spaceId: ID!, classConceptId: ID!, input: ItemProps!): Item!
-  createForConcept(id: ID = null, classConceptId: ID!, input: ItemProps!): Item!
+  createInstance(id: ID = null, classConceptId: ID!, input: ItemProps!): Item!
   createLinkForIdea(id: ID = null, classConceptId: ID!, input: ItemProps!): Item!
   createInContainer(id: ID = null, containerItemId: ID!, classConceptId: ID!, input: ItemProps!): Item!
   createAtLocation(id: ID = null, locationId: ID!, classConceptId: ID!, input: ItemProps!): Item!
+  createWithinCollection(id: ID = null, collectionId: ID!, classConceptId: ID!, input: ItemProps!): Item!
 }
 
 extend type Mutation {
