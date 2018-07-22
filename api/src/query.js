@@ -5,7 +5,7 @@ export const entityMerge = (cypher, alias, preprocess) => async(args, context, i
   const props = Object.assign({}, args, {
     id: args.id || uuid()
   });
-  if (preprocess) {
+  if (preprocess !== undefined) {
     preprocess(props);
   }
   const sets = Object.keys(props.input || {}).map(key => `${alias}.${key} = $input.${key}`).join(', ');
@@ -21,7 +21,7 @@ export const entityMerge = (cypher, alias, preprocess) => async(args, context, i
 
 export const cypher = (cypher, preprocess) => async(args, context) => {
   const props = Object.assign({}, args);
-  if (preprocess) {
+  if (preprocess !== undefined) {
     preprocess(props);
   }
   const session = context.driver.session();
@@ -29,21 +29,21 @@ export const cypher = (cypher, preprocess) => async(args, context) => {
 }
 
 export const addRelationship = (subject, predicate, object, objectKey) => async(args, context) => {
-  await resolveCypher(`
+  await cypher(`
     MATCH (sub:${subject} {id: $id}), (obj:${object} {id: ${objectKey}})
     MERGE (sub)-[:${predicate}]->(obj)
   `, );
 }
 
 export const removeRelationship = (subject, predicate, object, objectKey) => async(args, context) => {
-  await resolveCypher(`
+  await cypher(`
     MATCH (sub:${subject} {id: $id})-[r:${predicate}]->(obj:${object} {id: ${objectKey}})
     DELETE r
   `)
 }
 
 export const setRelationship = (subject, predicate, object, objectKey) => async(args, context) => {
-  await resolveCypher(`
+  await cypher(`
     MATCH (sub:${subject} {id: $id})-[r:${predicate}]->(obj:${object})
     DELETE r
     MERGE (sub)-[:${predicate}]->(${object} { id: ${objectKey} })
@@ -51,7 +51,7 @@ export const setRelationship = (subject, predicate, object, objectKey) => async(
 }
 
 export const clearRelationship = (subject, predicate, object) => async(args, context) => {
-  await resolveCypher(`
+  await cypher(`
     MATCH (sub:${subject} {id: $id})-[r:${predicate}]->(obj:${object})
     DELETE r
   `);

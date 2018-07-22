@@ -21,13 +21,13 @@ export const Person = () => ({
     MATCH (loc:Location {id: $locationId})<-[:CONTAINS]-(s:Space) WITH loc, s
     MERGE (s)-[:CONTAINS]->(p:Person {id: $id})-[:AT]->(loc)
   `, 'p'),
-  createUnion: resolve.entityMerge(`
+  createUnion: resolve.cypher(`
     MATCH (p1:Person {id: $person1}), (p2:Person {id: $person2}), (e:Event {id: $eventId})
     MERGE (p1)-[:PART_OF]->(u:Union {datetime: e.datetime})<-[:PART_OF]-(p2)
     MERGE (u)-[:UNION]->(e)
     MERGE (p1)-[:TIMELINE]->(e)<-[:TIMELINE]-(p2)
   `),
-  createOffspring: resolve.entityMerge(`
+  createOffspring: resolve.cypher(`
     MATCH (p1:Person {id: $parent1}), (p2:Person {id: $parent2}), (c:Person {id: $childId}), (e:Event {id: $eventId})
     MERGE (p1)-[:PARENT_OF]->(o:Offspring {datetime: e.datetime})<-[:PARENT_OF]-(p2)
     MERGE (o)-[:CHILD]->(c) 
@@ -40,6 +40,6 @@ export const Person = () => ({
   setLocation: resolve.setRelationship('Person', 'AT', 'Location', '$locationId'),
 
   removeItem: resolve.removeRelationship('Person', 'HAS', 'Item', '$itemId'),
-  removeCollection: resolve.removeCollection('Person', 'HAS', 'Collection', '$collectionId'),
-  clearLocation: resolve.clearRelationship('Person', 'AT', 'Location'),
+  removeCollection: resolve.removeRelationship('Person', 'HAS', 'Collection', '$collectionId'),
+  clearLocation: resolve.clearRelationship('Person', 'AT', 'Location')
 });
