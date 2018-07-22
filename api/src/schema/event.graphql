@@ -9,6 +9,7 @@ input EventProps {
 type EventOps {
   createInSpace(id: ID = null, spaceId: ID!, input: EventProps!): Event!
   createForConcept(id: ID = null, conceptId: ID!, input: EventProps!): Event!
+  createAtLocation(id: ID = null, locationId: ID!, input: EventProps!): Event!
 }
 
 extend type Mutation {
@@ -32,4 +33,5 @@ type Event implements Entity {
   people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "TIMELINE", direction: "IN")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "TIMELINE", direction: "IN")
   ideas(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "IN")
+  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "AT", direction: "IN")
 }

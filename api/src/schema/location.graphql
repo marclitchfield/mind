@@ -1,0 +1,32 @@
+input LocationProps {
+  title: String!
+  icon: String
+  locator: String
+}
+
+type LocationOps {
+  createInSpace(id: ID = null, spaceId: ID!, input: LocationProps!): Location!
+  createForConcept(id: ID = null, conceptId: ID!, input: LocationProps!): Location!
+  createWithinLocation(id: ID = null, outerLocationId: ID!, input: LocationProps!): Location!
+}
+
+extend type Mutation {
+  Location: LocationOps
+}
+
+extend type Query {
+  Location(id: ID!): Location
+}
+
+type Location implements Entity {
+  id: ID!
+  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String!
+  icon: String
+  locator: String
+  innerLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "CONTAINS", direction: "OUT")
+  outerLocation: Location @relation(name: "CONTAINS", direction: "IN")
+  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direction: "IN")
+  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "AT", direction: "OUT")
+}

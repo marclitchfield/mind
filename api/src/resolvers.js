@@ -6,6 +6,7 @@ import { Idea } from "./resolvers/idea.resolvers"
 import { Event } from "./resolvers/event.resolvers"
 import { Person } from "./resolvers/person.resolvers"
 import { Item } from "./resolvers/item.resolvers"
+import { Location } from "./resolvers/location.resolvers"
 
 export const resolvers = {
   Query: {
@@ -16,7 +17,8 @@ export const resolvers = {
     Idea: neo4jgraphql,
     Event: neo4jgraphql,
     Person: neo4jgraphql,
-    Item: neo4jgraphql
+    Item: neo4jgraphql,
+    Location: neo4jgraphql
   },
   Mutation: {
     Mind,
@@ -25,6 +27,7 @@ export const resolvers = {
     Idea,
     Event,
     Person,
-    Item
+    Item,
+    Location
   }
 };

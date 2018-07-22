@@ -32,4 +32,5 @@ type Concept implements Entity {
   events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "CONTAINS", direction: "IN")
   people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "CONTAINS", direction: "OUT")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "INSTANCE_OF", direction: "IN")
+  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "CONTAINS", direction: "OUT")
 }

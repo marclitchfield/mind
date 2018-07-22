@@ -18,5 +18,10 @@ export const Item = () => ({
     MATCH (ic:Item {id: $containerItemId})<-[:CONTAINS]-(s:Space), (c:Concept {id: $classConceptId}) WITH ic, s, c
     MERGE (ic)-[:CONTAINS]->(i:Item {id: $id})<-[:CONTAINS]-(s)
     MERGE (i)-[:CLASS_OF]->(c)
+  `, 'i'),
+  createAtLocation: resolveEntityMerge(`
+    MATCH (loc:Location {id: $locationId})<-[:CONTAINS]-(s:Space), (c:Concept {id: $classConceptId}) WITH loc, s, c
+    MERGE (s)-[:CONTAINS]->(i:Item {id: $id})-[:AT]->(loc)
+    MERGE (i)-[:CLASS_OF]->(c)
   `, 'i')
 });

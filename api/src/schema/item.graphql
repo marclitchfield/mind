@@ -11,6 +11,7 @@ type ItemOps {
   createForConcept(id: ID = null, classConceptId: ID!, input: ItemProps!): Item!
   createLinkForIdea(id: ID = null, classConceptId: ID!, input: ItemProps!): Item!
   createInContainer(id: ID = null, containerItemId: ID!, classConceptId: ID!, input: ItemProps!): Item!
+  createAtLocation(id: ID = null, locationId: ID!, classConceptId: ID!, input: ItemProps!): Item!
 }
 
 extend type Mutation {
@@ -34,4 +35,5 @@ type Item implements Entity {
   items: [Item!] @relation(name: "CONTAINS", direction: "OUT")
   ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "LINKS_TO", direction: "IN")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
+  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "AT", direction: "OUT")
 }
