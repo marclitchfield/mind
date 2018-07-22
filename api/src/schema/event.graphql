@@ -29,6 +29,6 @@ type Event implements Entity {
   type: String
   datetime: String! @cypher(statement: "RETURN apoc.date.format(this.datetime)")
   concepts(first: Int = 10, offset: Int = 0): [Concept!]! @relation(name: "CONTAINS", direction: "OUT")
-  # people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "TIMELINE", direction: "IN")
+  people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "TIMELINE", direction: "IN")
   # items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "TIMELINE", direction: "IN")
 }
