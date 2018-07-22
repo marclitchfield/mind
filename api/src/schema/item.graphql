@@ -1,0 +1,37 @@
+input ItemProps {
+  title: String!
+  icon: String
+  name: String
+  born_at: String
+  died_at: String
+}
+
+type ItemOps {
+  createInSpace(id: ID = null, spaceId: ID!, classConceptId: ID!, input: ItemProps!): Item!
+  createForConcept(id: ID = null, classConceptId: ID!, input: ItemProps!): Item!
+  createLinkForIdea(id: ID = null, classConceptId: ID!, input: ItemProps!): Item!
+  createInContainer(id: ID = null, containerItemId: ID!, classConceptId: ID!, input: ItemProps!): Item!
+}
+
+extend type Mutation {
+  Item: ItemOps
+}
+
+extend type Query {
+  Item(id: ID!): Item
+}
+
+type Item implements Entity {
+  id: ID!
+  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String!
+  icon: String
+  type: String
+  description: String
+  class: Concept @relation(name: "INSTANCE_OF", direction: "OUT")
+  container: Item @relation(name: "CONTAINS", direction: "IN")
+  items: [Item!] @relation(name: "CONTAINS", direction: "OUT")
+  ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "LINKS_TO", direction: "IN")
+  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
+}

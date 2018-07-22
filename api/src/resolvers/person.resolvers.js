@@ -9,12 +9,12 @@ export const Person = () => ({
     MATCH (c:Concept {id: $conceptId})<-[:CONTAINS]-(s:Space) WITH c, s
     MERGE (c)-[:CONTAINS]->(p:Person {id: $id})<-[:CONTAINS]-(s)
   `, 'p'),
-  createForPositionSource: resolveEntityMerge(`
-    MATCH (sp:Position {id: $positionId})<-[:CONTAINS]-(s:Space) WITH sp, s
-    MERGE (sp)-[:SOURCE]->(p:Person {id: $id})<-[:CONTAINS]-(s)
+  createAsIdeaSource: resolveEntityMerge(`
+    MATCH (si:Idea {id: $ideaId})<-[:CONTAINS]-(s:Space) WITH si, s
+    MERGE (si)-[:SOURCE]->(p:Person {id: $id})<-[:CONTAINS]-(s)
   `, 'p'),
-  createForPositionSubject: resolveEntityMerge(`
-    MATCH (sp:Position {id: $positionId})<-[:CONTAINS]-(s:Space) WITH sp, s
+  createAsIdeaSubject: resolveEntityMerge(`
+    MATCH (sp:Idea {id: $ideaId})<-[:CONTAINS]-(s:Space) WITH sp, s
     MERGE (sp)-[:SUBJECT]->(p:Person {id: $id})<-[:CONTAINS]-(s)
   `, 'p'),
   createUnion: resolveCypher(`
