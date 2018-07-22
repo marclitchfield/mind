@@ -1,11 +1,6 @@
 # Mind
 
-### Prerequisites
-* Docker with docker-compose
-
 ### Setup
-
-Run docker-compose:
 ```
 docker-compose up -d
 ```
