@@ -20,8 +20,9 @@ type Space {
   title: String!
   created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
   rootConcepts(first: Int = 10, offset: Int = 0): [Concept!] @cypher(statement: "MATCH (this)-[:CONTAINS {root:true}]->(c:Concept) RETURN c")
+  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direction: "OUT")
   rootIdeas(first: Int = 10, offset: Int = 0): [Idea!] @cypher(statement: "MATCH (this)-[:CONTAINS]->(i:Idea) WHERE NOT (i)<-[:RESPONSE]-(:Idea) RETURN i")
-  allConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direction: "OUT")
+  ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "CONTAINS", direction: "OUT")
   people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "CONTAINS", direction: "OUT")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "OUT")
   events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "CONTAINS", direction: "OUT")

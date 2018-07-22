@@ -17,6 +17,10 @@ export const Person = () => ({
     MATCH (sp:Idea {id: $ideaId})<-[:CONTAINS]-(s:Space) WITH sp, s
     MERGE (sp)-[:SUBJECT]->(p:Person {id: $id})<-[:CONTAINS]-(s)
   `, 'p'),
+  createAtLocation: resolveEntityMerge(`
+    MATCH (loc:Location {id: $locationId})<-[:CONTAINS]-(s:Space) WITH loc, s
+    MERGE (s)-[:CONTAINS]->(p:Person {id: $id})-[:AT]->(loc)
+  `, 'p'),
   createUnion: resolveCypher(`
     MATCH (p1:Person {id: $person1}), (p2:Person {id: $person2}), (e:Event {id: $eventId})
     MERGE (p1)-[:PART_OF]->(u:Union {datetime: e.datetime})<-[:PART_OF]-(p2)

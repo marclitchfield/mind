@@ -8,6 +8,7 @@ input CollectionProps {
 type CollectionOps {
   createInSpace(id: ID = null, spaceId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
   createInstance(id: ID = null, classConceptId: ID!, input: CollectionProps!): Collection!
+  createForPerson(id: ID = null, personId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
 }
 
 extend type Mutation {
@@ -26,6 +27,7 @@ type Collection implements Entity {
   icon: String
   type: String
   description: String
+  location: Location @relation(name: "AT", direction: "OUT")
   class: Concept @relation(name: "INSTANCE_OF", direction: "OUT")
   items: [Item!] @relation(name: "CONTAINS", direction: "OUT")
   timeline: [Event!] @relation(name: "TIMELINE", direction: "OUT")
