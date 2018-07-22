@@ -10,6 +10,11 @@ export const Concept = () => ({
     MERGE (sc)-[:SUB]->(c:Concept {id: $id})<-[:CONTAINS]-(s)  
   `, 'c'),
   connectSub: resolveCypher(`
-    MERGE (sup:Concept {id: $superConceptId})-[:SUB]->(sub:Concept {id: $subConceptId})
+    MATCH (sup:Concept {id: $superConceptId}), (sub:Concept {id: $subConceptId})
+    MERGE (sup)-[:SUB]->(sub)
+  `),
+  disconnectSub: resolveCypher(`
+    MATCH (sup:Concept {id: $superConceptId})-[r:SUB]->(sub:Concept {id: $subConceptId})
+    DELETE r
   `)
 })

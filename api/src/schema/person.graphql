@@ -1,0 +1,56 @@
+input PersonProps {
+  title: String!
+  icon: String
+  name: String
+  born_at: String
+  died_at: String
+}
+
+input PersonEventProps {
+  datetime: String
+}
+
+type PersonOps {
+  createInSpace(id: ID = null, spaceId: ID!, input: PersonProps!): Person!
+  createForConcept(id: ID = null, conceptId: ID!, input: PersonProps!): Person!
+  createForPositionSource(id: ID = null, positionId: ID!, input: PersonProps!): Person!
+  createForPositionSubject(id: ID = null, positionId: ID!, input: PersonProps!): Person!
+  createOffspring(parent1: ID!, parent2: ID!, childId: ID!, eventId: ID!): Boolean
+  createUnion(person1: ID!, person2: ID!, eventId: ID!): Boolean
+}
+
+extend type Mutation {
+  Person: PersonOps
+}
+
+extend type Query {
+  Person(id: ID!): Person
+}
+
+type Person implements Entity {
+  id: ID!
+  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String!
+  icon: String
+  name: String
+  offspring: [Offspring!] @relation(name: "PARENT_OF", direction: "OUT")
+  parents: [Person!] @cypher(statement: "MATCH (this)<-[:CHILD]-(o:Offspring)<-[:PARENT_OF]-(p:Person) RETURN p")
+  children: [Person!] @cypher(statement: "MATCH (this)-[:PARENT_OF]->(o:Offspring)-[:CHILD]->(p:Person) RETURN p")
+  unions: [Union!] @relation(name: "PART_OF", direction: "OUT")
+  positions(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "SOURCE", direction: "IN")
+  contextPositions(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "SUBJECT", direction: "IN")
+  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direction: "IN")
+  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
+}
+
+type Offspring {
+  parents: [Person!]! @relation(name: "PARENT", direction: "IN")
+  child: Person! @relation(name: "CHILD", direction: "OUT")
+  event: Event! @relation(name: "BIRTH", direction: "OUT")
+}
+
+type Union {
+  participants: [Person!]! @relation(name: "PART_OF", direction: "IN")
+  event: Event! @relation(name: "UNION", direction: "OUT")
+}

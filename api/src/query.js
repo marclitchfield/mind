@@ -1,10 +1,13 @@
 const uuid = require('uuid/v4');
 
-export const resolveEntityMerge = (cypher, alias) => async(args, context, info) => {
+export const resolveEntityMerge = (cypher, alias, preprocess) => async(args, context, info) => {
   const session = context.driver.session();
   const props = Object.assign({}, args, {
     id: args.id || uuid()
   });
+  if (preprocess) {
+    preprocess(props);
+  }
   const sets = Object.keys(props.input || {}).map(key => `${alias}.${key} = $input.${key}`).join(', ');
   const result = await session.run(`
     ${cypher}
@@ -16,7 +19,11 @@ export const resolveEntityMerge = (cypher, alias) => async(args, context, info) 
   return Object.assign({}, record.get('result').properties, { created: record.get('created') });
 }
 
-export const resolveCypher = (cypher) => async(args, context) => {
+export const resolveCypher = (cypher, preprocess) => async(args, context) => {
+  const props = Object.assign({}, args);
+  if (preprocess) {
+    preprocess(props);
+  }
   const session = context.driver.session();
-  await session.run(cypher, args);
+  await session.run(cypher, props);
 }

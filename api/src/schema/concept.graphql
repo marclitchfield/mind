@@ -29,7 +29,8 @@ type Concept implements Entity {
   subConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "OUT")
   superConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "IN")
   positions(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "CONTAINS", direction: "IN")
+  events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "CONTAINS", direction: "IN")
+  people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "CONTAINS", direction: "OUT")
   # people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "CLASS_OF", direction: "IN")
   # items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "CLASS_OF", direction: "IN")
-  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
 }

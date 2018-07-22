@@ -30,6 +30,9 @@ type Position implements Entity {
   concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direciton: "OUT")
   contexts(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "RESPONSE", direction: "IN")
   responses(first: Int = 10, offset: Int = 0): [Position!] @relation(name: "RESPONSE", direction: "OUT")
+  events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "CONTAINS", direction: "OUT")
+  sources(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SOURCE", direction: "OUT")
+  subjects(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SUBJECT", direction: "OUT")
   # confidence(mindId: ID!): Float
   # people(first: Int = 10, offset: Int = 0): [Person!]! @relation(name: "SUBJECT", direction: "OUT")
   # items(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "SUBJECT", direction: "OUT")
