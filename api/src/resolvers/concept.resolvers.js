@@ -11,8 +11,5 @@ export const Concept = () => ({
   `, 'c'),
 
   addSubConcept: resolve.addRelationship('Concept', 'SUB', 'Concept', '$subConceptId'),
-  addPerson: resolve.addRelationship('Concept', 'CONTAINS', 'Person', '$personId'),
-  
   removeSubConcept: resolve.removeRelationship('Concept', 'SUB', 'Concept', '$subConceptId'),
-  removePerson: resolve.removeRelationship('Concept', 'CONTAINS', 'Person', '$personId')
 })

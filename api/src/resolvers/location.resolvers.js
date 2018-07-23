@@ -7,16 +7,16 @@ export const Location = () => ({
   `, 'loc'),
   createForConcept: resolve.entityMerge(`
     MATCH (c:Concept {id: $conceptId})<-[:CONTAINS]-(s:Space) WITH c, s
-    MERGE (s)-[:CONTAINS]->(loc:Location {id: $id})-[:CONTAINS]->(c)
+    MERGE (s)-[:CONTAINS]->(loc:Location {id: $id})-[:DESCRIBED_BY]->(c)
   `, 'loc'),
   createWithinLocation: resolve.entityMerge(`
     MATCH (ol:Location {id: $outerLocationId})<-[:CONTAINS]-(s:Space) WITH ol, s
     MERGE (s)-[:CONTAINS]->(il:Location {id: $id})<-[:IN]-(ol)
   `, 'il'),
 
-  addConcept: resolve.addRelationship('Location', 'CONTAINS', 'Concept', '$conceptId'),
+  addConcept: resolve.addRelationship('Location', 'DESCRIBED_BY', 'Concept', '$conceptId'),
   addLocation: resolve.addRelationship('Location', 'CONTAINS', 'Location', '$locationId'),
-  
-  removeConcept: resolve.removeRelationship('Location', 'CONTAINS', 'Concept', '$conceptId'),
+
+  removeConcept: resolve.removeRelationship('Location', 'DESCRIBED_BY', 'Concept', '$conceptId'),
   removeLocation: resolve.removeRelationship('Location', 'CONTAINS', 'Location', '$locationId')
 });

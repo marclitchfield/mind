@@ -7,7 +7,7 @@ export const Person = () => ({
   `, 'p'),
   createForConcept: resolve.entityMerge(`
     MATCH (c:Concept {id: $conceptId})<-[:CONTAINS]-(s:Space) WITH c, s
-    MERGE (c)-[:CONTAINS]->(p:Person {id: $id})<-[:CONTAINS]-(s)
+    MERGE (s)-[:CONTAINS]->(p:Person {id: $id})-[:DESCRIBED_BY]->(c)
   `, 'p'),
   createAsIdeaSource: resolve.entityMerge(`
     MATCH (si:Idea {id: $ideaId})<-[:CONTAINS]-(s:Space) WITH si, s
@@ -36,11 +36,13 @@ export const Person = () => ({
   `),
 
   addEvent: resolve.addRelationship('Person', 'TIMELINE', 'Event', '$eventId'),
+  addConcept: resolve.addRelationship('Person', 'DESCRIBED_BY', 'Concept', '$conceptId'),
   addItem: resolve.addRelationship('Person', 'HAS', 'Item', '$itemId'),
   addCollection: resolve.addRelationship('Person', 'HAS', 'Collection', '$collectionId'),
   setLocation: resolve.setRelationship('Person', 'AT', 'Location', '$locationId'),
 
   removeEvent: resolve.removeRelationship('Person', 'TIMELINE', 'Event', '$eventId'),
+  removeConcept: resolve.removeRelationship('Person', 'DESCRIBED_BY', 'Concept', '$conceptId'),
   removeItem: resolve.removeRelationship('Person', 'HAS', 'Item', '$itemId'),
   removeCollection: resolve.removeRelationship('Person', 'HAS', 'Collection', '$collectionId'),
   clearLocation: resolve.clearRelationship('Person', 'AT', 'Location')

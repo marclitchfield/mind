@@ -28,7 +28,7 @@ type Idea implements Entity {
   title: String!
   icon: String
   type: String!
-  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "RELATES_TO", direciton: "OUT")
+  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direciton: "OUT")
   contexts(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RESPONSE", direction: "IN")
   responses(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RESPONSE", direction: "OUT")
   events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "CONTAINS", direction: "OUT")

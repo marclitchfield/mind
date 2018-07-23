@@ -50,7 +50,7 @@ type Person implements Entity {
   subjectIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "HAS", direction: "OUT")
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "HAS", direction: "OUT")
-  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direction: "IN")
+  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
 }
 

@@ -7,7 +7,7 @@ export const Event = () => ({
   `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
   createForConcept: resolve.entityMerge(`
     MATCH (c:Concept {id: $conceptId})<-[:CONTAINS]-(s:Space) WITH c, s
-    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})-[:CONTAINS]->(c)
+    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})-[:DESCRIBED_BY]->(c)
   `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
   createAtLocation: resolve.entityMerge(`
     MATCH (loc:Location {id: $locationId})<-[:CONTAINS]-(s:Space) WITH loc, s
@@ -31,8 +31,8 @@ export const Event = () => ({
   `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
 
   addLocation: resolve.addRelationship('Event', 'AT', 'Location', '$locationId'),
-  addConcept: resolve.addRelationship('Event', 'CONTAINS', 'Concept', '$conceptId'),
+  addConcept: resolve.addRelationship('Event', 'DESCRIBED_BY', 'Concept', '$conceptId'),
   
   removeLocation: resolve.removeRelationship('Event', 'AT', 'Location', '$locationId'),
-  removeConcept: resolve.removeRelationship('Event', 'CONTAINS', 'Concept', '$conceptId')
+  removeConcept: resolve.removeRelationship('Event', 'DESCRIBED_BY', 'Concept', '$conceptId')
 });

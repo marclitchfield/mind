@@ -30,9 +30,9 @@ type Concept implements Entity {
   body: String
   subConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "OUT")
   superConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "IN")
-  ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RELATES_TO", direction: "IN")
-  events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "CONTAINS", direction: "IN")
-  people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "CONTAINS", direction: "OUT")
+  ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "DESCRIBED_BY", direction: "IN")
+  events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "DESCRIBED_BY", direction: "IN")
+  people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "DESCRIBED_BY", direction: "IN")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "INSTANCE_OF", direction: "IN")
-  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "CONTAINS", direction: "OUT")
+  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "DESCRIBED_BY", direction: "IN")
 }
