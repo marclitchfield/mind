@@ -32,14 +32,14 @@ export const addRelationship = (subject, predicate, object, objectKey) => async(
   await cypher(`
     MATCH (sub:${subject} {id: $id}), (obj:${object} {id: ${objectKey}})
     MERGE (sub)-[:${predicate}]->(obj)
-  `, );
+  `, )(args, context);
 }
 
 export const removeRelationship = (subject, predicate, object, objectKey) => async(args, context) => {
   await cypher(`
     MATCH (sub:${subject} {id: $id})-[r:${predicate}]->(obj:${object} {id: ${objectKey}})
     DELETE r
-  `)
+  `)(args, context);
 }
 
 export const setRelationship = (subject, predicate, object, objectKey) => async(args, context) => {
@@ -47,12 +47,12 @@ export const setRelationship = (subject, predicate, object, objectKey) => async(
     MATCH (sub:${subject} {id: $id})-[r:${predicate}]->(obj:${object})
     DELETE r
     MERGE (sub)-[:${predicate}]->(${object} { id: ${objectKey} })
-  `);
+  `)(args, context);
 }
 
 export const clearRelationship = (subject, predicate, object) => async(args, context) => {
   await cypher(`
     MATCH (sub:${subject} {id: $id})-[r:${predicate}]->(obj:${object})
     DELETE r
-  `);
+  `)(args, context);
 }

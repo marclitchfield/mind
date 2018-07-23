@@ -35,10 +35,12 @@ export const Person = () => ({
     MERGE (p1)-[:TIMELINE]->(e)<-[:TIMELINE]-(p2)
   `),
 
+  addEvent: resolve.addRelationship('Person', 'TIMELINE', 'Event', '$eventId'),
   addItem: resolve.addRelationship('Person', 'HAS', 'Item', '$itemId'),
   addCollection: resolve.addRelationship('Person', 'HAS', 'Collection', '$collectionId'),
   setLocation: resolve.setRelationship('Person', 'AT', 'Location', '$locationId'),
 
+  removeEvent: resolve.removeRelationship('Person', 'TIMELINE', 'Event', '$eventId'),
   removeItem: resolve.removeRelationship('Person', 'HAS', 'Item', '$itemId'),
   removeCollection: resolve.removeRelationship('Person', 'HAS', 'Collection', '$collectionId'),
   clearLocation: resolve.clearRelationship('Person', 'AT', 'Location')
