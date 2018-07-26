@@ -20,5 +20,7 @@ export const Space = () => ({
   removeIdea: resolve.removeRelationship('Space', 'CONTAINS', 'Idea', '$ideaId'),
   removeItem: resolve.removeRelationship('Space', 'CONTAINS', 'Item', '$itemId'),
   removeLocation: resolve.removeRelationship('Space', 'CONTAINS', 'Location', '$locationId'),
-  removePerson: resolve.removeRelationship('Space', 'CONTAINS', 'Person', '$personId')
+  removePerson: resolve.removeRelationship('Space', 'CONTAINS', 'Person', '$personId'),
+
+  destroy: resolve.cypher('MATCH (s:Space {id: $id})-[*1..3]->(n) DETACH DELETE s, n')
 });

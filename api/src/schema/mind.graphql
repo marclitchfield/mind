@@ -7,6 +7,7 @@ type MindOps {
 
   addSpace(id: ID!, spaceId: ID!): Boolean
   removeSpace(id: ID!, spaceId: ID!): Boolean
+  destroy(id: ID!): Boolean
 }
 
 type Mutation {
@@ -20,6 +21,7 @@ type Query {
 
 type Mind {
   id: ID!
+  title: String!
   created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
   spaces: [Space!] @relation(name: "CONTAINS", direction: "OUT")
 }

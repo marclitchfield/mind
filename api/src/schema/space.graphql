@@ -20,6 +20,8 @@ type SpaceOps {
   removeItem(id: ID!, itemId: ID!): Boolean
   removeLocation(id: ID!, locationId: ID!): Boolean
   removePerson(id: ID!, personId: ID!): Boolean
+
+  destroy(id: ID!): Boolean
 }
 
 extend type Mutation {

@@ -9,18 +9,20 @@ import { Item } from "./resolvers/item.resolvers"
 import { Location } from "./resolvers/location.resolvers"
 import { Collection } from "./resolvers/collection.resolvers"
 
+const neo4jgraphResolver = (type, args, context, resolvers) => neo4jgraphql(type, args, context, resolvers, false);
+
 export const resolvers = {
   Query: {
-    Minds: (_parent, args, context, resolvers) => neo4jgraphql('Mind', args, context, resolvers),
-    Mind: neo4jgraphql,
-    Space: neo4jgraphql,
-    Concept: neo4jgraphql,
-    Idea: neo4jgraphql,
-    Event: neo4jgraphql,
-    Person: neo4jgraphql,
-    Item: neo4jgraphql,
-    Location: neo4jgraphql,
-    Collection: neo4jgraphql
+    Minds: (_parent, args, context, resolvers) => neo4jgraphResolver('Mind', args, context, resolvers, false),
+    Mind: neo4jgraphResolver,
+    Space: neo4jgraphResolver,
+    Concept: neo4jgraphResolver,
+    Idea: neo4jgraphResolver,
+    Event: neo4jgraphResolver,
+    Person: neo4jgraphResolver,
+    Item: neo4jgraphResolver,
+    Location: neo4jgraphResolver,
+    Collection: neo4jgraphResolver
   },
   Mutation: {
     Mind,

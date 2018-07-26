@@ -9,12 +9,19 @@ export const entityMerge = (cypher, alias, preprocess) => async(args, context, i
     preprocess(props);
   }
   const sets = Object.keys(props.input || {}).map(key => `${alias}.${key} = $input.${key}`).join(', ');
-  const result = await session.run(`
-    ${cypher}
-    ON MATCH SET ${sets}
-    ON CREATE SET ${sets}, ${alias}.created = timestamp()
-    RETURN ${alias} AS result, apoc.date.format(${alias}.created) AS created
-  `, props);
+  const fullStatement = sets.length > 0 ?
+    `
+      ${cypher}
+      ON MATCH SET ${sets}
+      ON CREATE SET ${sets}, ${alias}.created = timestamp()
+      RETURN ${alias} AS result, apoc.date.format(${alias}.created) AS created
+    ` :
+    `
+      ${cypher}
+      ON CREATE SET ${alias}.created = timestamp()
+      RETURN ${alias} AS result, apoc.date.format(${alias}.created) AS created
+    `;
+  const result = await session.run(fullStatement, props);
   const record = result.records[0];
   return Object.assign({}, record.get('result').properties, { created: record.get('created') });
 }

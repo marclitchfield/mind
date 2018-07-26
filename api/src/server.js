@@ -5,35 +5,33 @@ import { makeExecutableSchema } from "graphql-tools";
 import dotenv from "dotenv";
 import * as fs from 'fs';
 
-const typeDefs = fs.readdirSync(__dirname + '/schema')
-  .map(file => fs.readFileSync(__dirname + '/schema/' + file, 'utf8'))
-  .join('\n');
+export function createServer() {
+  const typeDefs = fs.readdirSync(__dirname + '/schema')
+    .map(file => fs.readFileSync(__dirname + '/schema/' + file, 'utf8'))
+    .join('\n');
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-  resolverValidationOptions: {
-    requireResolversForResolveType: false
-  }
-});
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+    resolverValidationOptions: {
+      requireResolversForResolveType: false
+    }
+  });
 
-dotenv.config();
+  dotenv.config();
 
-const driver = neo4j.driver(
-  process.env.NEO4J_URI || "bolt://localhost:7687",
-  neo4j.auth.basic(
-    process.env.NEO4J_USER || "neo4j",
-    process.env.NEO4J_PASSWORD || "password"
-  )
-);
+  const driver = neo4j.driver(
+    process.env.NEO4J_URI || "bolt://localhost:7687",
+    neo4j.auth.basic(
+      process.env.NEO4J_USER || "neo4j",
+      process.env.NEO4J_PASSWORD || "password"
+    )
+  );
 
-const server = new ApolloServer({
-  schema,
-  context: {
-    driver
-  }
-});
- 
-server.listen(process.env.PORT || 5000, '0.0.0.0').then(({ url }) => {
-  console.log(`GraphQL API ready at ${url}`);
-});
+  return new ApolloServer({
+    schema,
+    context: {
+      driver
+    }
+  });
+}
