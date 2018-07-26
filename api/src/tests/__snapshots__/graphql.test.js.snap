@@ -1,5 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Collection.createInstance 1`] = `
+Object {
+  "data": Object {
+    "Space": Object {
+      "__typename": "Space",
+      "collections": Array [
+        Object {
+          "__typename": "Collection",
+          "class": Object {
+            "__typename": "Concept",
+            "title": "Test",
+          },
+          "spaces": Array [
+            Object {
+              "__typename": "Space",
+              "title": "test",
+            },
+          ],
+          "title": "Test",
+        },
+      ],
+    },
+  },
+  "loading": false,
+  "networkStatus": 7,
+  "stale": false,
+}
+`;
+
 exports[`Concept.createInSpace 1`] = `
 Object {
   "data": Object {

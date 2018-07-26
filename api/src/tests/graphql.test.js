@@ -18,7 +18,7 @@ beforeAll(async() => {
   
   await server.listen(9999);
   const response = await client.mutate({
-    mutation: gql(TestCaseSetup.mutation)
+    mutation: TestCaseSetup.mutation
   });
 
   updateState(response);
@@ -31,12 +31,17 @@ afterAll(async() => {
 
 TestCases.forEach(testCase => {
   test(testCase.test, async() => {
-    updateState(await client.mutate({ 
-      mutation: gql(applyStateReplacements(testCase.mutation)),
-    }));
+    for(const mutation of testCase.mutations) {
+      const mutateResponse = await client.mutate({ 
+        mutation: applyStateReplacements(mutation),
+      }).catch(handleClientError);
+      updateState(mutateResponse);
+    }
+    
     const response = await client.query({ 
-      query: gql(applyStateReplacements(testCase.query)),
-    });
+      query: applyStateReplacements(testCase.query),
+    }).catch(handleClientError);
+    
     const snapshot = JSON.parse(JSON.stringify(response));
     expect(snapshot).toMatchSnapshot();
   });
@@ -50,15 +55,29 @@ function updateState(response) {
   });
 }
 
+function handleClientError(err) {
+  if (err && err.networkError && err.networkError.result && err.networkError.result.errors) {
+    const message = err.networkError.result.errors.map(formatError).join('\n');
+    throw message;
+  }
+  throw err;
+}
+
+function formatError(graphqlError) {
+  const locations = graphqlError.locations.map(loc => JSON.stringify(loc)).join('.');
+  const message = `${graphqlError.extensions.code}: ${graphqlError.message} (${locations}`;
+  return message.replace(/"/g, "'");
+}
+
 function applyStateReplacements(graphql) {
-  let result = graphql;
+  let result = graphql.loc.source.body;
   const re = /\$\((.*?)\.(.*?)\)/g;
   let m;
-  while (m = re.exec(graphql)) {
+  while (m = re.exec(result)) {
     if (m.length == 3) {
       result = result.replace(m[0], state[m[1]][m[2]]);
     }
   }
-  return result;
+  return gql(result);
 }
 
