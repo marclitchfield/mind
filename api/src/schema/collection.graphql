@@ -9,6 +9,7 @@ type CollectionOps {
   createInSpace(id: ID = null, spaceId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
   createInstance(id: ID = null, classConceptId: ID!, input: CollectionProps!): Collection!
   createForPerson(id: ID = null, personId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
+  createAtLocation(id: ID = null, locationId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
   addEvent(id: ID!, eventId: ID!): Boolean
   setClass(id: ID!, classConceptId: ID!): Boolean
   setLocation(id: ID!, locationId: ID!): Boolean
@@ -34,6 +35,7 @@ type Collection implements Entity {
   description: String
   location: Location @relation(name: "AT", direction: "OUT")
   class: Concept @relation(name: "INSTANCE_OF", direction: "OUT")
-  items: [Item!] @relation(name: "CONTAINS", direction: "OUT")
-  timeline: [Event!] @relation(name: "TIMELINE", direction: "OUT")
+  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "OUT")
+  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
+  owners(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "HAS", direction: "IN")
 }

@@ -17,11 +17,9 @@ beforeAll(async() => {
   });
   
   await server.listen(9999);
-  const response = await client.mutate({
-    mutation: TestCaseSetup.mutation
-  });
-
-  updateState(response);
+  await client.mutate({
+    mutation: gql`mutation { Mind { destroy(id:"test") } }`
+  })
 });
 
 afterAll(async() => {
@@ -31,21 +29,37 @@ afterAll(async() => {
 
 TestCases.forEach(testCase => {
   test(testCase.test, async() => {
-    for(const mutation of testCase.mutations) {
-      const mutateResponse = await client.mutate({ 
-        mutation: applyStateReplacements(mutation),
-      }).catch(handleClientError);
-      updateState(mutateResponse);
-    }
-    
-    const response = await client.query({ 
-      query: applyStateReplacements(testCase.query),
-    }).catch(handleClientError);
-    
-    const snapshot = JSON.parse(JSON.stringify(response));
+    await testSetup(testCase.test);
+    await runMutations(testCase.mutations);
+    const response = await runQuery(testCase.query);
+    const snapshot = JSON.parse(JSON.stringify(response.data));
     expect(snapshot).toMatchSnapshot();
   });
 });
+
+async function testSetup(testCase) {
+  state['TEST_CASE'] = {name: testCase};
+  const setupResponse = await client.mutate({
+    mutation: applyStateReplacements(TestCaseSetup.mutation)
+  });
+
+  updateState(setupResponse);
+}
+
+async function runMutations(mutations) {
+  for(const mutation of mutations) {
+    const mutateResponse = await client.mutate({ 
+      mutation: applyStateReplacements(mutation),
+    }).catch(handleClientError);
+    updateState(mutateResponse);
+  }
+}
+
+async function runQuery(query) {
+  return await client.query({ 
+    query: applyStateReplacements(query),
+  }).catch(handleClientError);
+}
 
 function updateState(response) {
   Object.keys(response.data).forEach(outerKey => {

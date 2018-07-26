@@ -51,9 +51,9 @@ export const removeRelationship = (subject, predicate, object, objectKey) => asy
 
 export const setRelationship = (subject, predicate, object, objectKey) => async(args, context) => {
   await cypher(`
-    MATCH (sub:${subject} {id: $id})-[r:${predicate}]->(obj:${object})
+    MATCH (sub:${subject} {id: $id})-[r:${predicate}]->(obj:${object}), (newObj { id: ${objectKey} })
     DELETE r
-    MERGE (sub)-[:${predicate}]->(${object} { id: ${objectKey} })
+    MERGE (sub)-[:${predicate}]->(newObj)
   `)(args, context);
 }
 
