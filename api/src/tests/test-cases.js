@@ -23,6 +23,31 @@ export const TestCases = [
     }`
   },
   {
+    test: 'Concept.createSubConcept',
+    mutations: [
+      gql`mutation { Concept { super:createInSpace(spaceId:"$(space.id)" input:{title: "Test"}) { id } } }`,
+      gql`mutation { Concept { sub:createSubConcept(superConceptId:"$(super.id)" input:{title: "Test"}) { id } } }`,
+    ],
+    query: gql`query { 
+      Concept(id:"$(super.id)") { 
+        subConcepts { title superConcepts { title } }
+      }
+    }`
+  },
+  {
+    test: 'Concept.addSubConcept',
+    mutations: [
+      gql`mutation { Concept { super:createInSpace(spaceId:"$(space.id)" input:{title: "Test"}) { id } } }`,
+      gql`mutation { Concept { sub:createInSpace(spaceId:"$(space.id)" input:{title: "Test"}) { id } } }`,
+      gql`mutation { Concept { addSubConcept(id:"$(super.id)" subConceptId:"$(sub.id)") } }`,
+    ],
+    query: gql`query { 
+      Concept(id:"$(super.id)") { 
+        subConcepts { title superConcepts { title } }
+      }
+    }`
+  },  
+  {
     test: 'Collection.createInSpace',
     mutations: [
       gql`mutation { Concept { concept:createInSpace(spaceId:"$(space.id)" input:{title: "Test"}) { id } } }`,

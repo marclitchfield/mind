@@ -172,6 +172,26 @@ Object {
 }
 `;
 
+exports[`Concept.addSubConcept 1`] = `
+Object {
+  "Concept": Object {
+    "__typename": "Concept",
+    "subConcepts": Array [
+      Object {
+        "__typename": "Concept",
+        "superConcepts": Array [
+          Object {
+            "__typename": "Concept",
+            "title": "Test",
+          },
+        ],
+        "title": "Test",
+      },
+    ],
+  },
+}
+`;
+
 exports[`Concept.createInSpace 1`] = `
 Object {
   "Space": Object {
@@ -195,6 +215,26 @@ Object {
           Object {
             "__typename": "Space",
             "title": "Concept.createInSpace",
+          },
+        ],
+        "title": "Test",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Concept.createSubConcept 1`] = `
+Object {
+  "Concept": Object {
+    "__typename": "Concept",
+    "subConcepts": Array [
+      Object {
+        "__typename": "Concept",
+        "superConcepts": Array [
+          Object {
+            "__typename": "Concept",
+            "title": "Test",
           },
         ],
         "title": "Test",
