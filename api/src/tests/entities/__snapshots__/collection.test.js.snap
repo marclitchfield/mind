@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Collection.addEvent 1`] = `
+exports[`Collection addEvent 1`] = `
 Object {
   "Collection": Object {
     "__typename": "Collection",
@@ -15,7 +15,7 @@ Object {
 }
 `;
 
-exports[`Collection.clearLocation 1`] = `
+exports[`Collection clearLocation 1`] = `
 Object {
   "Collection": Object {
     "__typename": "Collection",
@@ -25,7 +25,7 @@ Object {
 }
 `;
 
-exports[`Collection.createAtLocation 1`] = `
+exports[`Collection createAtLocation 1`] = `
 Object {
   "Space": Object {
     "__typename": "Space",
@@ -40,7 +40,7 @@ Object {
         "spaces": Array [
           Object {
             "__typename": "Space",
-            "title": "Collection.createAtLocation",
+            "title": "createAtLocation",
           },
         ],
         "title": "Test",
@@ -50,7 +50,7 @@ Object {
 }
 `;
 
-exports[`Collection.createForPerson 1`] = `
+exports[`Collection createForPerson 1`] = `
 Object {
   "Space": Object {
     "__typename": "Space",
@@ -70,7 +70,7 @@ Object {
         "spaces": Array [
           Object {
             "__typename": "Space",
-            "title": "Collection.createForPerson",
+            "title": "createForPerson",
           },
         ],
         "title": "Test",
@@ -80,7 +80,7 @@ Object {
 }
 `;
 
-exports[`Collection.createInSpace 1`] = `
+exports[`Collection createInSpace 1`] = `
 Object {
   "Space": Object {
     "__typename": "Space",
@@ -94,7 +94,7 @@ Object {
         "spaces": Array [
           Object {
             "__typename": "Space",
-            "title": "Collection.createInSpace",
+            "title": "createInSpace",
           },
         ],
         "title": "Test",
@@ -104,7 +104,7 @@ Object {
 }
 `;
 
-exports[`Collection.createInstance 1`] = `
+exports[`Collection createInstance 1`] = `
 Object {
   "Space": Object {
     "__typename": "Space",
@@ -118,7 +118,7 @@ Object {
         "spaces": Array [
           Object {
             "__typename": "Space",
-            "title": "Collection.createInstance",
+            "title": "createInstance",
           },
         ],
         "title": "Test",
@@ -128,7 +128,7 @@ Object {
 }
 `;
 
-exports[`Collection.removeEvent 1`] = `
+exports[`Collection removeEvent 1`] = `
 Object {
   "Collection": Object {
     "__typename": "Collection",
@@ -142,7 +142,7 @@ Object {
 }
 `;
 
-exports[`Collection.setClass 1`] = `
+exports[`Collection setClass 1`] = `
 Object {
   "Collection": Object {
     "__typename": "Collection",
@@ -155,7 +155,7 @@ Object {
 }
 `;
 
-exports[`Collection.setLocation 1`] = `
+exports[`Collection setLocation 1`] = `
 Object {
   "Collection": Object {
     "__typename": "Collection",
@@ -168,78 +168,6 @@ Object {
       "title": "Test2",
     },
     "title": "Test",
-  },
-}
-`;
-
-exports[`Concept.addSubConcept 1`] = `
-Object {
-  "Concept": Object {
-    "__typename": "Concept",
-    "subConcepts": Array [
-      Object {
-        "__typename": "Concept",
-        "superConcepts": Array [
-          Object {
-            "__typename": "Concept",
-            "title": "Test",
-          },
-        ],
-        "title": "Test",
-      },
-    ],
-  },
-}
-`;
-
-exports[`Concept.createInSpace 1`] = `
-Object {
-  "Space": Object {
-    "__typename": "Space",
-    "concepts": Array [
-      Object {
-        "__typename": "Concept",
-        "spaces": Array [
-          Object {
-            "__typename": "Space",
-            "title": "Concept.createInSpace",
-          },
-        ],
-        "title": "Test",
-      },
-    ],
-    "rootConcepts": Array [
-      Object {
-        "__typename": "Concept",
-        "spaces": Array [
-          Object {
-            "__typename": "Space",
-            "title": "Concept.createInSpace",
-          },
-        ],
-        "title": "Test",
-      },
-    ],
-  },
-}
-`;
-
-exports[`Concept.createSubConcept 1`] = `
-Object {
-  "Concept": Object {
-    "__typename": "Concept",
-    "subConcepts": Array [
-      Object {
-        "__typename": "Concept",
-        "superConcepts": Array [
-          Object {
-            "__typename": "Concept",
-            "title": "Test",
-          },
-        ],
-        "title": "Test",
-      },
-    ],
   },
 }
 `;

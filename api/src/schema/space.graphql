@@ -4,7 +4,9 @@ input SpaceProps {
 
 type SpaceOps {
   createInMind(id: ID = null, mindId: ID!, input: SpaceProps!): Space!
+  createSubSpace(id: ID = null, superSpaceId: ID!, input: SpaceProps!): Space!
 
+  addSubSpace(id: ID!, subSpaceId: ID!): Boolean
   addCollection(id: ID!, collectionId: ID!): Boolean
   addConcept(id: ID!, conceptId: ID!): Boolean
   addEvent(id: ID!, eventId: ID!): Boolean
@@ -13,6 +15,7 @@ type SpaceOps {
   addLocation(id: ID!, locationId: ID!): Boolean
   addPerson(id: ID!, personId: ID!): Boolean
 
+  removeSubSpace(id: ID!, subSpaceId: ID!): Boolean
   removeCollection(id: ID!, collectionId: ID!): Boolean
   removeConcept(id: ID!, conceptId: ID!): Boolean
   removeEvent(id: ID!, eventId: ID!): Boolean
@@ -37,6 +40,8 @@ type Space {
   minds: [Mind] @relation(name: "CONTAINS", direction: "IN")
   title: String!
   created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  subSpaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "SUB", direction: "OUT")
+  superSpaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "SUB", direction: "IN")
   rootConcepts(first: Int = 10, offset: Int = 0): [Concept!] @cypher(statement: "MATCH (this)-[:CONTAINS {root:true}]->(c:Concept) RETURN c")
   concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "CONTAINS", direction: "OUT")
   rootIdeas(first: Int = 10, offset: Int = 0): [Idea!] @cypher(statement: "MATCH (this)-[:CONTAINS]->(i:Idea) WHERE NOT (i)<-[:RESPONSE]-(:Idea) RETURN i")

@@ -4,7 +4,7 @@
   "description": "API app for GRANDstack",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --verbose",
     "test:watch": "jest --watchAll --verbose",
     "start": "./node_modules/.bin/nodemon -e js,graphql --exec babel-node src/index.js",
     "seedDb": "./node_modules/.bin/babel-node src/seed/seed-db.js"
@@ -29,6 +29,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "jest": "^23.4.1",
+    "jest-each": "^23.4.0",
     "nodemon": "^1.17.5"
   }
 }
