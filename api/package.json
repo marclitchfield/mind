@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest --verbose",
-    "test:watch": "jest --watchAll --verbose",
+    "test:watch": "jest --watchAll",
     "start": "./node_modules/.bin/nodemon -e js,graphql --exec babel-node src/index.js",
     "seedDb": "./node_modules/.bin/babel-node src/seed/seed-db.js"
   },

@@ -71,3 +71,12 @@ Object {
   },
 }
 `;
+
+exports[`Concept removeSubConcept 1`] = `
+Object {
+  "Concept": Object {
+    "__typename": "Concept",
+    "subConcepts": Array [],
+  },
+}
+`;

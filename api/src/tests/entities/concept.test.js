@@ -49,4 +49,19 @@ describe('Concept', () => {
     });
   }); 
 
+  test('removeSubConcept', () => {
+    return verifyMutations('Concept', 'addSubConcept', {
+      mutations: [
+        ({space}) => gql`mutation { Concept { sup:createInSpace(spaceId:"${space.id}" input:{title: "Test"}) { id } } }`,
+        ({space}) => gql`mutation { Concept { sub:createInSpace(spaceId:"${space.id}" input:{title: "Test"}) { id } } }`,
+        ({sup, sub}) => gql`mutation { Concept { addSubConcept(id:"${sup.id}" subConceptId:"${sub.id}") } }`,
+        ({sup, sub}) => gql`mutation { Concept { removeSubConcept(id:"${sup.id}" subConceptId:"${sub.id}") } }`,
+      ],
+      query: ({sup}) => gql`query { 
+        Concept(id:"${sup.id}") { 
+          subConcepts { title superConcepts { title } }
+        }
+      }`
+    });
+  }); 
 });

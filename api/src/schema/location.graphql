@@ -34,5 +34,5 @@ type Location implements Entity {
   innerLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "CONTAINS", direction: "OUT")
   outerLocation: Location @relation(name: "CONTAINS", direction: "IN")
   concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
-  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "AT", direction: "OUT")
+  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "AT", direction: "IN")
 }
