@@ -4,15 +4,15 @@ import gql from 'graphql-tag';
 describe('Concept', () => {
   applySetup();
 
-  test('createInSpace', () => {
-    return verifyMutations('Concept', 'createInSpace', {
+  test('post to space', () => {
+    return verifyMutations('Concept', 'post to space', {
       mutations: [
         ({space}) => gql`mutation { 
-          Concept { concept:createInSpace(spaceId:"${space.id}" input:{title: "Test"}) { id } }
+          Concept { concept:post(sourceId:"${space.id}" input:{title: "Test"}) { id } }
         }`
       ],
       query: ({space}) => gql`query { 
-        Space(id:"${space.id}") { 
+        Space(id:"${space.id}") {
           concepts { title spaces { title } }
           rootConcepts { title spaces { title } }
         } 
@@ -20,48 +20,49 @@ describe('Concept', () => {
     });
   });
 
-  test('createSubConcept', () => {
-    return verifyMutations('Concept', 'createSubConcept', {
+  test('post to entity', () => {
+    return verifyMutations('Concept', 'post to entity', {
       mutations: [
-        ({space})  => gql`mutation { Concept { sup:createInSpace(spaceId:"${space.id}" input:{title: "Test"}) { id } } }`,
-        ({sup}) => gql`mutation { Concept { sub:createSubConcept(superConceptId:"${sup.id}" input:{title: "Test"}) { id } } }`,
+        ({space}) => gql`mutation { Event { event:createInSpace(spaceId:"${space.id}" input:{title:"test", datetime: "2011-12-12"}) { id } } }`,
+        ({event}) => gql`mutation { Concept { concept:post(sourceId:"${event.id}" input:{title: "Test"}) { id } } }`
       ],
-      query: ({sup}) => gql`query { 
-        Concept(id:"${sup.id}") { 
-          subConcepts { title superConcepts { title } }
+      query: ({concept}) => gql`query { 
+        Concept(id:"${concept.id}") { 
+          events { title concepts { title }}
+        } 
+      }`
+    });
+  });
+
+  test('add entity', () => {
+    return verifyMutations('Concept', 'add entity', {
+      mutations: [
+        ({space}) => gql`mutation { Concept { concept:post(sourceId:"${space.id}"}) { id } } }`,
+        ({space}) => gql`mutation { Event { event:post(spaceId:"${space.id}" input:{title:"test", datetime: "2011-12-12"}) { id } } }`,
+        ({concept, event}) => gql`mutation { Concept { add(id:"${concept.id}" targetId:"${event.id}") } }`
+      ],
+      query: ({concept}) => gql`query { 
+        Concept(id:"${concept.id}") { 
+          events { title concepts { title }}
         }
       }`
     });
   });
 
-  test('addSubConcept', () => {
-    return verifyMutations('Concept', 'addSubConcept', {
+  test('remove entity', () => {
+    return verifyMutations('Concept', 'remove', {
       mutations: [
-        ({space}) => gql`mutation { Concept { sup:createInSpace(spaceId:"${space.id}" input:{title: "Test"}) { id } } }`,
-        ({space}) => gql`mutation { Concept { sub:createInSpace(spaceId:"${space.id}" input:{title: "Test"}) { id } } }`,
-        ({sup, sub}) => gql`mutation { Concept { addSubConcept(id:"${sup.id}" subConceptId:"${sub.id}") } }`,
+        ({space}) => gql`mutation { Concept { concept:post(sourceId:"${space.id}"}) { id } } }`,
+        ({space}) => gql`mutation { Event { event:post(spaceId:"${space.id}" input:{title:"test", datetime: "2011-12-12"}) { id } } }`,
+        ({concept, event}) => gql`mutation { Concept { add(id:"${concept.id}" targetId:"${event.id}") } }`,
+        ({concept, event}) => gql`mutation { Concept { remove(id:"${concept.id}" targetId:"${event.id}") } }`
       ],
-      query: ({sup}) => gql`query { 
-        Concept(id:"${sup.id}") { 
-          subConcepts { title superConcepts { title } }
+      query: ({concept}) => gql`query { 
+        Concept(id:"${concept.id}") { 
+          events { title concepts { title }}
         }
       }`
     });
-  }); 
+  });
 
-  test('removeSubConcept', () => {
-    return verifyMutations('Concept', 'addSubConcept', {
-      mutations: [
-        ({space}) => gql`mutation { Concept { sup:createInSpace(spaceId:"${space.id}" input:{title: "Test"}) { id } } }`,
-        ({space}) => gql`mutation { Concept { sub:createInSpace(spaceId:"${space.id}" input:{title: "Test"}) { id } } }`,
-        ({sup, sub}) => gql`mutation { Concept { addSubConcept(id:"${sup.id}" subConceptId:"${sub.id}") } }`,
-        ({sup, sub}) => gql`mutation { Concept { removeSubConcept(id:"${sup.id}" subConceptId:"${sub.id}") } }`,
-      ],
-      query: ({sup}) => gql`query { 
-        Concept(id:"${sup.id}") { 
-          subConcepts { title superConcepts { title } }
-        }
-      }`
-    });
-  }); 
 });

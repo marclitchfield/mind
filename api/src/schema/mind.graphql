@@ -3,10 +3,9 @@ input MindProps {
 }
 
 type MindOps {
-  create(id: ID = null, input: MindProps!): Mind!
-
-  addSpace(id: ID!, spaceId: ID!): Boolean
-  removeSpace(id: ID!, spaceId: ID!): Boolean
+  post(id: ID = null, input: MindProps!): Mind!
+  add(id: ID!, targetId: ID!): Boolean
+  remove(id: ID!, targetId: ID!): Boolean
   destroy(id: ID!): Boolean
 }
 

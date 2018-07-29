@@ -1,22 +1,18 @@
 import * as resolve from '../query';
 
+const spec = {
+  Collection: {name: 'AT', direction: 'IN'},
+  Concept: {name: 'DESCRIBED_BY', direction: 'OUT'},
+  Event: {name: 'TIMELINE', direction: 'OUT'},
+  Idea: {name: 'SUBJECT', direction: 'IN'},
+  Items: {name: 'AT', direction: 'IN'},
+  Location: {name: 'CONTAINS', direction: 'OUT'},
+  Person: {name: 'AT', direction: 'IN'},
+  Space: {name: 'CONTAINS', direction: 'IN'},
+};
+
 export const Location = () => ({
-  createInSpace: resolve.entityMerge(`
-    MATCH (s:Space {id: $spaceId}) WITH s
-    MERGE (loc:Location {id: $id})<-[:CONTAINS]-(s)
-  `, 'loc'),
-  createForConcept: resolve.entityMerge(`
-    MATCH (c:Concept {id: $conceptId})<-[:CONTAINS]-(s:Space) WITH c, s
-    MERGE (s)-[:CONTAINS]->(loc:Location {id: $id})-[:DESCRIBED_BY]->(c)
-  `, 'loc'),
-  createWithinLocation: resolve.entityMerge(`
-    MATCH (ol:Location {id: $outerLocationId})<-[:CONTAINS]-(s:Space) WITH ol, s
-    MERGE (s)-[:CONTAINS]->(il:Location {id: $id})<-[:IN]-(ol)
-  `, 'il'),
-
-  addConcept: resolve.addRelationship('Location', 'DESCRIBED_BY', 'Concept', '$conceptId'),
-  addLocation: resolve.addRelationship('Location', 'CONTAINS', 'Location', '$locationId'),
-
-  removeConcept: resolve.removeRelationship('Location', 'DESCRIBED_BY', 'Concept', '$conceptId'),
-  removeLocation: resolve.removeRelationship('Location', 'CONTAINS', 'Location', '$locationId')
+  post: resolve.entityMerge('Location', spec),
+  add: resolve.addRelationship('Location', spec),
+  remove: resolve.removeRelationship('Location', spec),
 });

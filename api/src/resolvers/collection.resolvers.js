@@ -1,29 +1,19 @@
 import * as resolve from '../query';
 
-export const Collection = () => ({
-  createInSpace: resolve.entityMerge(`
-    MATCH (s:Space {id: $spaceId}), (c:Concept {id: $classConceptId}) WITH s, c
-    MERGE (s)-[:CONTAINS]->(col:Collection {id: $id})-[:INSTANCE_OF]->(c)
-  `, 'col'),
-  createInstance: resolve.entityMerge(`
-    MATCH (c:Concept {id: $classConceptId})<-[:CONTAINS]-(s:Space) WITH c, s
-    MERGE (s)-[:CONTAINS]->(col:Collection {id: $id})-[:INSTANCE_OF]->(c)
-  `, 'col'),
-  createForPerson: resolve.entityMerge(`
-    MATCH (p:Person {id: $personId})<-[:CONTAINS]-(s:Space), (c:Concept {id: $classConceptId}) WITH p, s, c
-    MERGE (s)-[:CONTAINS]->(col:Collection {id: $id})<-[:HAS]-(p)
-    MERGE (col)-[:INSTANCE_OF]->(c)
-  `, 'col'),
-  createAtLocation: resolve.entityMerge(`
-    MATCH (loc:Location {id: $locationId})<-[:CONTAINS]-(s:Space), (c:Concept {id: $classConceptId}) WITH loc, s, c
-    MERGE (s)-[:CONTAINS]->(col:Collection {id: $id})-[:AT]->(loc)
-    MERGE (col)-[:INSTANCE_OF]->(c)
-  `, 'col'),
+const spec = {
+  Collection: {name: 'CONTAINS', direction: 'OUT'},
+  Concept: {name: 'INSTANCE_OF', direction: 'OUT'},
+  Event: {name: 'TIMELINE', direction: 'OUT'},
+  Idea: {name: 'SUBJECT', direction: 'IN'},
+  Items: {name: 'CONTAINS', direction: 'OUT'},
+  Location: {name: 'AT', direction: 'OUT'},
+  Person: {name: 'HAS', direction: 'IN'},
+  Space: {name: 'CONTAINS', direction: 'IN'},
+};
 
-  addEvent: resolve.addRelationship('Collection', 'TIMELINE', 'Event', '$eventId'),
-  setLocation: resolve.setRelationship('Collection', 'AT', 'Location', '$locationId'),
-  setClass: resolve.setRelationship('Collection', 'INSTANCE_OF', 'Concept', '$classConceptId'),
-  
-  removeEvent: resolve.removeRelationship('Collection', 'TIMELINE', 'Event', '$eventId'),
-  clearLocation: resolve.clearRelationship('Collection', 'AT', 'Location')
+export const Collection = () => ({
+  post: resolve.entityMerge('Collection', spec, {instance: true}),
+  add: resolve.addRelationship('Collection', spec),
+  remove: resolve.removeRelationship('Collection', spec),
+  setClass: resolve.setRelationship('Collection', 'INSTANCE_OF', '$classId'),
 });

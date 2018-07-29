@@ -1,15 +1,18 @@
 import * as resolve from '../query';
 
-export const Concept = () => ({
-  createInSpace: resolve.entityMerge(`
-    MATCH (s:Space {id: $spaceId}) WITH s
-    MERGE (s)-[:CONTAINS {root:true}]->(c:Concept {id: $id})
-  `, 'c'),
-  createSubConcept: resolve.entityMerge(`
-    MATCH (sc:Concept {id: $superConceptId})<-[:CONTAINS]-(s:Space) WITH s, sc
-    MERGE (sc)-[:SUB]->(c:Concept {id: $id})<-[:CONTAINS]-(s)  
-  `, 'c'),
+const spec = {
+  Collection: {name: 'INSTANCE_OF', direction: 'IN'},
+  Concept: {name: 'SUB', direction: 'OUT'},
+  Event: {name: 'DESCRIBED_BY', direction: 'IN'},
+  Idea: {name: 'DESCRIBED_BY', direction: 'IN'},
+  Items: {name: 'INSTANCE_OF', direction: 'IN'},
+  Location: {name: 'DESCRIBED_BY', direction: 'IN'},
+  Person: {name: 'DESCRIBED_BY', direction: 'IN'},
+  Space: {name: 'CONTAINS', direction: 'IN'},
+};
 
-  addSubConcept: resolve.addRelationship('Concept', 'SUB', 'Concept', '$subConceptId'),
-  removeSubConcept: resolve.removeRelationship('Concept', 'SUB', 'Concept', '$subConceptId'),
+export const Concept = () => ({
+  post: resolve.entityMerge('Concept', spec),
+  add: resolve.addRelationship('Concept', spec),
+  remove: resolve.removeRelationship('Concept', spec),
 })

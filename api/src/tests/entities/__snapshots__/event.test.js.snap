@@ -1,66 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Event addLocation 1`] = `
+exports[`Event add entity 1`] = `
 Object {
   "Event": Object {
     "__typename": "Event",
-    "locations": Array [
-      Object {
-        "__typename": "Location",
-        "timeline": Array [
-          Object {
-            "__typename": "Event",
-            "title": "Test",
-          },
-        ],
-        "title": "test",
-      },
-    ],
+    "locations": Array [],
   },
 }
 `;
 
-exports[`Event createAtLocation 1`] = `
-Object {
-  "Event": Object {
-    "__typename": "Event",
-    "locations": Array [
-      Object {
-        "__typename": "Location",
-        "timeline": Array [
-          Object {
-            "__typename": "Event",
-            "title": "Test",
-          },
-        ],
-        "title": "test",
-      },
-    ],
-  },
-}
-`;
-
-exports[`Event createForCollection 1`] = `
-Object {
-  "Event": Object {
-    "__typename": "Event",
-    "collections": Array [
-      Object {
-        "__typename": "Collection",
-        "timeline": Array [
-          Object {
-            "__typename": "Event",
-            "title": "Test",
-          },
-        ],
-        "title": "test",
-      },
-    ],
-  },
-}
-`;
-
-exports[`Event createForConcept 1`] = `
+exports[`Event post to entity 1`] = `
 Object {
   "Event": Object {
     "__typename": "Event",
@@ -80,67 +29,7 @@ Object {
 }
 `;
 
-exports[`Event createForIdea 1`] = `
-Object {
-  "Event": Object {
-    "__typename": "Event",
-    "ideas": Array [
-      Object {
-        "__typename": "Idea",
-        "events": Array [
-          Object {
-            "__typename": "Event",
-            "title": "Test",
-          },
-        ],
-        "title": "test",
-      },
-    ],
-  },
-}
-`;
-
-exports[`Event createForItem 1`] = `
-Object {
-  "Event": Object {
-    "__typename": "Event",
-    "items": Array [
-      Object {
-        "__typename": "Item",
-        "timeline": Array [
-          Object {
-            "__typename": "Event",
-            "title": "Test",
-          },
-        ],
-        "title": "test",
-      },
-    ],
-  },
-}
-`;
-
-exports[`Event createForPerson 1`] = `
-Object {
-  "Event": Object {
-    "__typename": "Event",
-    "people": Array [
-      Object {
-        "__typename": "Person",
-        "timeline": Array [
-          Object {
-            "__typename": "Event",
-            "title": "Test",
-          },
-        ],
-        "title": "test",
-      },
-    ],
-  },
-}
-`;
-
-exports[`Event createInSpace 1`] = `
+exports[`Event post to space 1`] = `
 Object {
   "Space": Object {
     "__typename": "Space",
@@ -150,7 +39,7 @@ Object {
         "spaces": Array [
           Object {
             "__typename": "Space",
-            "title": "createInSpace",
+            "title": "post to space",
           },
         ],
         "title": "Test",
@@ -160,7 +49,7 @@ Object {
 }
 `;
 
-exports[`Event removeLocation 1`] = `
+exports[`Event remove entity 1`] = `
 Object {
   "Event": Object {
     "__typename": "Event",

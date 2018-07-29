@@ -29,9 +29,9 @@ export async function verifyMutations(context, caseName, {mutations, query}) {
 
 async function beforeEachMutation(context, caseName) {
   await runMutations([
-    () => gql`mutation { Mind { mind:create(id:"test" input:{title: "Test Mind"}) { id } } }`,
-    () => gql`mutation { Space { ctx:createInMind(id:"test.${context}" mindId:"test", input:{title: "${context}"}) { id } } }`,
-    () => gql`mutation { Space { space:createSubSpace(superSpaceId:"test.${context}", input:{title: "${caseName}"}) { id } } }`
+    () => gql`mutation { Mind { mind:post(id:"test" input:{title: "Test Mind"}) { id } } }`,
+    () => gql`mutation { Space { ctx:post(id:"test.${context}" sourceId:"test", input:{title: "${context}"}) { id } } }`,
+    () => gql`mutation { Space { space:post(sourceId: "test.${context}", input:{title: "${caseName}"}) { id } } }`
   ]);
 }
 

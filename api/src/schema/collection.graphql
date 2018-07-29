@@ -6,15 +6,10 @@ input CollectionProps {
 }
 
 type CollectionOps {
-  createInSpace(id: ID = null, spaceId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
-  createInstance(id: ID = null, classConceptId: ID!, input: CollectionProps!): Collection!
-  createForPerson(id: ID = null, personId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
-  createAtLocation(id: ID = null, locationId: ID!, classConceptId: ID!, input: CollectionProps!): Collection!
-  addEvent(id: ID!, eventId: ID!): Boolean
-  setClass(id: ID!, classConceptId: ID!): Boolean
-  setLocation(id: ID!, locationId: ID!): Boolean
-  removeEvent(id: ID!, eventId: ID!): Boolean
-  clearLocation(id: ID!): Boolean
+  post(id: ID = null, sourceId: ID = null, classId: ID!, input: CollectionProps!): Collection!
+  add(id: ID!, targetId: ID!): Boolean
+  remove(id: ID!, targetId: ID!): Boolean
+  setClass(id: ID!, classId: ID!): Boolean
 }
 
 extend type Mutation {
@@ -27,15 +22,18 @@ extend type Query {
 
 type Collection implements Entity {
   id: ID!
-  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
   created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
   title: String!
   icon: String
   type: String
   description: String
-  location: Location @relation(name: "AT", direction: "OUT")
+
+  collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "CONTAINS", direction: "OUT")
   class: Concept @relation(name: "INSTANCE_OF", direction: "OUT")
-  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
+  ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
+  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "OUT")
+  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "AT", direction: "OUT")
   owners(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "HAS", direction: "IN")
+  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
 }

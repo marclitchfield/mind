@@ -5,15 +5,9 @@ input LocationProps {
 }
 
 type LocationOps {
-  createInSpace(id: ID = null, spaceId: ID!, input: LocationProps!): Location!
-  createForConcept(id: ID = null, conceptId: ID!, input: LocationProps!): Location!
-  createWithinLocation(id: ID = null, outerLocationId: ID!, input: LocationProps!): Location!
-
-  addConcept(id: ID!, conceptId: ID!): Boolean
-  addLocation(id: ID!, locationId: ID!): Boolean
-  
-  removeConcept(id: ID!, conceptId: ID!): Boolean
-  removeLocation(id: ID!, locationId: ID!): Boolean
+  post(id: ID = null, sourceId: ID = null, input: LocationProps!): Location!
+  add(id: ID!, targetId: ID!): Boolean
+  remove(id: ID!, targetId: ID!): Boolean
 }
 
 extend type Mutation {
@@ -26,13 +20,17 @@ extend type Query {
 
 type Location implements Entity {
   id: ID!
-  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
   created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
   title: String!
   icon: String
   locator: String
-  innerLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "CONTAINS", direction: "OUT")
-  outerLocation: Location @relation(name: "CONTAINS", direction: "IN")
+
+  collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "AT", direction: "IN")
   concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
-  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "AT", direction: "IN")
+  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "AT", direction: "OUT")
+  ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
+  subLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUB", direction: "OUT")
+  superLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUB", direction: "IN")
+  people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "AT", direction: "IN")
+  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
 }
