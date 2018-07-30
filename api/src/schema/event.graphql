@@ -1,15 +1,23 @@
 input EventProps {
-  title: String!
+  id: ID
+  sourceId: ID
+  title: String
   body: String
   icon: String
-  datetime: String!
+  datetime: String
   type: String
+  remove: Boolean
 }
 
 type EventOps {
-  post(id: ID = null, sourceId: ID = null, input: EventProps!): Event!
-  add(id: ID!, targetId: ID!): Boolean
-  remove(id: ID!, targetId: ID!): Boolean
+  post_timeline_of_collection(input: EventProps!): Event!
+  post_described_by_concept(input: EventProps!): Event!
+  post_connected_to_event(input: EventProps!): Event!
+  post_subject_of_idea(input: EventProps!): Event!
+  post_timeline_of_item(input: EventProps!): Event!
+  post_timeline_of_location(input: EventProps!): Event!
+  post_timeline_of_person(input: EventProps!): Event!
+  post_in_space(input: EventProps!): Event!
 }
 
 extend type Mutation {
@@ -36,5 +44,5 @@ type Event implements Entity {
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "TIMELINE", direction: "IN")
   locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "TIMELINE", direction: "IN")
   people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "TIMELINE", direction: "IN")
-  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 }

@@ -1,6 +1,26 @@
 const uuid = require('uuid/v4');
 
-export const entityMerge = (entityType, spec, {beforeMerge, instance} = {}) => async(args, context) => {
+export const entityMerge = (entityType, relationship, sourceType, direction, options) => async(args, context) => {
+  const {beforeMerge, instance, cardinality, properties} = options || {};
+  const contextMatch = sourceType === 'Space' 
+  ? `MATCH (space:Space {id: $sourceId})`
+  : `MATCH (space:Space)-[:CONTAINS]->(source:${sourceType} {id: $sourceId})`;
+
+  const entityMerge = `MERGE (space)-[:CONTAINS]->(entity:${entityType} {id: $id})`;
+  const sourceMerge = {
+    'IN': `MERGE (entity)<-[:${relationship}]-(source)`,
+    'OUT': `MERGE (entity)-[:${relationship}]->(source)`
+  }[direction];
+
+  const mergeStatement = [
+    contextMatch,
+    entityMerge,
+    sourceMerge
+  ].join('\n');
+  return cypherMerge(mergeStatement, {beforeMerge})(args, context);
+}
+
+export const entityMerge2 = (entityType, spec, {beforeMerge, instance} = {}) => async(args, context) => {
   const sourceType = await queryType(context, args.sourceId);
   const sourceSpec = spec[sourceType];
 

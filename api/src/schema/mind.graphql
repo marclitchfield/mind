@@ -1,11 +1,10 @@
 input MindProps {
+  id: ID
   title: String!
 }
 
 type MindOps {
-  post(id: ID = null, input: MindProps!): Mind!
-  add(id: ID!, targetId: ID!): Boolean
-  remove(id: ID!, targetId: ID!): Boolean
+  post(input: MindProps!): Mind!
   destroy(id: ID!): Boolean
 }
 

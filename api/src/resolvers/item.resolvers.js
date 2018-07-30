@@ -1,19 +1,13 @@
 import * as resolve from '../query';
 
-const spec = {
-  Collection: {name: 'CONTAINS', direction: 'IN'},
-  Concept: {name: 'INSTANCE_OF', direction: 'OUT'},
-  Event: {name: 'TIMELINE', direction: 'OUT'},
-  Idea: {name: 'LINKS_TO', direction: 'IN'},
-  Items: {name: 'CONTAINS', direction: 'OUT'},
-  Location: {name: 'AT', direction: 'OUT'},
-  Person: {name: 'HAS', direction: 'IN'},
-  Space: {name: 'CONTAINS', direction: 'IN'},
-};
-
 export const Item = () => ({
-  post: resolve.entityMerge('Item', spec, {instance: true}),
-  add: resolve.addRelationship('Item', spec),
-  remove: resolve.removeRelationship('Item', spec),
-  setClass: resolve.setRelationship('Item', 'INSTANCE_OF', '$classId'),
+  post_in_collection: resolve.entityMerge('Item', 'CONTAINS', 'Collection', 'IN', { instance: true }),
+  post_instance_of_concept: resolve.entityMerge('Item', 'INSTANCE_OF', 'Concept', 'OUT', { cardinality: 1 }),
+  post_timeline_event: resolve.entityMerge('Item', 'TIMELINE', 'Event', 'OUT', { instance: true }),
+  post_subject_of_idea: resolve.entityMerge('Item', 'SUBJECT', 'Idea', 'IN', { instance: true }),
+  post_container_of_item: resolve.entityMerge('Item', 'CONTAINS', 'Item', 'OUT', { instance: true }),
+  post_in_item: resolve.entityMerge('Item', 'CONTAINS', 'Item', 'IN', { instance: true }),
+  post_at_location: resolve.entityMerge('Item', 'AT', 'Location', 'OUT', { instance: true, cardinality: 1 }),
+  post_for_owner: resolve.entityMerge('Item', 'HAS', 'Person', 'IN', { instance: true }),
+  post_in_space: resolve.entityMerge('Item', 'CONTAINS', 'Space', 'IN', { instance: true }),
 });

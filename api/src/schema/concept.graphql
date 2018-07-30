@@ -1,13 +1,22 @@
 input ConceptProps {
-  title: String!
+  id: ID
+  sourceId: ID
+  title: String
   body: String
   icon: String
+  remove: Boolean
 }
 
 type ConceptOps {
-  post(id: ID = null, sourceId: ID = null, input: ConceptProps!): Concept!
-  add(id: ID!, targetId: ID!): Boolean
-  remove(id: ID!, targetId: ID!): Boolean
+  post_class_of_collection(input: ConceptProps!): Concept!
+  post_super_concept(input: ConceptProps!): Concept!
+  post_sub_concept(input: ConceptProps!): Concept!
+  post_description_of_event(input: ConceptProps!): Concept!
+  post_description_of_idea(input: ConceptProps!): Concept!
+  post_class_of_item(input: ConceptProps!): Concept!
+  post_description_of_location(input: ConceptProps!): Concept!
+  post_description_of_person(input: ConceptProps!): Concept!
+  post_in_space(input: ConceptProps!): Concept!
 }
 
 extend type Mutation {
@@ -25,13 +34,13 @@ type Concept implements Entity {
   icon: String
   body: String
 
-  collections(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "INSTANCE_OF", direction: "IN")
+  collectionInstances(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "INSTANCE_OF", direction: "IN")
   subConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "OUT")
   superConcepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "IN")
-  events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "DESCRIBED_BY", direction: "IN")
-  ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "DESCRIBED_BY", direction: "IN")
-  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "INSTANCE_OF", direction: "IN")
-  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "DESCRIBED_BY", direction: "IN")
-  people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "DESCRIBED_BY", direction: "IN")
-  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  describedEvents(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "DESCRIBED_BY", direction: "IN")
+  describedIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "DESCRIBED_BY", direction: "IN")
+  itemInstances(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "INSTANCE_OF", direction: "IN")
+  describedLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "DESCRIBED_BY", direction: "IN")
+  describedPeople(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "DESCRIBED_BY", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 }

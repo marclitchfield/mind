@@ -1,14 +1,23 @@
 input IdeaProps {
-  title: String!
+  id: ID
+  sourceId: ID
+  title: String
   body: String
   icon: String
   type: String
+  remove: Boolean
 }
 
 type IdeaOps {
-  post(id: ID = null, sourceId: ID = null, input: IdeaProps!): Idea!
-  add(id: ID!, targetId: ID!): Boolean
-  remove(id: ID!, targetId: ID!): Boolean
+  post_about_collection(input: IdeaProps!): Idea!
+  post_described_by_concept(input: IdeaProps!): Idea!
+  post_about_event(input: IdeaProps!): Idea!
+  post_super_idea(input: IdeaProps!): Idea!
+  post_sub_idea(input: IdeaProps!): Idea!
+  post_about_item(input: IdeaProps!): Idea!
+  post_about_location(input: IdeaProps!): Idea!
+  post_about_person(input: IdeaProps!): Idea!
+  post_in_space(input: IdeaProps!): Idea!
 }
 
 extend type Mutation {
@@ -27,12 +36,12 @@ type Idea implements Entity {
   type: String!
 
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "SUBJECT", direciton: "OUT")
-  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direciton: "OUT")
-  events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "SUBJECT", direction: "OUT")
+  concept(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direciton: "OUT")
+  subjectEvents(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "SUBJECT", direction: "OUT")
   contexts(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RESPONSE", direction: "IN")
   responses(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RESPONSE", direction: "OUT")
-  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "SUBJECT", direction: "OUT")
-  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUBJECT", direction: "OUT")
-  people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SUBJECT", direction: "OUT")
-  spaces: [Space!] @relation(name: "CONTAINS", direciton: "IN")
+  subjectItems(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "SUBJECT", direction: "OUT")
+  subjectLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUBJECT", direction: "OUT")
+  subjectPeople(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SUBJECT", direction: "OUT")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direciton: "IN")
 }

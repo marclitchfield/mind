@@ -1,17 +1,24 @@
 input PersonProps {
-  title: String!
+  id: ID
+  sourceId: ID
+  title: String
   icon: String
   name: String
   born_at: String
   died_at: String
+  remove: Boolean
 }
 
 type PersonOps {
-  post(id: ID = null, sourceId: ID = null, input: EventProps!): Event!
-  add(id: ID!, targetId: ID!): Boolean
-  remove(id: ID!, targetId: ID!): Boolean
-  createOffspring(parent1: ID!, parent2: ID!, childId: ID!, eventId: ID!): Boolean
-  createUnion(person1: ID!, person2: ID!, eventId: ID!): Boolean
+  post_having_collection(input: PersonProps!): Person!
+  post_described_by_concept(input: PersonProps!): Person!
+  post_timeline_of_event(input: PersonProps!): Person!
+  post_subject_of_idea(input: PersonProps!): Person!
+  post_having_item(input: PersonProps!): Person!
+  post_at_location(input: PersonProps!): Person!
+  post_in_space(input: PersonProps!): Person!
+  post_union(person1: ID!, person2: ID!, eventId: ID!): Boolean
+  post_offspring(parent1: ID!, parent2: ID!, childId: ID!, eventId: ID!): Boolean
 }
 
 extend type Mutation {
@@ -35,7 +42,7 @@ type Person implements Entity {
   ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "HAS", direction: "OUT")
   location: Location @relation(name: "AT", direction: "OUT")
-  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 
   offspring: [Offspring!] @relation(name: "PARENT_OF", direction: "OUT")
   parents: [Person!] @cypher(statement: "MATCH (this)<-[:CHILD]-(o:Offspring)<-[:PARENT_OF]-(p:Person) RETURN p")

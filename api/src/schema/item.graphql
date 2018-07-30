@@ -1,15 +1,25 @@
 input ItemProps {
-  title: String!
+  id: ID
+  sourceId: ID
+  classId: ID
+  title: String
   icon: String
   name: String
   type: String
   description: String
+  remove: Boolean
 }
 
 type ItemOps {
-  post(id: ID = null, sourceId: ID = null, input: ItemProps!): Item!
-  add(id: ID!, targetId: ID!): Boolean
-  remove(id: ID!, targetId: ID!): Boolean
+  post_in_collection(input: ItemProps!): Item!
+  post_instance_of_concept(input: ItemProps!): Item!
+  post_timeline_event(input: ItemProps!): Item!
+  post_subject_of_idea(input: ItemProps!): Item!
+  post_container_of_item(input: ItemProps!): Item!
+  post_in_item(input: ItemProps!): Item!
+  post_at_location(input: ItemProps!): Item!
+  post_for_owner(input: ItemProps!): Item!
+  post_in_space(input: ItemProps!): Item!
 }
 
 extend type Mutation {
@@ -32,9 +42,9 @@ type Item implements Entity {
   class: Concept @relation(name: "INSTANCE_OF", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
   ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
-  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "OUT")
+  containedItems(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "OUT")
   containers(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "IN")
-  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "AT", direction: "OUT")
+  location: Location @relation(name: "AT", direction: "OUT")
   owners(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "HAS", direction: "IN")
-  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 }

@@ -1,13 +1,22 @@
 input LocationProps {
-  title: String!
+  id: ID
+  sourceId: ID
+  title: String
   icon: String
   locator: String
+  remove: Boolean
 }
 
 type LocationOps {
-  post(id: ID = null, sourceId: ID = null, input: LocationProps!): Location!
-  add(id: ID!, targetId: ID!): Boolean
-  remove(id: ID!, targetId: ID!): Boolean
+  post_location_of_collection(input: LocationProps!): Location!
+  post_described_by_concept(input: LocationProps!): Location!
+  post_timeline_of_event(input: LocationProps!): Location!
+  post_subject_of_idea(input: LocationProps!): Location!
+  post_location_of_item(input: LocationProps!): Location!
+  post_super_location(input: LocationProps!): Location!
+  post_sub_location(input: LocationProps!): Location!
+  post_location_of_person(input: LocationProps!): Location!
+  post_in_space(input: LocationProps!): Location!
 }
 
 extend type Mutation {
@@ -29,8 +38,9 @@ type Location implements Entity {
   concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "AT", direction: "OUT")
   ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
+  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "AT", direction: "OUT")
   subLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUB", direction: "OUT")
   superLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUB", direction: "IN")
   people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "AT", direction: "IN")
-  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 }

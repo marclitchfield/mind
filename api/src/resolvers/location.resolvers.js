@@ -1,18 +1,13 @@
 import * as resolve from '../query';
 
-const spec = {
-  Collection: {name: 'AT', direction: 'IN'},
-  Concept: {name: 'DESCRIBED_BY', direction: 'OUT'},
-  Event: {name: 'TIMELINE', direction: 'OUT'},
-  Idea: {name: 'SUBJECT', direction: 'IN'},
-  Items: {name: 'AT', direction: 'IN'},
-  Location: {name: 'CONTAINS', direction: 'OUT'},
-  Person: {name: 'AT', direction: 'IN'},
-  Space: {name: 'CONTAINS', direction: 'IN'},
-};
-
 export const Location = () => ({
-  post: resolve.entityMerge('Location', spec),
-  add: resolve.addRelationship('Location', spec),
-  remove: resolve.removeRelationship('Location', spec),
+  post_location_of_collection: resolve.entityMerge('Location', 'AT', 'Collection', 'IN'),
+  post_described_by_concept: resolve.entityMerge('Location', 'DESCRIBED_BY', 'Concept', 'OUT'),
+  post_timeline_of_event: resolve.entityMerge('Location', 'TIMELINE', 'Event', 'OUT'),
+  post_subject_of_idea: resolve.entityMerge('Location', 'SUBJECT', 'Idea', 'IN'),
+  post_location_of_item: resolve.entityMerge('Location', 'AT', 'Item', 'IN'),
+  post_super_location: resolve.entityMerge('Location', 'SUB', 'Location', 'OUT'),
+  post_sub_location: resolve.entityMerge('Location', 'SUB', 'Location', 'IN'),
+  post_location_of_person: resolve.entityMerge('Location', 'AT', 'Person', 'OUT'),
+  post_in_space: resolve.entityMerge('Location', 'CONTAINS', 'Space', 'IN'),
 });

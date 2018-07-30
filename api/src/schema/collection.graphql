@@ -1,15 +1,23 @@
 input CollectionProps {
-  title: String!
+  id: ID
+  sourceId: ID
+  classId: ID
+  title: String
   icon: String
   type: String
   description: String
+  remove: Boolean
 }
 
 type CollectionOps {
-  post(id: ID = null, sourceId: ID = null, classId: ID!, input: CollectionProps!): Collection!
-  add(id: ID!, targetId: ID!): Boolean
-  remove(id: ID!, targetId: ID!): Boolean
-  setClass(id: ID!, classId: ID!): Boolean
+  post_container_of_collection(input: CollectionProps!): Collection!
+  post_instance_of_concept(input: CollectionProps!): Collection!
+  post_timeline_of_event(input: CollectionProps!): Collection!
+  post_subject_of_idea(input: CollectionProps!): Collection!
+  post_container_of_item(input: CollectionProps!): Collection!
+  post_at_location(input: CollectionProps!): Collection!
+  post_for_person(input: CollectionProps!): Collection!
+  post_in_space(input: CollectionProps!): Collection!
 }
 
 extend type Mutation {
@@ -33,7 +41,7 @@ type Collection implements Entity {
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
   ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "OUT")
-  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "AT", direction: "OUT")
+  location: Location! @relation(name: "AT", direction: "OUT")
   owners(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "HAS", direction: "IN")
-  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 }

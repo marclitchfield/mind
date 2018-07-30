@@ -1,11 +1,14 @@
 input SpaceProps {
+  id: ID
+  sourceId: ID
   title: String!
+  remove: Boolean
 }
 
 type SpaceOps {
-  post(id: ID = null, sourceId: ID!, input: SpaceProps!): Space!
-  add(id: ID!, targetId: ID!): Boolean
-  remove(id: ID!, targetId: ID!): Boolean
+  post_in_mind(input: SpaceProps!): Space!
+  post_super_space(input: SpaceProps!): Space!
+  post_sub_space(input: SpaceProps!): Space!
   destroy(id: ID!): Boolean
 }
 
