@@ -8,13 +8,13 @@ export default `mutation mind_space {
   m3:Concept {
     c1:createInSpace(id:"c1" spaceId:"1" input:{title:"c1" body:"the body" icon:"concept.png"}) { id }
     c2:createInSpace(id:"c2" spaceId:"1" input:{title:"c2" body:"the body" icon:"concept.png"}) { id }
-    c3:createSub(id:"c3" superConceptId:"c1" input:{title:"c3" body:"the body" icon:"concept.png"}) { id }
-    c4:createSub(id:"c4" superConceptId:"c1" input:{title:"c4" body:"the body" icon:"concept.png"}) { id }
-    c5:createSub(id:"c5" superConceptId:"c3" input:{title:"c5" body:"the body" icon:"concept.png"}) { id }
-    c6:createSub(id:"c6" superConceptId:"c1" input:{title:"c6" body:"the body" icon:"concept.png"}) { id }
-    c1c5:connectSub(superConceptId:"c1" subConceptId:"c5")
-    c6c2:connectSub(superConceptId:"c6" subConceptId:"c2")
-    c1dc5:disconnectSub(superConceptId:"c1" subConceptId:"c5")
+    c3:createSubConcept(id:"c3" superConceptId:"c1" input:{title:"c3" body:"the body" icon:"concept.png"}) { id }
+    c4:createSubConcept(id:"c4" superConceptId:"c1" input:{title:"c4" body:"the body" icon:"concept.png"}) { id }
+    c5:createSubConcept(id:"c5" superConceptId:"c3" input:{title:"c5" body:"the body" icon:"concept.png"}) { id }
+    c6:createSubConcept(id:"c6" superConceptId:"c1" input:{title:"c6" body:"the body" icon:"concept.png"}) { id }
+    c1c5:addSubConcept(id:"c1" subConceptId:"c5")
+    c6c2:addSubConcept(id:"c6" subConceptId:"c2")
+    c1dc5:removeSubConcept(id:"c1" subConceptId:"c5")
 	}
 	m4:Idea {
     p1:createForConcept(id:"p1" conceptId:"c2" input:{title:"p1" body:"the body"}) { id }
@@ -57,6 +57,16 @@ export default `mutation mind_space {
   m10:Item {
     i4:createAtLocation(id:"i4" locationId:"l2" classConceptId:"c4" input:{title:"i4"}) { id }
     i5:createWithinCollection(id:"i5" collectionId:"col2" classConceptId:"c4" input:{title:"i5"}) { id }
+  }
+  m11:Event {
+    e3:createForCollection(id:"e3" collectionId:"col2" input:{title:"e3" datetime:"2018-01-01"}) { id }
+    e4:createForIdea(id:"e4" ideaId:"p3" input:{title:"e4" datetime:"2018-01-01"}) { id }
+    e5:createForItem(id:"e5" itemId:"i3" input:{title:"e5" datetime:"2018-01-01"}) { id }
+    e6:createForPerson(id:"e6" personId:"person3" input:{title:"e6" datetime:"2018-01-01"}) { id }
+  }
+  m12:Person {
+    p5:createAtLocation(id:"p5" locationId:"l3" input:{title:"p5"}) { id }
+    p5e:addEvent(id:"person3" eventId:"e5")
   }
 }
 `  
