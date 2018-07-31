@@ -1,12 +1,12 @@
 const uuid = require('uuid/v4');
 
 export const entityMerge = (entityType, relationship, sourceType, direction, options) => async(args, context) => {
-  const {beforeMerge, instance, cardinality, inheritSpace, properties} = options || {};
+  const {beforeMerge, instance, cardinality, inheritSpace, relationshipProperties} = options || {};
 
   const entityCypher = buildEntityCypher(entityType, sourceType, inheritSpace);
   const instanceCypher = buildInstanceCypher(instance);
   const cardinalityCypher = buildCardinalityCypher(relationship, sourceType, direction, cardinality);
-  const sourceMerge = buildSourceMerge(relationship, direction);
+  const sourceMerge = buildSourceMerge(relationship, direction, relationshipProperties);
 
   const mergeStatement = [
     entityCypher,
@@ -47,40 +47,15 @@ function buildCardinalityCypher(relationship, sourceType, direction, cardinality
 }
 
 
-function buildSourceMerge(relationship, direction) {
+function buildSourceMerge(relationship, direction, relationshipProperties) {
+  const properties = relationshipProperties === undefined ? '' : 
+    '{'+Object.keys(relationshipProperties).map(key => key + ':' + JSON.stringify(relationshipProperties[key])).join(',')+'}';
+
   return {
-    'IN': `MERGE (entity)<-[:${relationship}]-(source)`,
-    'OUT': `MERGE (entity)-[:${relationship}]->(source)`
+    'IN': `MERGE (entity)<-[:${relationship} ${properties}]-(source)`,
+    'OUT': `MERGE (entity)-[:${relationship} ${properties}]->(source)`
   }[direction];
 }
-
-
-// export const entityMerge2 = (entityType, spec, {beforeMerge, instance} = {}) => async(args, context) => {
-//   const sourceType = await queryType(context, args.sourceId);
-//   const sourceSpec = spec[sourceType];
-
-//   const contextMatch = sourceType === 'Space' 
-//   ? `MATCH (space:Space {id: $sourceId})`
-//   : `MATCH (space:Space)-[:CONTAINS]->(source:${sourceType} {id: $sourceId})`;
-
-//   const instanceMatch = instance ? `MATCH (class:Concept {id: $classId})` : '';
-//   const entityMerge = `MERGE (space)-[:CONTAINS]->(entity:${entityType} {id: $id})`;
-//   const sourceMerge = {
-//     'IN': `MERGE (entity)<-[:${sourceSpec.name}]-(source)`,
-//     'OUT': `MERGE (entity)-[:${sourceSpec.name}]->(source)`
-//   }[sourceSpec.direction];
-  
-//   const instanceMerge = instance ? `MERGE (entity)-[:INSTANCE_OF]->(class)` : '';
-
-//   const mergeStatement = [
-//     contextMatch,
-//     instanceMatch,
-//     entityMerge,
-//     sourceMerge,
-//     instanceMerge,
-//   ].join('\n');
-//   return cypherMerge(mergeStatement, {beforeMerge})(args, context);
-// }
 
 export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, context) => {
   const props = Object.assign({}, args.input, { id: args.input.id || uuid()});
@@ -100,9 +75,9 @@ export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, c
     returnStatement
   ].join('\n');
 
-  console.log('*** cypher ***');
-  console.log(cypher);
-  console.log(props);
+  // console.log('*** cypher ***');
+  // console.log(cypher);
+  // console.log(props);
 
   const session = context.driver.session();
   const result = await session.run(cypher, props);

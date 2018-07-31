@@ -9,5 +9,5 @@ export const Concept = () => ({
   post_class_of_item: resolve.entityMerge('Concept', 'INSTANCE_OF', 'Item', 'IN'),
   post_description_of_location: resolve.entityMerge('Concept', 'DESCRIBED_BY', 'Location', 'IN'),
   post_description_of_person: resolve.entityMerge('Concept', 'DESCRIBED_BY', 'Person', 'IN'),
-  post_in_space: resolve.entityMerge('Concept', 'CONTAINS', 'Space', 'IN', { properties: { root: true }, inheritSpace: false}),
+  post_in_space: resolve.entityMerge('Concept', 'CONTAINS', 'Space', 'IN', { relationshipProperties: { root: true }, inheritSpace: false}),
 })

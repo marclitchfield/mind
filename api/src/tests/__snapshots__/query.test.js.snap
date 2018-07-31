@@ -41,6 +41,48 @@ Object {
 }
 `;
 
+exports[`Query tests post properties (root concept in space) 1`] = `
+Object {
+  "Space": Object {
+    "__typename": "Space",
+    "concepts": Array [
+      Object {
+        "__typename": "Concept",
+        "spaces": Array [
+          Object {
+            "__typename": "Space",
+            "title": "root concept in space",
+          },
+        ],
+        "title": "sub concept",
+      },
+      Object {
+        "__typename": "Concept",
+        "spaces": Array [
+          Object {
+            "__typename": "Space",
+            "title": "root concept in space",
+          },
+        ],
+        "title": "root concept",
+      },
+    ],
+    "rootConcepts": Array [
+      Object {
+        "__typename": "Concept",
+        "spaces": Array [
+          Object {
+            "__typename": "Space",
+            "title": "root concept in space",
+          },
+        ],
+        "title": "root concept",
+      },
+    ],
+  },
+}
+`;
+
 exports[`Query tests post single cardinality (person at location) 1`] = `
 Object {
   "Person": Object {

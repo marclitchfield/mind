@@ -81,7 +81,18 @@ describe('Query tests', () => {
   });
 
   test('post properties (root concept in space)', () => {
-
+    return verifyMutations('Query tests', 'root concept in space', {
+      mutations: [
+        ({space}) => gql`mutation { Concept { rootConcept:post_in_space(input:{sourceId:"${space.id}", title: "root concept"}) { id } } }`,
+        ({rootConcept}) => gql`mutation { Concept { leafConcept:post_sub_concept(input:{sourceId:"${rootConcept.id}", title: "sub concept"}) { id } } }`,
+      ],
+      query: ({space}) => gql`query {
+        Space(id:"${space.id}") {
+          rootConcepts { title spaces { title } }
+          concepts { title spaces { title } }
+        }
+      }`
+    });
   });
 
   test('post removal (idea in space)', () => {
