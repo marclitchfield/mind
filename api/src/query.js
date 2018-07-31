@@ -3,22 +3,57 @@ const uuid = require('uuid/v4');
 export const entityMerge = (entityType, relationship, sourceType, direction, options) => async(args, context) => {
   const {beforeMerge, instance, cardinality, inheritSpace, properties} = options || {};
 
-  const entityMerge = inheritSpace === false 
-    ? `MATCH (source:${sourceType} {id: $sourceId}) 
-       MERGE (entity:${entityType} {id: $id})` 
-    : `MATCH (space:Space)-[:CONTAINS]->(source:${sourceType} {id: $sourceId})
-       MERGE (space)-[:CONTAINS]->(entity:${entityType} {id: $id})`;
-  const sourceMerge = {
+  const entityCypher = buildEntityCypher(entityType, sourceType, inheritSpace);
+  const instanceCypher = buildInstanceCypher(instance);
+  const cardinalityCypher = buildCardinalityCypher(relationship, sourceType, direction, cardinality);
+  const sourceMerge = buildSourceMerge(relationship, direction);
+
+  const mergeStatement = [
+    entityCypher,
+    instanceCypher,
+    cardinalityCypher,
+    sourceMerge,
+  ].filter(statement => statement).join('\n');
+
+  return cypherMerge(mergeStatement, {beforeMerge})(args, context);
+}
+
+function buildEntityCypher(entityType, sourceType, inheritSpace) {
+  if (inheritSpace === false) {
+    return `MATCH (source:${sourceType} {id: $sourceId})
+            MERGE (entity:${entityType} {id: $id}) WITH entity, source`;
+  }
+  return `MATCH (space:Space)-[:CONTAINS]->(source:${sourceType} {id: $sourceId})
+          MERGE (space)-[:CONTAINS]->(entity:${entityType} {id: $id}) WITH entity, source`;
+}
+
+function buildInstanceCypher(instance) {
+  if (!instance) {
+    return '';
+  }
+  return `MATCH (class:Concept {id: $classId})
+          MERGE (entity)-[:INSTANCE_OF]->(class) WITH entity, source`;
+}
+
+function buildCardinalityCypher(relationship, sourceType, direction, cardinality) {
+  if (cardinality !== 1) {
+    return '';
+  }
+  const match = {
+    'IN': `OPTIONAL MATCH (entity)<-[r:${relationship}]-(:${sourceType})`,
+    'OUT': `OPTIONAL MATCH (entity)-[r:${relationship}]->(:${sourceType})`
+  }[direction];
+  return match + ' DELETE r WITH entity, source'
+}
+
+
+function buildSourceMerge(relationship, direction) {
+  return {
     'IN': `MERGE (entity)<-[:${relationship}]-(source)`,
     'OUT': `MERGE (entity)-[:${relationship}]->(source)`
   }[direction];
-
-  const mergeStatement = [
-    entityMerge,
-    sourceMerge
-  ].join('\n');
-  return cypherMerge(mergeStatement, {beforeMerge})(args, context);
 }
+
 
 // export const entityMerge2 = (entityType, spec, {beforeMerge, instance} = {}) => async(args, context) => {
 //   const sourceType = await queryType(context, args.sourceId);
@@ -64,6 +99,10 @@ export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, c
     upsertStatement,
     returnStatement
   ].join('\n');
+
+  console.log('*** cypher ***');
+  console.log(cypher);
+  console.log(props);
 
   const session = context.driver.session();
   const result = await session.run(cypher, props);

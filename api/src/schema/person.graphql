@@ -1,9 +1,9 @@
 input PersonProps {
   id: ID
   sourceId: ID
-  title: String
-  icon: String
   name: String
+  icon: String
+  title: String
   born_at: String
   died_at: String
   remove: Boolean
