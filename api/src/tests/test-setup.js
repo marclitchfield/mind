@@ -30,8 +30,8 @@ export async function verifyMutations(context, caseName, {mutations, query}) {
 async function beforeEachMutation(context, caseName) {
   await runMutations([
     () => gql`mutation { Mind { mind:post(input:{id: "test", title: "Test Mind"}) { id } } }`,
-    () => gql`mutation { Space { ctx:post(input:{id: "test.${context}", sourceId:"test", title: "${context}"}) { id } } }`,
-    () => gql`mutation { Space { space:post(input:{sourceId: "test.${context}", title: "${caseName}"}) { id } } }`
+    () => gql`mutation { Space { ctx:post_in_mind(input:{id: "test.${context}", sourceId:"test", title: "${context}"}) { id } } }`,
+    () => gql`mutation { Space { space:post_sub_space(input:{sourceId: "test.${context}", title: "${caseName}"}) { id } } }`
   ]);
 }
 

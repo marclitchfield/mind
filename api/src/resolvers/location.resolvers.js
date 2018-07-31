@@ -9,5 +9,5 @@ export const Location = () => ({
   post_super_location: resolve.entityMerge('Location', 'SUB', 'Location', 'OUT'),
   post_sub_location: resolve.entityMerge('Location', 'SUB', 'Location', 'IN'),
   post_location_of_person: resolve.entityMerge('Location', 'AT', 'Person', 'OUT'),
-  post_in_space: resolve.entityMerge('Location', 'CONTAINS', 'Space', 'IN'),
+  post_in_space: resolve.entityMerge('Location', 'CONTAINS', 'Space', 'IN', { inheritSpace: false }),
 });

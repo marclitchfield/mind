@@ -1,6 +1,6 @@
 import * as resolve from '../query';
 
-const beforeMerge = (props) => { props.input.datetime = Date.parse(props.input.datetime)};
+const beforeMerge = (props) => { props.datetime = Date.parse(props.datetime)};
 
 export const Event = () => ({
   post_timeline_of_collection: resolve.entityMerge('Event', 'TIMELINE', 'Collection', 'IN', { beforeMerge }),
@@ -10,5 +10,5 @@ export const Event = () => ({
   post_timeline_of_item: resolve.entityMerge('Event', 'TIMELINE', 'Item', 'IN', { beforeMerge }),
   post_timeline_of_location: resolve.entityMerge('Event', 'TIMELINE', 'Location', 'IN', { beforeMerge }),
   post_timeline_of_person: resolve.entityMerge('Event', 'TIMELINE', 'Person', 'IN', { beforeMerge }),
-  post_in_space: resolve.entityMerge('Event', 'CONTAINS', 'Space', 'IN', { beforeMerge }),
+  post_in_space: resolve.entityMerge('Event', 'CONTAINS', 'Space', 'IN', { beforeMerge, inheritSpace: false }),
 });

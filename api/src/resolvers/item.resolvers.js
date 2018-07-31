@@ -9,5 +9,5 @@ export const Item = () => ({
   post_in_item: resolve.entityMerge('Item', 'CONTAINS', 'Item', 'IN', { instance: true }),
   post_at_location: resolve.entityMerge('Item', 'AT', 'Location', 'OUT', { instance: true, cardinality: 1 }),
   post_for_owner: resolve.entityMerge('Item', 'HAS', 'Person', 'IN', { instance: true }),
-  post_in_space: resolve.entityMerge('Item', 'CONTAINS', 'Space', 'IN', { instance: true }),
+  post_in_space: resolve.entityMerge('Item', 'CONTAINS', 'Space', 'IN', { instance: true, inheritSpace: false }),
 });

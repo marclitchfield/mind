@@ -9,5 +9,5 @@ export const Idea = () => ({
   post_about_item: resolve.entityMerge('Idea', 'SUBJECT', 'Item', 'OUT'),
   post_about_location: resolve.entityMerge('Idea', 'SUBJECT', 'Location', 'OUT'),
   post_about_person: resolve.entityMerge('Idea', 'SUBJECT', 'Person', 'OUT'),
-  post_in_space: resolve.entityMerge('Idea', 'CONTAINS', 'Space', 'IN'),
+  post_in_space: resolve.entityMerge('Idea', 'CONTAINS', 'Space', 'IN', { inheritSpace: false }),
 });

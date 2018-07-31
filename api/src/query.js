@@ -1,59 +1,60 @@
 const uuid = require('uuid/v4');
 
 export const entityMerge = (entityType, relationship, sourceType, direction, options) => async(args, context) => {
-  const {beforeMerge, instance, cardinality, properties} = options || {};
-  const contextMatch = sourceType === 'Space' 
-  ? `MATCH (space:Space {id: $sourceId})`
-  : `MATCH (space:Space)-[:CONTAINS]->(source:${sourceType} {id: $sourceId})`;
+  const {beforeMerge, instance, cardinality, inheritSpace, properties} = options || {};
 
-  const entityMerge = `MERGE (space)-[:CONTAINS]->(entity:${entityType} {id: $id})`;
+  const entityMerge = inheritSpace === false 
+    ? `MATCH (source:${sourceType} {id: $sourceId}) 
+       MERGE (entity:${entityType} {id: $id})` 
+    : `MATCH (space:Space)-[:CONTAINS]->(source:${sourceType} {id: $sourceId})
+       MERGE (space)-[:CONTAINS]->(entity:${entityType} {id: $id})`;
   const sourceMerge = {
     'IN': `MERGE (entity)<-[:${relationship}]-(source)`,
     'OUT': `MERGE (entity)-[:${relationship}]->(source)`
   }[direction];
 
   const mergeStatement = [
-    contextMatch,
     entityMerge,
     sourceMerge
   ].join('\n');
   return cypherMerge(mergeStatement, {beforeMerge})(args, context);
 }
 
-export const entityMerge2 = (entityType, spec, {beforeMerge, instance} = {}) => async(args, context) => {
-  const sourceType = await queryType(context, args.sourceId);
-  const sourceSpec = spec[sourceType];
+// export const entityMerge2 = (entityType, spec, {beforeMerge, instance} = {}) => async(args, context) => {
+//   const sourceType = await queryType(context, args.sourceId);
+//   const sourceSpec = spec[sourceType];
 
-  const contextMatch = sourceType === 'Space' 
-  ? `MATCH (space:Space {id: $sourceId})`
-  : `MATCH (space:Space)-[:CONTAINS]->(source:${sourceType} {id: $sourceId})`;
+//   const contextMatch = sourceType === 'Space' 
+//   ? `MATCH (space:Space {id: $sourceId})`
+//   : `MATCH (space:Space)-[:CONTAINS]->(source:${sourceType} {id: $sourceId})`;
 
-  const instanceMatch = instance ? `MATCH (class:Concept {id: $classId})` : '';
-  const entityMerge = `MERGE (space)-[:CONTAINS]->(entity:${entityType} {id: $id})`;
-  const sourceMerge = {
-    'IN': `MERGE (entity)<-[:${sourceSpec.name}]-(source)`,
-    'OUT': `MERGE (entity)-[:${sourceSpec.name}]->(source)`
-  }[sourceSpec.direction];
+//   const instanceMatch = instance ? `MATCH (class:Concept {id: $classId})` : '';
+//   const entityMerge = `MERGE (space)-[:CONTAINS]->(entity:${entityType} {id: $id})`;
+//   const sourceMerge = {
+//     'IN': `MERGE (entity)<-[:${sourceSpec.name}]-(source)`,
+//     'OUT': `MERGE (entity)-[:${sourceSpec.name}]->(source)`
+//   }[sourceSpec.direction];
   
-  const instanceMerge = instance ? `MERGE (entity)-[:INSTANCE_OF]->(class)` : '';
+//   const instanceMerge = instance ? `MERGE (entity)-[:INSTANCE_OF]->(class)` : '';
 
-  const mergeStatement = [
-    contextMatch,
-    instanceMatch,
-    entityMerge,
-    sourceMerge,
-    instanceMerge,
-  ].join('\n');
-  return cypherMerge(mergeStatement, {beforeMerge})(args, context);
-}
+//   const mergeStatement = [
+//     contextMatch,
+//     instanceMatch,
+//     entityMerge,
+//     sourceMerge,
+//     instanceMerge,
+//   ].join('\n');
+//   return cypherMerge(mergeStatement, {beforeMerge})(args, context);
+// }
 
 export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, context) => {
-  const props = Object.assign({}, args, { id: args.id || uuid() });
+  const props = Object.assign({}, args.input, { id: args.input.id || uuid()});
   if (beforeMerge !== undefined) {
     beforeMerge(props);
   }
-  const assignments = Object.keys(props.input || {}).map(key => `entity.${key} = $input.${key}`).join(', ');
-  const upsertStatement = assignments.length > 0 
+  const propertyKeys = Object.keys(props || {}).filter(prop => !['sourceId', 'classId'].includes(prop));
+  const assignments = propertyKeys.map(key => `entity.${key} = $${key}`).join(', ');
+  const upsertStatement = assignments.length > 0
     ? `ON MATCH SET ${assignments} ON CREATE SET ${assignments}, entity.created = timestamp()`
     : `ON CREATE SET entity.created = timestamp()`
   const returnStatement = `RETURN entity, apoc.date.format(entity.created) AS created`;  
@@ -64,11 +65,9 @@ export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, c
     returnStatement
   ].join('\n');
 
-  console.log('cypher', cypher, props);
   const session = context.driver.session();
   const result = await session.run(cypher, props);
   const record = result.records[0];
-  console.log('records', result.records);
   return Object.assign({}, record.get('entity').properties, { created: record.get('created') });
 }
 

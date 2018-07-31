@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Query tests post entity with beforeMerge (event in space) 1`] = `
+Object {
+  "Event": Object {
+    "__typename": "Event",
+    "datetime": "2011-12-12 00:00:00",
+    "spaces": Array [
+      Object {
+        "__typename": "Space",
+        "title": "event in space",
+      },
+    ],
+    "title": "test event",
+  },
+}
+`;
+
+exports[`Query tests simple post (idea in space) 1`] = `
+Object {
+  "Idea": Object {
+    "__typename": "Idea",
+    "spaces": Array [
+      Object {
+        "__typename": "Space",
+        "title": "idea in space",
+      },
+    ],
+    "title": "test idea",
+  },
+}
+`;

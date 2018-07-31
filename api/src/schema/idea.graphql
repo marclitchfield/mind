@@ -35,13 +35,13 @@ type Idea implements Entity {
   icon: String
   type: String!
 
-  collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "SUBJECT", direciton: "OUT")
-  concept(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direciton: "OUT")
+  collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "SUBJECT", direction: "OUT")
+  concept(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
   subjectEvents(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "SUBJECT", direction: "OUT")
   contexts(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RESPONSE", direction: "IN")
   responses(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RESPONSE", direction: "OUT")
   subjectItems(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "SUBJECT", direction: "OUT")
   subjectLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUBJECT", direction: "OUT")
   subjectPeople(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SUBJECT", direction: "OUT")
-  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direciton: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 }
