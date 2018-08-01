@@ -52,8 +52,8 @@ function buildSourceMerge(relationship, direction, relationshipProperties) {
     '{'+Object.keys(relationshipProperties).map(key => key + ':' + JSON.stringify(relationshipProperties[key])).join(',')+'}';
 
   return {
-    'IN': `MERGE (entity)<-[:${relationship} ${properties}]-(source)`,
-    'OUT': `MERGE (entity)-[:${relationship} ${properties}]->(source)`
+    'IN': `MERGE (entity)<-[source_rel:${relationship} ${properties}]-(source)`,
+    'OUT': `MERGE (entity)-[source_rel:${relationship} ${properties}]->(source)`
   }[direction];
 }
 
@@ -62,7 +62,8 @@ export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, c
   if (beforeMerge !== undefined) {
     beforeMerge(props);
   }
-  const propertyKeys = Object.keys(props || {}).filter(prop => !['sourceId', 'classId'].includes(prop));
+  const removeStatement = props.remove ? 'DELETE source_rel WITH entity, source' : '';
+  const propertyKeys = Object.keys(props || {}).filter(prop => !['sourceId', 'classId', 'remove'].includes(prop));
   const assignments = propertyKeys.map(key => `entity.${key} = $${key}`).join(', ');
   const upsertStatement = assignments.length > 0
     ? `ON MATCH SET ${assignments} ON CREATE SET ${assignments}, entity.created = timestamp()`
@@ -72,12 +73,15 @@ export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, c
   const cypher = [
     mergeStatement,
     upsertStatement,
+    removeStatement,
     returnStatement
   ].join('\n');
 
-  // console.log('*** cypher ***');
-  // console.log(cypher);
-  // console.log(props);
+  if (props.remove) {
+    console.log('*** cypher ***');
+    console.log(cypher);
+    console.log(props);
+  }
 
   const session = context.driver.session();
   const result = await session.run(cypher, props);

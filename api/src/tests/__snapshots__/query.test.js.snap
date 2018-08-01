@@ -131,6 +131,16 @@ Object {
 }
 `;
 
+exports[`Query tests post single cardinality removal (remove event at location) 1`] = `
+Object {
+  "Person": Object {
+    "__typename": "Person",
+    "location": null,
+    "title": "test person",
+  },
+}
+`;
+
 exports[`Query tests post single cardinality update (update person location) 1`] = `
 Object {
   "Person": Object {

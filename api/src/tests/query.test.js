@@ -95,7 +95,16 @@ describe('Query tests', () => {
     });
   });
 
-  test('post removal (idea in space)', () => {
-
+  test('post single cardinality removal (remove event at location)', () => {
+    return verifyMutations('Query tests', 'remove event at location', {
+      mutations: [
+        ({space}) => gql`mutation { Location { location:post_in_space(input:{sourceId:"${space.id}", title: "test location"}) { id } } }`,
+        ({location}) => gql`mutation { Person { person:post_at_location(input:{sourceId:"${location.id}", title: "test person"}) { id } } }`,
+        ({person, location}) => gql`mutation { Person { person:post_at_location(input:{remove: true, id:"${person.id}" sourceId:"${location.id}", title: "test person"}) { id } } }`,
+      ],
+      query: ({person}) => gql`query {
+        Person(id:"${person.id}") { title location { title } }
+      }`
+    });
   });
 });
