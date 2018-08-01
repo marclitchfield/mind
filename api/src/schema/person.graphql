@@ -13,6 +13,7 @@ type PersonOps {
   post_having_collection(input: PersonProps!): Person!
   post_described_by_concept(input: PersonProps!): Person!
   post_timeline_of_event(input: PersonProps!): Person!
+  post_source_of_idea(input: PersonProps!): Person!
   post_subject_of_idea(input: PersonProps!): Person!
   post_having_item(input: PersonProps!): Person!
   post_at_location(input: PersonProps!): Person!
@@ -39,7 +40,8 @@ type Person implements Entity {
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "HAS", direction: "OUT")
   concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
-  ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
+  sourceIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SOURCE_OF", direction: "OUT")
+  subjectIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "HAS", direction: "OUT")
   location: Location @relation(name: "AT", direction: "OUT")
   spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")

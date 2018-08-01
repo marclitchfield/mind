@@ -4,6 +4,7 @@ export const Person = () => ({
   post_having_collection: resolve.entityMerge('Person', 'HAS', 'Collection', 'OUT'),
   post_described_by_concept: resolve.entityMerge('Person', 'DESCRIBED_BY', 'Concept', 'OUT'),
   post_timeline_of_event: resolve.entityMerge('Person', 'TIMELINE', 'Event', 'OUT'),
+  post_source_of_idea: resolve.entityMerge('Person', 'SOURCE_OF', 'Idea', 'OUT'),
   post_subject_of_idea: resolve.entityMerge('Person', 'SUBJECT', 'Idea', 'IN'),
   post_having_item: resolve.entityMerge('Person', 'HAS', 'Item', 'OUT'),
   post_at_location: resolve.entityMerge('Person', 'AT', 'Location', 'OUT', { cardinality: 1 }),
