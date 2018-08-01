@@ -1,72 +1,72 @@
 export default `mutation mind_space {
 	m1:Mind {
-		m:create(id:"1", input:{title:"self"}) { id }
+		m:post(input:{id:"1", title:"self"}) { id }
 	}
 	m2:Space {
-		s:createInMind(id:"1" mindId:"1" input:{title:"Ideas"}) { id }
+		s:post_in_mind(input:{id:"1", sourceId:"1", title:"Ideas"}) { id }
 	}
   m3:Concept {
-    c1:createInSpace(id:"c1" spaceId:"1" input:{title:"c1" body:"the body" icon:"concept.png"}) { id }
-    c2:createInSpace(id:"c2" spaceId:"1" input:{title:"c2" body:"the body" icon:"concept.png"}) { id }
-    c3:createSubConcept(id:"c3" superConceptId:"c1" input:{title:"c3" body:"the body" icon:"concept.png"}) { id }
-    c4:createSubConcept(id:"c4" superConceptId:"c1" input:{title:"c4" body:"the body" icon:"concept.png"}) { id }
-    c5:createSubConcept(id:"c5" superConceptId:"c3" input:{title:"c5" body:"the body" icon:"concept.png"}) { id }
-    c6:createSubConcept(id:"c6" superConceptId:"c1" input:{title:"c6" body:"the body" icon:"concept.png"}) { id }
-    c1c5:addSubConcept(id:"c1" subConceptId:"c5")
-    c6c2:addSubConcept(id:"c6" subConceptId:"c2")
-    c1dc5:removeSubConcept(id:"c1" subConceptId:"c5")
+    c1:post_in_space(input:{id:"c1" sourceId:"1" title:"c1" body:"the body" icon:"concept.png"}) { id }
+    c2:post_in_space(input:{id:"c2" sourceId:"1" title:"c2" body:"the body" icon:"concept.png"}) { id }
+    c3:post_sub_concept(input:{id:"c3" sourceId:"c1" title:"c3" body:"the body" icon:"concept.png"}) { id }
+    c4:post_sub_concept(input:{id:"c4" sourceId:"c1" title:"c4" body:"the body" icon:"concept.png"}) { id }
+    c5:post_sub_concept(input:{id:"c5" sourceId:"c3" title:"c5" body:"the body" icon:"concept.png"}) { id }
+    c6:post_sub_concept(input:{id:"c6" sourceId:"c1" title:"c6" body:"the body" icon:"concept.png"}) { id }
+    c1c5:post_sub_concept(input:{id:"c1" sourceId:"c5"}) { id }
+    c6c2:post_sub_concept(input:{id:"c6" sourceId:"c2"}) { id }
+    c1dc5:post_sub_concept(input:{remove:true, id:"c1" sourceId:"c5"}) { id }
 	}
 	m4:Idea {
-    p1:createForConcept(id:"p1" conceptId:"c2" input:{title:"p1" body:"the body"}) { id }
-    p2:createForConcept(id:"p2" conceptId:"c5" input:{title:"p2" body:"the body"}) { id }
-    p3:createResponse(id:"p3" contextIdeaId:"p2" input:{title:"p3" body:"the body"}) { id }
-    p4:createResponse(id:"p4" contextIdeaId:"p1" input:{title:"p4" body:"the body"}) { id }
-    p5:createResponse(id:"p5" contextIdeaId:"p3" input:{title:"p5" body:"the body"}) { id }
-    p6:createResponse(id:"p6" contextIdeaId:"p3" input:{title:"p6" body:"the body"}) { id }
+    p1:post_described_by_concept(input:{id:"p1" sourceId:"c2" title:"p1" body:"the body"}) { id }
+    p2:post_described_by_concept(input:{id:"p2" sourceId:"c5" title:"p2" body:"the body"}) { id }
+    p3:post_sub_idea(input:{id:"p3" sourceId:"p2" title:"p3" body:"the body"}) { id }
+    p4:post_sub_idea(input:{id:"p4" sourceId:"p1" title:"p4" body:"the body"}) { id }
+    p5:post_sub_idea(input:{id:"p5" sourceId:"p3" title:"p5" body:"the body"}) { id }
+    p6:post_sub_idea(input:{id:"p6" sourceId:"p3" title:"p6" body:"the body"}) { id }
 	}
 	m5:Event {
-		e1:createInSpace(id:"e1" spaceId:"1" input:{title:"e1" body:"body" datetime:"2007"}) { id }
-		e2:createForConcept(id:"e2" conceptId:"c3" input:{title:"e2" body:"body" datetime:"2011-01-01"}) { id }
-    eu:createInSpace(id:"eu" spaceId:"1" input:{title:"union" body:"union" datetime:"2010-07-17"}) { id }
-    eo1:createInSpace(id:"eo1" spaceId:"1" input:{title:"birth" body:"birth" datetime:"2011-12-12"}) { id }
-    eo2:createInSpace(id:"eo2" spaceId:"1" input:{title:"eo2" body:"birth" datetime:"2017-06-28"}) { id }
+		e1:post_in_space(input:{id:"e1" sourceId:"1" title:"e1" body:"body" datetime:"2007"}) { id }
+		e2:post_described_by_concept(input:{id:"e2" sourceId:"c3" title:"e2" body:"body" datetime:"2011-01-01"}) { id }
+    eu:post_in_space(input:{id:"eu" sourceId:"1" title:"union" body:"union" datetime:"2010-07-17"}) { id }
+    eo1:post_in_space(input:{id:"eo1" sourceId:"1" title:"birth" body:"birth" datetime:"2011-12-12"}) { id }
+    eo2:post_in_space(input:{id:"eo2" sourceId:"1" title:"eo2" body:"birth" datetime:"2017-06-28"}) { id }
 	}
-  m6:Person {
-    p1:createInSpace(id:"person1" spaceId:"1" input:{title:"person1"}) { id }
-    p2:createForConcept(id:"person2" conceptId:"c3" input:{title:"person2"}) { id }
-    p3:createAsIdeaSource(id:"person3" ideaId:"p1" input:{title:"person3"}) { id }
-    p4:createAsIdeaSubject(id:"person4" ideaId:"p2" input:{title:"person4"}) { id }
-    u:createUnion(person1:"person3" person2:"person4" eventId:"eu")
-    o1:createOffspring(parent1:"person3" parent2:"person4" childId:"person1" eventId:"eo1")
-    o2:createOffspring(parent1:"person3" parent2:"person4" childId:"person2" eventId:"eo2")
-  }
-  m7:Item {
-    i1:createInSpace(id:"i1" spaceId:"1" classConceptId:"c2" input:{title:"i1"}) { id }
-    i2:createInstance(id:"i2" classConceptId:"c3" input:{title:"i2"}) { id }
-    i3:createInContainer(id:"i3" containerItemId:"i1" classConceptId:"c4" input:{title:"i3"}) { id }
-  }
-  m8:Location {
-    l1:createInSpace(id:"l1" spaceId:"1" input:{title:"l1"}) { id }
-    l2:createForConcept(id:"l2" conceptId:"c6" input:{title:"l2"}) { id }
-    l3:createWithinLocation(id:"l3" outerLocationId:"l2" input:{title:"l3"}) { id }
-  }
-  m9:Collection {
-    col1:createInSpace(id:"col1" spaceId:"1" classConceptId:"c4" input:{title:"col1"}) { id }
-    col2:createInstance(id:"col2" classConceptId:"c5" input:{title:"col2"}) { id }
-  }
-  m10:Item {
-    i4:createAtLocation(id:"i4" locationId:"l2" classConceptId:"c4" input:{title:"i4"}) { id }
-    i5:createWithinCollection(id:"i5" collectionId:"col2" classConceptId:"c4" input:{title:"i5"}) { id }
-  }
-  m11:Event {
-    e3:createForCollection(id:"e3" collectionId:"col2" input:{title:"e3" datetime:"2018-01-01"}) { id }
-    e4:createForIdea(id:"e4" ideaId:"p3" input:{title:"e4" datetime:"2018-01-01"}) { id }
-    e5:createForItem(id:"e5" itemId:"i3" input:{title:"e5" datetime:"2018-01-01"}) { id }
-    e6:createForPerson(id:"e6" personId:"person3" input:{title:"e6" datetime:"2018-01-01"}) { id }
-  }
-  m12:Person {
-    p5:createAtLocation(id:"p5" locationId:"l3" input:{title:"p5"}) { id }
-    p5e:addEvent(id:"person3" eventId:"e5")
-  }
+	m6:Person {
+    p1:post_in_space(input:{id:"person1" sourceId:"1" title:"person1"}) { id }
+    p2:post_described_by_concept(input:{id:"person2" sourceId:"c3" title:"person2"}) { id }
+    p3:post_source_of_idea(input:{id:"person3" sourceId:"p1" title:"person3"}) { id }
+    p4:post_subject_of_idea(input:{id:"person4" sourceId:"p2" title:"person4"}) { id }
+    u:post_union(person1:"person3" person2:"person4" eventId:"eu")
+    o1:post_offspring(parent1:"person3" parent2:"person4" childId:"person1" eventId:"eo1")
+    o2:post_offspring(parent1:"person3" parent2:"person4" childId:"person2" eventId:"eo2")
+	}
+	m7:Item {
+    i1:post_in_space(input:{id:"i1" sourceId:"1" classId:"c2" title:"i1"}) { id }
+    i2:post_instance_of_concept(input:{id:"i2" sourceId:"c3" title:"i2"}) { id }
+    i3:post_in_item(input:{id:"i3" sourceId:"i1" classId:"c4" title:"i3"}) { id }
+	}
+	m8:Location {
+    l1:post_in_space(input:{id:"l1" sourceId:"1" title:"l1"}) { id }
+    l2:post_described_by_concept(input:{id:"l2" sourceId:"c6" title:"l2"}) { id }
+    l3:post_sub_location(input:{id:"l3" sourceId:"l2" title:"l3"}) { id }
+	}
+	m9:Collection {
+    col1:post_in_space(input:{id:"col1" sourceId:"1" classId:"c4" title:"col1"}) { id }
+    col2:post_instance_of_concept(input:{id:"col2" sourceId:"c5" title:"col2"}) { id }
+	}
+	m10:Item {
+    i4:post_at_location(input:{id:"i4" sourceId:"l2" classId:"c4" title:"i4"}) { id }
+    i5:post_in_collection(input:{id:"i5" sourceId:"col2" classId:"c4" title:"i5"}) { id }
+	}
+	m11:Event {
+    e3:post_timeline_of_collection(input:{id:"e3" sourceId:"col2" title:"e3" datetime:"2018-01-01"}) { id }
+    e4:post_subject_of_idea(input:{id:"e4" sourceId:"p3" title:"e4" datetime:"2018-01-01"}) { id }
+    e5:post_timeline_of_item(input:{id:"e5" sourceId:"i3" title:"e5" datetime:"2018-01-01"}) { id }
+    e6:post_timeline_of_person(input:{id:"e6" sourceId:"person3" title:"e6" datetime:"2018-01-01"}) { id }
+	}
+	m12:Person {
+    p5:post_at_location(input:{id:"p5" sourceId:"l3" title:"p5"}) { id }
+    p5e:post_timeline_of_event(input:{id:"person3" sourceId:"e5"}) { id }
+	}
 }
 `  

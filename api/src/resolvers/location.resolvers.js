@@ -1,22 +1,13 @@
 import * as resolve from '../query';
 
 export const Location = () => ({
-  createInSpace: resolve.entityMerge(`
-    MATCH (s:Space {id: $spaceId}) WITH s
-    MERGE (loc:Location {id: $id})<-[:CONTAINS]-(s)
-  `, 'loc'),
-  createForConcept: resolve.entityMerge(`
-    MATCH (c:Concept {id: $conceptId})<-[:CONTAINS]-(s:Space) WITH c, s
-    MERGE (s)-[:CONTAINS]->(loc:Location {id: $id})-[:DESCRIBED_BY]->(c)
-  `, 'loc'),
-  createWithinLocation: resolve.entityMerge(`
-    MATCH (ol:Location {id: $outerLocationId})<-[:CONTAINS]-(s:Space) WITH ol, s
-    MERGE (s)-[:CONTAINS]->(il:Location {id: $id})<-[:IN]-(ol)
-  `, 'il'),
-
-  addConcept: resolve.addRelationship('Location', 'DESCRIBED_BY', 'Concept', '$conceptId'),
-  addLocation: resolve.addRelationship('Location', 'CONTAINS', 'Location', '$locationId'),
-
-  removeConcept: resolve.removeRelationship('Location', 'DESCRIBED_BY', 'Concept', '$conceptId'),
-  removeLocation: resolve.removeRelationship('Location', 'CONTAINS', 'Location', '$locationId')
+  post_location_of_collection: resolve.entityMerge('Location', 'AT', 'Collection', 'IN'),
+  post_described_by_concept: resolve.entityMerge('Location', 'DESCRIBED_BY', 'Concept', 'OUT'),
+  post_timeline_of_event: resolve.entityMerge('Location', 'TIMELINE', 'Event', 'OUT'),
+  post_subject_of_idea: resolve.entityMerge('Location', 'SUBJECT', 'Idea', 'IN'),
+  post_location_of_item: resolve.entityMerge('Location', 'AT', 'Item', 'IN'),
+  post_super_location: resolve.entityMerge('Location', 'SUB', 'Location', 'OUT'),
+  post_sub_location: resolve.entityMerge('Location', 'SUB', 'Location', 'IN'),
+  post_location_of_person: resolve.entityMerge('Location', 'AT', 'Person', 'OUT'),
+  post_in_space: resolve.entityMerge('Location', 'CONTAINS', 'Space', 'IN', { inheritSpace: false }),
 });

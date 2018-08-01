@@ -1,23 +1,23 @@
 input EventProps {
-  title: String!
+  id: ID
+  sourceId: ID
+  title: String
   body: String
   icon: String
-  datetime: String!
+  datetime: String
   type: String
+  remove: Boolean
 }
 
 type EventOps {
-  createInSpace(id: ID = null, spaceId: ID!, input: EventProps!): Event!
-  createForConcept(id: ID = null, conceptId: ID!, input: EventProps!): Event!
-  createAtLocation(id: ID = null, locationId: ID!, input: EventProps!): Event!
-  createForCollection(id: ID = null, collectionId: ID!, input: EventProps!): Event!
-  createForItem(id: ID = null, itemId: ID!, input: EventProps!): Event!
-  createForIdea(id: ID = null, ideaId: ID!, input: EventProps!): Event!
-  createForPerson(id: ID = null, personId: ID!, input: EventProps!): Event!
-  addLocation(id: ID!, locationId: ID!): Boolean
-  addConcept(id: ID!, conceptId: ID!): Boolean
-  removeLocation(id: ID!, locationId: ID!): Boolean
-  removeConcept(id: ID!, conceptId: ID!): Boolean
+  post_timeline_of_collection(input: EventProps!): Event!
+  post_described_by_concept(input: EventProps!): Event!
+  post_connected_to_event(input: EventProps!): Event!
+  post_subject_of_idea(input: EventProps!): Event!
+  post_timeline_of_item(input: EventProps!): Event!
+  post_timeline_of_location(input: EventProps!): Event!
+  post_timeline_of_person(input: EventProps!): Event!
+  post_in_space(input: EventProps!): Event!
 }
 
 extend type Mutation {
@@ -30,17 +30,19 @@ extend type Query {
 
 type Event implements Entity {
   id: ID!
-  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
   created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
   title: String!
   icon: String
   body: String
   type: String
   datetime: String! @cypher(statement: "RETURN apoc.date.format(this.datetime)")
-  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
-  people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "TIMELINE", direction: "IN")
-  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "TIMELINE", direction: "IN")
+
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "TIMELINE", direction: "IN")
+  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
+  connectedEvents(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "CONNECTED_TO", direction: "OUT")
   ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "CONTAINS", direction: "IN")
-  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "AT", direction: "OUT")
+  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "TIMELINE", direction: "IN")
+  locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "TIMELINE", direction: "IN")
+  people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "TIMELINE", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 }

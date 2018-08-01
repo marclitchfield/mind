@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Query tests post entity with beforeMerge (event in space) 1`] = `
+Object {
+  "Event": Object {
+    "__typename": "Event",
+    "datetime": "2011-12-12 00:00:00",
+    "spaces": Array [
+      Object {
+        "__typename": "Space",
+        "title": "event in space",
+      },
+    ],
+    "title": "test event",
+  },
+}
+`;
+
+exports[`Query tests post instance (item in space) 1`] = `
+Object {
+  "Item": Object {
+    "__typename": "Item",
+    "class": Object {
+      "__typename": "Concept",
+      "itemInstances": Array [
+        Object {
+          "__typename": "Item",
+          "title": "test item",
+        },
+      ],
+      "title": "test concept",
+    },
+    "spaces": Array [
+      Object {
+        "__typename": "Space",
+        "title": "item in space",
+      },
+    ],
+    "title": "test item",
+  },
+}
+`;
+
+exports[`Query tests post properties (root concept in space) 1`] = `
+Object {
+  "Space": Object {
+    "__typename": "Space",
+    "concepts": Array [
+      Object {
+        "__typename": "Concept",
+        "spaces": Array [
+          Object {
+            "__typename": "Space",
+            "title": "root concept in space",
+          },
+        ],
+        "title": "sub concept",
+      },
+      Object {
+        "__typename": "Concept",
+        "spaces": Array [
+          Object {
+            "__typename": "Space",
+            "title": "root concept in space",
+          },
+        ],
+        "title": "root concept",
+      },
+    ],
+    "rootConcepts": Array [
+      Object {
+        "__typename": "Concept",
+        "spaces": Array [
+          Object {
+            "__typename": "Space",
+            "title": "root concept in space",
+          },
+        ],
+        "title": "root concept",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Query tests post single cardinality (person at location) 1`] = `
+Object {
+  "Person": Object {
+    "__typename": "Person",
+    "location": Object {
+      "__typename": "Location",
+      "people": Array [
+        Object {
+          "__typename": "Person",
+          "title": "test person",
+        },
+      ],
+      "title": "test location",
+    },
+    "spaces": Array [
+      Object {
+        "__typename": "Space",
+        "title": "person at location",
+      },
+    ],
+    "title": "test person",
+  },
+}
+`;
+
+exports[`Query tests post single cardinality instance (item at location) 1`] = `
+Object {
+  "Item": Object {
+    "__typename": "Item",
+    "class": Object {
+      "__typename": "Concept",
+      "itemInstances": Array [
+        Object {
+          "__typename": "Item",
+          "title": "test person",
+        },
+      ],
+      "title": "test concept",
+    },
+    "location": Object {
+      "__typename": "Location",
+      "items": Array [],
+      "title": "test location",
+    },
+  },
+}
+`;
+
+exports[`Query tests post single cardinality removal (remove event at location) 1`] = `
+Object {
+  "Person": Object {
+    "__typename": "Person",
+    "location": null,
+    "title": "test person",
+  },
+}
+`;
+
+exports[`Query tests post single cardinality update (update person location) 1`] = `
+Object {
+  "Person": Object {
+    "__typename": "Person",
+    "location": Object {
+      "__typename": "Location",
+      "people": Array [
+        Object {
+          "__typename": "Person",
+          "title": "test person",
+        },
+      ],
+      "title": "test location 2",
+    },
+    "spaces": Array [
+      Object {
+        "__typename": "Space",
+        "title": "update person location",
+      },
+    ],
+    "title": "test person",
+  },
+}
+`;
+
+exports[`Query tests simple post (idea in space) 1`] = `
+Object {
+  "Idea": Object {
+    "__typename": "Idea",
+    "spaces": Array [
+      Object {
+        "__typename": "Space",
+        "title": "idea in space",
+      },
+    ],
+    "title": "test idea",
+  },
+}
+`;

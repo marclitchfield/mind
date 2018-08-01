@@ -1,32 +1,14 @@
 import * as resolve from '../query';
 
 export const Idea = () => ({
-  createInSpace: resolve.entityMerge(`
-      MATCH (s:Space {id: $spaceId}) WITH s
-      MERGE (s)-[:CONTAINS]->(i:Idea {id: $id})
-    `, 'i'),
-  createForConcept: resolve.entityMerge(`
-      MATCH (c:Concept {id: $conceptId})<-[:CONTAINS]-(s:Space) WITH c, s
-      MERGE (s)-[:CONTAINS]-(i:Idea {id: $id})-[:DESCRIBED_BY]->(c)
-    `, 'i'),
-  createResponse: resolve.entityMerge(`
-      MATCH (p:Idea {id: $contextIdeaId})<-[:CONTAINS]-(s:Space) WITH p, s
-      MERGE (p)-[:RESPONSE]->(r:Idea {id: $id})<-[:CONTAINS]-(s)
-    `, 'r'),
-
-  addEvent: resolve.addRelationship('Idea', 'CONTAINS', 'Event', '$eventId'),
-  addConcept: resolve.addRelationship('Idea', 'DESCRIBED_BY', 'Concept', '$conceptId'),
-  addReesponse: resolve.addRelationship('Idea', 'RESPONSE', 'Idea', '$responseIdeaId'),
-  addLinkedItem: resolve.addRelationship('Idea', 'LINKS_TO', 'Item', '$linkedItemId'),
-  addSubjectItem: resolve.addRelationship('Idea', 'SUBJECT', 'Item', '$subjectItemId'),
-  addSourcePerson: resolve.addRelationship('Idea', 'SOURCE', 'Person', '$sourcePersonId'),
-  addSubjectPerson: resolve.addRelationship('Idea', 'SUBJECT', 'Person', '$subjectPersonId'),
-  
-  removeEvent: resolve.removeRelationship('Idea', 'CONTAINS', 'Event', '$eventId'),
-  removeConcept: resolve.removeRelationship('Idea', 'DESCRIBED_BY', 'Concept', '$conceptId'),
-  removeResponse: resolve.removeRelationship('Idea', 'RESPONSE', 'Idea', '$responseIdeaId'),
-  removeLinkedItem: resolve.removeRelationship('Idea', 'LINKS_TO', 'Item', '$linkedItemId'),
-  removeSubjectItem: resolve.removeRelationship('Idea', 'SUBJECT', 'Item', '$subjectItemId'),
-  removeSourcePerson: resolve.removeRelationship('Idea', 'SOURCE', 'Person', '$sourcePersonId'),
-  removeSubjectPerson: resolve.removeRelationship('Idea', 'SUBJECT', 'Person', '$subjectPersonId')
+  post_about_collection: resolve.entityMerge('Idea', 'SUBJECT', 'Collection', 'OUT'),
+  post_described_by_concept: resolve.entityMerge('Idea', 'DESCRIBED_BY', 'Concept', 'OUT'),
+  post_about_event: resolve.entityMerge('Idea', 'SUBJECT', 'Event', 'OUT'),
+  post_super_idea: resolve.entityMerge('Idea', 'SUB', 'Idea', 'IN'),
+  post_sub_idea: resolve.entityMerge('Idea', 'SUB', 'Idea', 'OUT'),
+  post_about_item: resolve.entityMerge('Idea', 'SUBJECT', 'Item', 'OUT'),
+  post_about_location: resolve.entityMerge('Idea', 'SUBJECT', 'Location', 'OUT'),
+  post_about_person: resolve.entityMerge('Idea', 'SUBJECT', 'Person', 'OUT'),
+  post_by_person: resolve.entityMerge('Idea', 'SOURCE_OF', 'Person', 'IN'),
+  post_in_space: resolve.entityMerge('Idea', 'CONTAINS', 'Space', 'IN', { inheritSpace: false }),
 });

@@ -1,38 +1,14 @@
 import * as resolve from '../query';
 
-export const Event = () => ({
-  createInSpace: resolve.entityMerge(`
-    MATCH (s:Space {id: $spaceId}) WITH s
-    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})
-  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
-  createForConcept: resolve.entityMerge(`
-    MATCH (c:Concept {id: $conceptId})<-[:CONTAINS]-(s:Space) WITH c, s
-    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})-[:DESCRIBED_BY]->(c)
-  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
-  createAtLocation: resolve.entityMerge(`
-    MATCH (loc:Location {id: $locationId})<-[:CONTAINS]-(s:Space) WITH loc, s
-    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})-[:AT]->(loc)
-  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
-  createForCollection: resolve.entityMerge(`
-    MATCH (col:Collection {id: $collectionId})<-[:CONTAINS]-(s:Space) WITH col, s
-    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})<-[:TIMELINE]-(col)
-  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
-  createForItem: resolve.entityMerge(`
-    MATCH (item:Item {id: $itemId})<-[:CONTAINS]-(s:Space) WITH item, s
-    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})<-[:TIMELINE]-(item)
-  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),  
-  createForIdea: resolve.entityMerge(`
-    MATCH (idea:Idea {id: $ideaId})<-[:CONTAINS]-(s:Space) WITH idea, s
-    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})<-[:CONTAINS]-(idea)
-  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
-  createForPerson: resolve.entityMerge(`
-    MATCH (p:Person {id: $personId})<-[:CONTAINS]-(s:Space) WITH p, s
-    MERGE (s)-[:CONTAINS]->(e:Event {id: $id})<-[:TIMELINE]-(p)
-  `, 'e', (props) => { props.input.datetime = Date.parse(props.input.datetime) }),
+const beforeMerge = (props) => { props.datetime = Date.parse(props.datetime)};
 
-  addLocation: resolve.addRelationship('Event', 'AT', 'Location', '$locationId'),
-  addConcept: resolve.addRelationship('Event', 'DESCRIBED_BY', 'Concept', '$conceptId'),
-  
-  removeLocation: resolve.removeRelationship('Event', 'AT', 'Location', '$locationId'),
-  removeConcept: resolve.removeRelationship('Event', 'DESCRIBED_BY', 'Concept', '$conceptId')
+export const Event = () => ({
+  post_timeline_of_collection: resolve.entityMerge('Event', 'TIMELINE', 'Collection', 'IN', { beforeMerge }),
+  post_described_by_concept: resolve.entityMerge('Event', 'DESCRIBED_BY', 'Concept', 'OUT', { beforeMerge }),
+  post_connected_to_event: resolve.entityMerge('Event', 'CONNECTED_TO', 'Event', 'OUT', { beforeMerge }),
+  post_subject_of_idea: resolve.entityMerge('Event', 'SUBJECT', 'Idea', 'IN', { beforeMerge }),
+  post_timeline_of_item: resolve.entityMerge('Event', 'TIMELINE', 'Item', 'IN', { beforeMerge }),
+  post_timeline_of_location: resolve.entityMerge('Event', 'TIMELINE', 'Location', 'IN', { beforeMerge }),
+  post_timeline_of_person: resolve.entityMerge('Event', 'TIMELINE', 'Person', 'IN', { beforeMerge }),
+  post_in_space: resolve.entityMerge('Event', 'CONTAINS', 'Space', 'IN', { beforeMerge, inheritSpace: false }),
 });

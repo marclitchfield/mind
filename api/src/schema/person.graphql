@@ -1,29 +1,25 @@
 input PersonProps {
-  title: String!
-  icon: String
+  id: ID
+  sourceId: ID
   name: String
+  icon: String
+  title: String
   born_at: String
   died_at: String
+  remove: Boolean
 }
 
 type PersonOps {
-  createInSpace(id: ID = null, spaceId: ID!, input: PersonProps!): Person!
-  createForConcept(id: ID = null, conceptId: ID!, input: PersonProps!): Person!
-  createAsIdeaSource(id: ID = null, ideaId: ID!, input: PersonProps!): Person!
-  createAsIdeaSubject(id: ID = null, ideaId: ID!, input: PersonProps!): Person!
-  createAtLocation(id: ID = null, locationId: ID!, input: PersonProps!): Person!
-  createOffspring(parent1: ID!, parent2: ID!, childId: ID!, eventId: ID!): Boolean
-  createUnion(person1: ID!, person2: ID!, eventId: ID!): Boolean
-
-  addEvent(id: ID!, eventId: ID!): Boolean
-  addItem(id: ID!, itemId: ID!): Boolean
-  addCollection(id: ID!, collectionId: ID!): Boolean
-  setLocation(id: ID!, locationId: ID!): Boolean
-
-  removeEvent(id: ID!, eventId: ID!): Boolean
-  removeItem(id: ID!, itemId: ID!): Boolean
-  removeCollection(id: ID!, collectionId: ID!): Boolean
-  clearLocation(id: ID!): Boolean
+  post_having_collection(input: PersonProps!): Person!
+  post_described_by_concept(input: PersonProps!): Person!
+  post_timeline_of_event(input: PersonProps!): Person!
+  post_source_of_idea(input: PersonProps!): Person!
+  post_subject_of_idea(input: PersonProps!): Person!
+  post_having_item(input: PersonProps!): Person!
+  post_at_location(input: PersonProps!): Person!
+  post_in_space(input: PersonProps!): Person!
+  post_union(person1: ID!, person2: ID!, eventId: ID!): Boolean
+  post_offspring(parent1: ID!, parent2: ID!, childId: ID!, eventId: ID!): Boolean
 }
 
 extend type Mutation {
@@ -36,22 +32,24 @@ extend type Query {
 
 type Person implements Entity {
   id: ID!
-  spaces: [Space!] @relation(name: "CONTAINS", direction: "IN")
   created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
   title: String!
   icon: String
   name: String
+
+  collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "HAS", direction: "OUT")
+  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
+  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
+  sourceIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SOURCE_OF", direction: "OUT")
+  subjectIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
+  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "HAS", direction: "OUT")
+  location: Location @relation(name: "AT", direction: "OUT")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
+
   offspring: [Offspring!] @relation(name: "PARENT_OF", direction: "OUT")
   parents: [Person!] @cypher(statement: "MATCH (this)<-[:CHILD]-(o:Offspring)<-[:PARENT_OF]-(p:Person) RETURN p")
   children: [Person!] @cypher(statement: "MATCH (this)-[:PARENT_OF]->(o:Offspring)-[:CHILD]->(p:Person) RETURN p")
   unions: [Union!] @relation(name: "PART_OF", direction: "OUT")
-  location: Location @relation(name: "AT", direction: "OUT")
-  sourceIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SOURCE", direction: "IN")
-  subjectIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
-  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "HAS", direction: "OUT")
-  collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "HAS", direction: "OUT")
-  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
-  timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
 }
 
 type Offspring {

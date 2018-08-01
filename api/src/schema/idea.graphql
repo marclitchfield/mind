@@ -1,16 +1,24 @@
 input IdeaProps {
-  title: String!
+  id: ID
+  sourceId: ID
+  title: String
   body: String
   icon: String
   type: String
+  remove: Boolean
 }
 
 type IdeaOps {
-  createInSpace(id: ID = null, spaceId: ID!, input: IdeaProps!): Idea!
-  createForConcept(id: ID = null, conceptId: ID!, input: IdeaProps!): Idea!
-  createResponse(id: ID = null, contextIdeaId: ID!, input: IdeaProps!): Idea!
-  connectResponse(contextIdeaId: ID!, responseIdeaId: ID!): Boolean
-  disconnectResponse(contextIdeaId: ID!, responseIdeaId: ID!): Boolean
+  post_about_collection(input: IdeaProps!): Idea!
+  post_described_by_concept(input: IdeaProps!): Idea!
+  post_about_event(input: IdeaProps!): Idea!
+  post_super_idea(input: IdeaProps!): Idea!
+  post_sub_idea(input: IdeaProps!): Idea!
+  post_about_item(input: IdeaProps!): Idea!
+  post_about_location(input: IdeaProps!): Idea!
+  post_about_person(input: IdeaProps!): Idea!
+  post_by_person(input: IdeaProps!): Idea!
+  post_in_space(input: IdeaProps!): Idea!
 }
 
 extend type Mutation {
@@ -23,33 +31,19 @@ extend type Query {
 
 type Idea implements Entity {
   id: ID!
-  spaces: [Space!] @relation(name: "CONTAINS", direciton: "IN")
   created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
   title: String!
   icon: String
   type: String!
-  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direciton: "OUT")
+
+  collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "SUBJECT", direction: "OUT")
+  concept(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
+  subjectEvents(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "SUBJECT", direction: "OUT")
   contexts(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RESPONSE", direction: "IN")
   responses(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RESPONSE", direction: "OUT")
-  events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "CONTAINS", direction: "OUT")
-  sources(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SOURCE", direction: "OUT")
-  subjectPeople(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SUBJECT", direction: "OUT")
   subjectItems(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "SUBJECT", direction: "OUT")
-  linkedItems(first: Int = 10, offset: Int = 0): [Item!]! @relation(name: "LINKS_TO", direction: "OUT")
-  # confidence(mindId: ID!): Float
-  addEvent(id: ID!, eventId: ID!): Boolean
-  addConcept(id: ID!, conceptId: ID!): Boolean
-  addReesponse(id: ID!, responseIdeaId: ID!): Boolean
-  addLinkedItem(id: ID!, linkedItemId: ID!): Boolean
-  addSubjectItem(id: ID!, subjectItemId: ID!): Boolean
-  addSourcePerson(id: ID!, sourcePersonId: ID!): Boolean
-  addSubjectPerson(id: ID!, subjectPersonId: ID!): Boolean
-
-  removeEvent(id: ID!, eventI: ID!): Boolean
-  removeConcept(id: ID!, conceptId: ID!): Boolean
-  removeResponse(id: ID!, responseIdeaId: ID!): Boolean
-  removeLinkedItem(id: ID!, linkedItemId: ID!): Boolean
-  removeSubjectItem(id: ID!, subjectItemId: ID!): Boolean
-  removeSourcePerson(id: ID!, sourcePersonId: ID!): Boolean
-  removeSubjectPerson(id: ID!, subjectPersonId: ID!): Boolean
+  subjectLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUBJECT", direction: "OUT")
+  subjectPeople(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SUBJECT", direction: "OUT")
+  sourcePeople(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SOURCE_OF", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 }
