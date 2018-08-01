@@ -1,9 +1,9 @@
 export default `mutation mind_space {
 	m1:Mind {
-		m:post(input:{id:"1", title:"self"}) { id }
+		m:post(input:{id:"test", title:"demo"}) { id }
 	}
 	m2:Space {
-		s:post_in_mind(input:{id:"1", sourceId:"1", title:"Ideas"}) { id }
+		s:post_in_mind(input:{id:"1", sourceId:"test", title:"Demo"}) { id }
 	}
   m3:Concept {
     c1:post_in_space(input:{id:"c1" sourceId:"1" title:"c1" body:"the body" icon:"concept.png"}) { id }

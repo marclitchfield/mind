@@ -18,6 +18,44 @@ export const entityMerge = (entityType, relationship, sourceType, direction, opt
   return cypherMerge(mergeStatement, {beforeMerge})(args, context);
 }
 
+export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, context) => {
+  const props = Object.assign({}, args.input, { id: args.input.id || uuid()});
+  if (beforeMerge !== undefined) {
+    beforeMerge(props);
+  }
+  const removeStatement = props.remove ? 'DELETE source_rel WITH entity, source' : '';
+  const propertyKeys = Object.keys(props || {}).filter(prop => !['sourceId', 'classId', 'remove'].includes(prop));
+  const assignments = propertyKeys.map(key => `entity.${key} = $${key}`).join(', ');
+  const upsertStatement = assignments.length > 0
+    ? `ON MATCH SET ${assignments} ON CREATE SET ${assignments}, entity.created = timestamp()`
+    : `ON CREATE SET entity.created = timestamp()`
+  const returnStatement = `RETURN entity, apoc.date.format(entity.created) AS created`;  
+
+  const cypher = [
+    mergeStatement,
+    upsertStatement,
+    removeStatement,
+    returnStatement
+  ].join('\n');
+
+
+  const session = context.driver.session();
+  const result = await session.run(cypher, props);
+  const record = result.records[0];
+  return Object.assign({}, record.get('entity').properties, { created: record.get('created') });
+}
+
+export const runCypher = (cypher, {beforeCypher} = {}) => async(args, context) => {
+  const props = Object.assign({}, args);
+  if (beforeCypher !== undefined) {
+    beforeCypher(props);
+  }
+  const session = context.driver.session();
+  await session.run(cypher, props);
+}
+
+
+
 function buildEntityCypher(entityType, sourceType, inheritSpace) {
   if (inheritSpace === false) {
     return `MATCH (source:${sourceType} {id: $sourceId})
@@ -55,91 +93,4 @@ function buildSourceMerge(relationship, direction, relationshipProperties) {
     'IN': `MERGE (entity)<-[source_rel:${relationship} ${properties}]-(source)`,
     'OUT': `MERGE (entity)-[source_rel:${relationship} ${properties}]->(source)`
   }[direction];
-}
-
-export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, context) => {
-  const props = Object.assign({}, args.input, { id: args.input.id || uuid()});
-  if (beforeMerge !== undefined) {
-    beforeMerge(props);
-  }
-  const removeStatement = props.remove ? 'DELETE source_rel WITH entity, source' : '';
-  const propertyKeys = Object.keys(props || {}).filter(prop => !['sourceId', 'classId', 'remove'].includes(prop));
-  const assignments = propertyKeys.map(key => `entity.${key} = $${key}`).join(', ');
-  const upsertStatement = assignments.length > 0
-    ? `ON MATCH SET ${assignments} ON CREATE SET ${assignments}, entity.created = timestamp()`
-    : `ON CREATE SET entity.created = timestamp()`
-  const returnStatement = `RETURN entity, apoc.date.format(entity.created) AS created`;  
-
-  const cypher = [
-    mergeStatement,
-    upsertStatement,
-    removeStatement,
-    returnStatement
-  ].join('\n');
-
-
-  const session = context.driver.session();
-  const result = await session.run(cypher, props);
-  const record = result.records[0];
-  return Object.assign({}, record.get('entity').properties, { created: record.get('created') });
-}
-
-export const addRelationship = (entityType, spec) => async(args, context) => {
-  const targetType = await queryType(context, args.targetId);
-  const targetSpec = spec[targetType];
-  const targetMerge = {
-    'IN': `MERGE (entity)<-[:${targetSpec.name}]-(source)`,
-    'OUT': `MERGE (entity)-[:${targetSpec.name}]->(source)`
-  }[targetSpec.direction];
-  await cypher(`
-    MATCH (entity:${entityType} {id: $id}), (target:${targetType} {id: $targetId})
-    ${targetMerge}
-  `, )(args, context);
-}
-
-export const removeRelationship = (entityType, spec) => async(args, context) => {
-  const targetType = await queryType(context, args.targetId);
-  const targetSpec = spec[targetType];
-  const targetMatch = {
-    'IN': `MATCH (entity:${entityType} {id: $id})<-[r:${targetSpec.name}]-(target:${targetType} {id: $targetId})`,
-    'OUT': `MATCH (entity:${entityType} {id: $id})-[r:${targetSpec.name}]->(target:${targetType} {id: $targetId})`
-  }[targetSpec.direction];
-  await cypher(`${targetMatch} DELETE r`, )(args, context);
-}
-
-export const setRelationship = (entityType, spec) => async(args, context) => {
-  const targetType = await queryType(context, args.targetId);
-  const targetSpec = spec[targetType];
-  const targetMatch = {
-    'IN': `MATCH (entity:${entityType} {id: $id})-[r:${targetSpec.name}]->(target:${targetType} {id: $targetId})`,
-    'OUT': `MATCH (entity:${entityType} {id: $id})<-[r:${targetSpec.name}]-(target:${targetType} {id: $targetId})`
-  }[targetSpec.direction];
-  const deleteStatement = 'DELETE r';
-  const targetMerge = {
-    'IN': `MERGE (entity)<-[:${targetSpec.name}]-(target)`,
-    'OUT': `MERGE (entity)-[:${targetSpec.name}]->(target)`
-  }[targetSpec.direction];
-
-  const cypher = [
-    targetMatch, 
-    deleteStatement, 
-    targetMerge
-  ].join('\n');
-
-  await runCypher(cypher)(args, context);    
-}
-
-export const runCypher = (cypher, {beforeCypher} = {}) => async(args, context) => {
-  const props = Object.assign({}, args);
-  if (beforeCypher !== undefined) {
-    beforeCypher(props);
-  }
-  const session = context.driver.session();
-  await session.run(cypher, props);
-}
-
-async function queryType(context, id) { 
-  const session = context.driver.session();
-  const queryResult = await session.run("MATCH (n {id:$id}) RETURN LABELS(n)[0] AS type", { id });
-  return queryResult.records[0].get('type');
 }
