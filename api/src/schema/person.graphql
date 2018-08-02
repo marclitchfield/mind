@@ -18,6 +18,7 @@ type PersonOps {
   post_having_item(input: PersonProps!): Person!
   post_at_location(input: PersonProps!): Person!
   post_in_space(input: PersonProps!): Person!
+  
   post_union(person1: ID!, person2: ID!, eventId: ID!): Boolean
   post_offspring(parent1: ID!, parent2: ID!, childId: ID!, eventId: ID!): Boolean
 }

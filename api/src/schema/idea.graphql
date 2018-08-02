@@ -19,6 +19,10 @@ type IdeaOps {
   post_about_person(input: IdeaProps!): Idea!
   post_by_person(input: IdeaProps!): Idea!
   post_in_space(input: IdeaProps!): Idea!
+
+  post_reaction(subjectIdeaId: ID!, responseIdeaId: ID!, type: String): Boolean
+  post_reaction_by_person(subjectIdeaId: ID!, responseIdeaId: ID!, sourcePersonId: ID!, type: String): Boolean
+  post_reaction_for_event(subjectIdeaId: ID!, responseIdeaId: ID!, eventId: ID!, type: String): Boolean
 }
 
 extend type Mutation {
@@ -39,11 +43,23 @@ type Idea implements Entity {
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "SUBJECT", direction: "OUT")
   concept(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
   subjectEvents(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "SUBJECT", direction: "OUT")
-  contexts(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RESPONSE", direction: "IN")
-  responses(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "RESPONSE", direction: "OUT")
+  subIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUB", direction: "OUT")
+  superIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUB", direction: "IN")
   subjectItems(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "SUBJECT", direction: "OUT")
   subjectLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUBJECT", direction: "OUT")
   subjectPeople(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SUBJECT", direction: "OUT")
   sourcePeople(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SOURCE_OF", direction: "IN")
   spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
+
+  reactionsTo(first: Int = 10, offset: Int = 0): [Reaction!] @relation(name: "REACTION_TO", direction: "OUT")
+  reactionsOf(first: Int = 10, offset: Int = 0): [Reaction!] @relation(name: "REACTION_OF", direction: "IN")  
+}
+
+type Reaction {
+  confidence: Float
+  type: String
+  subject: Idea! @relation(name: "REACTION_OF", direction: "OUT")
+  response: Idea! @relation(name: "REACTION_TO", direction: "IN")
+  sourcePerson: Person @relation(name: "SOURCE_OF", direction: "IN")
+  event: Event @relation(name: "EVENT", direction: "IN")
 }

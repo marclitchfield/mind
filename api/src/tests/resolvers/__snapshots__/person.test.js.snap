@@ -12,11 +12,11 @@ Object {
         "parents": Array [
           Object {
             "__typename": "Person",
-            "title": "test parent 1",
+            "title": "test parent",
           },
           Object {
             "__typename": "Person",
-            "title": "test parent 2",
+            "title": "test parent",
           },
         ],
         "title": "test child",
@@ -29,11 +29,11 @@ Object {
             "parents": Array [
               Object {
                 "__typename": "Person",
-                "title": "test parent 1",
+                "title": "test parent",
               },
               Object {
                 "__typename": "Person",
-                "title": "test parent 2",
+                "title": "test parent",
               },
             ],
             "title": "test child",
@@ -48,13 +48,13 @@ Object {
             },
             "event": Object {
               "__typename": "Event",
-              "title": "test person 2",
+              "title": "test person",
             },
             "parents": Array [],
           },
         ],
         "parents": Array [],
-        "title": "test parent 2",
+        "title": "test parent",
       },
       Object {
         "__typename": "Person",
@@ -64,11 +64,11 @@ Object {
             "parents": Array [
               Object {
                 "__typename": "Person",
-                "title": "test parent 1",
+                "title": "test parent",
               },
               Object {
                 "__typename": "Person",
-                "title": "test parent 2",
+                "title": "test parent",
               },
             ],
             "title": "test child",
@@ -83,13 +83,13 @@ Object {
             },
             "event": Object {
               "__typename": "Event",
-              "title": "test person 2",
+              "title": "test person",
             },
             "parents": Array [],
           },
         ],
         "parents": Array [],
-        "title": "test parent 1",
+        "title": "test parent",
       },
     ],
   },
@@ -103,22 +103,22 @@ Object {
     "people": Array [
       Object {
         "__typename": "Person",
-        "title": "test person 2",
+        "title": "test person",
         "unions": Array [
           Object {
             "__typename": "Union",
             "event": Object {
               "__typename": "Event",
-              "title": "test person 2",
+              "title": "test person",
             },
             "participants": Array [
               Object {
                 "__typename": "Person",
-                "title": "test person 2",
+                "title": "test person",
               },
               Object {
                 "__typename": "Person",
-                "title": "test person 1",
+                "title": "test person",
               },
             ],
           },
@@ -126,22 +126,22 @@ Object {
       },
       Object {
         "__typename": "Person",
-        "title": "test person 1",
+        "title": "test person",
         "unions": Array [
           Object {
             "__typename": "Union",
             "event": Object {
               "__typename": "Event",
-              "title": "test person 2",
+              "title": "test person",
             },
             "participants": Array [
               Object {
                 "__typename": "Person",
-                "title": "test person 2",
+                "title": "test person",
               },
               Object {
                 "__typename": "Person",
-                "title": "test person 1",
+                "title": "test person",
               },
             ],
           },
