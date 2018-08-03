@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reaction tests create reaction 1`] = `
+Object {
+  "Reaction": Object {
+    "__typename": "Reaction",
+    "response": Object {
+      "__typename": "Idea",
+      "reactionsOf": Array [],
+      "reactionsTo": Array [
+        Object {
+          "__typename": "Reaction",
+          "response": Object {
+            "__typename": "Idea",
+            "title": "response idea",
+          },
+          "subject": Object {
+            "__typename": "Idea",
+            "title": "subject idea",
+          },
+          "type": "answer",
+        },
+      ],
+      "title": "response idea",
+    },
+    "subject": Object {
+      "__typename": "Idea",
+      "reactionsOf": Array [
+        Object {
+          "__typename": "Reaction",
+          "response": Object {
+            "__typename": "Idea",
+            "title": "response idea",
+          },
+          "subject": Object {
+            "__typename": "Idea",
+            "title": "subject idea",
+          },
+          "type": "answer",
+        },
+      ],
+      "reactionsTo": Array [],
+      "title": "subject idea",
+    },
+    "type": "answer",
+  },
+}
+`;
+
+exports[`Reaction tests create reaction by person 1`] = `
+Object {
+  "Reaction": Object {
+    "__typename": "Reaction",
+    "response": Object {
+      "__typename": "Idea",
+      "title": "response idea",
+    },
+    "sourcePerson": Object {
+      "__typename": "Person",
+      "title": "test person",
+    },
+    "subject": Object {
+      "__typename": "Idea",
+      "title": "subject idea",
+    },
+    "type": "answer",
+  },
+}
+`;
+
+exports[`Reaction tests create reaction for event 1`] = `
+Object {
+  "Reaction": Object {
+    "__typename": "Reaction",
+    "event": Object {
+      "__typename": "Event",
+      "title": "test event",
+    },
+    "response": Object {
+      "__typename": "Idea",
+      "title": "response idea",
+    },
+    "subject": Object {
+      "__typename": "Idea",
+      "title": "subject idea",
+    },
+    "type": "answer",
+  },
+}
+`;
+
+exports[`Reaction tests remove reaction 1`] = `
+Object {
+  "i1": Object {
+    "__typename": "Idea",
+    "reactionsOf": Array [],
+    "reactionsTo": Array [],
+  },
+  "i2": Object {
+    "__typename": "Idea",
+    "reactionsOf": Array [],
+    "reactionsTo": Array [],
+  },
+}
+`;

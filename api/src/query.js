@@ -1,5 +1,7 @@
 const uuid = require('uuid/v4');
 
+const wellKnownProps = ['sourceId', 'classId', 'remove'];
+
 export const entityMerge = (entityType, relationship, sourceType, direction, options) => async(args, context) => {
   const {beforeMerge, instance, cardinality, inheritSpace, relationshipProperties} = options || {};
 
@@ -24,8 +26,11 @@ export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, c
     beforeMerge(props);
   }
   const removeStatement = props.remove ? 'DELETE source_rel WITH entity, source' : '';
-  const propertyKeys = Object.keys(props || {}).filter(prop => !['sourceId', 'classId', 'remove'].includes(prop));
-  const assignments = propertyKeys.map(key => `entity.${key} = $${key}`).join(', ');
+
+  const propertyKeys = Object.keys(props || {}).filter(prop => 
+    !wellKnownProps.includes(prop) && props[prop] !== undefined);
+  const assignments = propertyKeys.map(key => 
+    `entity.${key} = $${key}`).join(', ');
   const upsertStatement = assignments.length > 0
     ? `ON MATCH SET ${assignments} ON CREATE SET ${assignments}, entity.created = timestamp()`
     : `ON CREATE SET entity.created = timestamp()`
@@ -37,7 +42,6 @@ export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, c
     removeStatement,
     returnStatement
   ].join('\n');
-
 
   const session = context.driver.session();
   const result = await session.run(cypher, props);
@@ -53,8 +57,6 @@ export const runCypher = (cypher, {beforeCypher} = {}) => async(args, context) =
   const session = context.driver.session();
   await session.run(cypher, props);
 }
-
-
 
 function buildEntityCypher(entityType, sourceType, inheritSpace) {
   if (inheritSpace === false) {

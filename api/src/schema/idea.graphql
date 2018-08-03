@@ -19,10 +19,6 @@ type IdeaOps {
   post_about_person(input: IdeaProps!): Idea!
   post_by_person(input: IdeaProps!): Idea!
   post_in_space(input: IdeaProps!): Idea!
-
-  post_reaction(subjectIdeaId: ID!, responseIdeaId: ID!, type: String): Boolean
-  post_reaction_by_person(subjectIdeaId: ID!, responseIdeaId: ID!, personId: ID!, type: String): Boolean
-  post_reaction_for_event(subjectIdeaId: ID!, responseIdeaId: ID!, eventId: ID!, type: String): Boolean
 }
 
 extend type Mutation {
@@ -53,13 +49,4 @@ type Idea implements Entity {
 
   reactionsTo(first: Int = 10, offset: Int = 0): [Reaction!] @relation(name: "REACTION_TO", direction: "OUT")
   reactionsOf(first: Int = 10, offset: Int = 0): [Reaction!] @relation(name: "REACTION_OF", direction: "IN")  
-}
-
-type Reaction {
-  confidence: Float
-  type: String
-  subject: Idea! @relation(name: "REACTION_OF", direction: "OUT")
-  response: Idea! @relation(name: "REACTION_TO", direction: "IN")
-  sourcePerson: Person @relation(name: "SOURCE_OF", direction: "IN")
-  event: Event @relation(name: "EVENT", direction: "IN")
 }

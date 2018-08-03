@@ -1,0 +1,33 @@
+input ReactionProps {
+  id: ID
+  subjectIdeaId: ID!
+  responseIdeaId: ID!
+  sourcePersonId: ID
+  type: String
+  eventId: ID
+  remove: Boolean
+}
+
+type ReactionOps {
+  post(input: ReactionProps!): Reaction
+}
+
+extend type Mutation {
+  Reaction: ReactionOps
+}
+
+extend type Query {
+  Reaction(id: ID!): Reaction!
+}
+
+type Reaction {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  type: String
+
+  subject: Idea @relation(name: "REACTION_OF", direction: "OUT")
+  response: Idea @relation(name: "REACTION_TO", direction: "IN")
+  sourcePerson: Person @relation(name: "SOURCE_OF", direction: "IN")
+  event: Event @relation(name: "EVENT", direction: "IN")
+}
+
