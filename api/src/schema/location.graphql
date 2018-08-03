@@ -35,12 +35,12 @@ type Location implements Entity {
   locator: String
 
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "AT", direction: "IN")
-  concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
+  description_concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "AT", direction: "OUT")
-  ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
+  subject_ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "AT", direction: "OUT")
-  subLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUB", direction: "OUT")
-  superLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUB", direction: "IN")
+  sub_locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUB", direction: "OUT")
+  super_locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUB", direction: "IN")
   people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "AT", direction: "IN")
   spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 }

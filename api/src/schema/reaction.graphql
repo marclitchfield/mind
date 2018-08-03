@@ -27,7 +27,7 @@ type Reaction {
 
   subject: Idea @relation(name: "REACTION_OF", direction: "OUT")
   response: Idea @relation(name: "REACTION_TO", direction: "IN")
-  sourcePerson: Person @relation(name: "SOURCE_OF", direction: "IN")
+  source_person: Person @relation(name: "SOURCE_OF", direction: "IN")
   event: Event @relation(name: "EVENT", direction: "IN")
 }
 

@@ -6,8 +6,8 @@ Object {
     "__typename": "Reaction",
     "response": Object {
       "__typename": "Idea",
-      "reactionsOf": Array [],
-      "reactionsTo": Array [
+      "reactions_of": Array [],
+      "reactions_to": Array [
         Object {
           "__typename": "Reaction",
           "response": Object {
@@ -25,7 +25,7 @@ Object {
     },
     "subject": Object {
       "__typename": "Idea",
-      "reactionsOf": Array [
+      "reactions_of": Array [
         Object {
           "__typename": "Reaction",
           "response": Object {
@@ -39,7 +39,7 @@ Object {
           "type": "answer",
         },
       ],
-      "reactionsTo": Array [],
+      "reactions_to": Array [],
       "title": "subject idea",
     },
     "type": "answer",
@@ -55,7 +55,7 @@ Object {
       "__typename": "Idea",
       "title": "response idea",
     },
-    "sourcePerson": Object {
+    "source_person": Object {
       "__typename": "Person",
       "title": "test person",
     },
@@ -93,13 +93,13 @@ exports[`Reaction tests remove reaction 1`] = `
 Object {
   "i1": Object {
     "__typename": "Idea",
-    "reactionsOf": Array [],
-    "reactionsTo": Array [],
+    "reactions_of": Array [],
+    "reactions_to": Array [],
   },
   "i2": Object {
     "__typename": "Idea",
-    "reactionsOf": Array [],
-    "reactionsTo": Array [],
+    "reactions_of": Array [],
+    "reactions_to": Array [],
   },
 }
 `;

@@ -39,7 +39,7 @@ type Collection implements Entity {
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "CONTAINS", direction: "OUT")
   class: Concept @relation(name: "INSTANCE_OF", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
-  ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
+  subject_ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "OUT")
   location: Location! @relation(name: "AT", direction: "OUT")
   owners(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "HAS", direction: "IN")

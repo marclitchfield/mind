@@ -22,7 +22,7 @@ Object {
     "__typename": "Item",
     "class": Object {
       "__typename": "Concept",
-      "itemInstances": Array [
+      "item_instances": Array [
         Object {
           "__typename": "Item",
           "title": "test item",
@@ -67,7 +67,7 @@ Object {
         "title": "root concept",
       },
     ],
-    "rootConcepts": Array [
+    "root_concepts": Array [
       Object {
         "__typename": "Concept",
         "spaces": Array [
@@ -114,7 +114,7 @@ Object {
     "__typename": "Item",
     "class": Object {
       "__typename": "Concept",
-      "itemInstances": Array [
+      "item_instances": Array [
         Object {
           "__typename": "Item",
           "title": "test person",

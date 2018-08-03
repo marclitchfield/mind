@@ -16,13 +16,13 @@ describe('Reaction tests', () => {
           type
           subject {
             title
-            reactionsTo { type subject { title } response { title } }
-            reactionsOf { type subject { title } response { title } }
+            reactions_to { type subject { title } response { title } }
+            reactions_of { type subject { title } response { title } }
           }
           response {
             title
-            reactionsTo { type subject { title } response { title } }
-            reactionsOf { type subject { title } response { title } }
+            reactions_to { type subject { title } response { title } }
+            reactions_of { type subject { title } response { title } }
           }
         }
       }`
@@ -44,7 +44,7 @@ describe('Reaction tests', () => {
           type
           subject { title }
           response { title }
-          sourcePerson { title }
+          source_person { title }
         }
       }`
     });
@@ -87,12 +87,12 @@ describe('Reaction tests', () => {
       ],
       query: ({subject, response}) => gql`query {
         i1:Idea(id:"${subject.id}") {
-          reactionsOf { type }
-          reactionsTo { type }
+          reactions_of { type }
+          reactions_to { type }
         }
         i2:Idea(id:"${response.id}") {
-          reactionsOf { type }
-          reactionsTo { type }
+          reactions_of { type }
+          reactions_to { type }
         }
       }`
     });

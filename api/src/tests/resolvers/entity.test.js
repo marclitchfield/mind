@@ -33,7 +33,7 @@ describe('Entity tests', () => {
         ({space, concept}) => gql`mutation { Item { item:post_in_space(input:{sourceId:"${space.id}", classId:"${concept.id}", title: "test item"}) { id } } }`
       ],
       query: ({item}) => gql`query {
-        Item(id:"${item.id}") { title class { title itemInstances { title } } spaces { title } }
+        Item(id:"${item.id}") { title class { title item_instances { title } } spaces { title } }
       }`
     });
   });
@@ -73,7 +73,7 @@ describe('Entity tests', () => {
       ],
       query: ({item}) => gql`query {
         Item(id:"${item.id}") {
-          class { title itemInstances { title } }
+          class { title item_instances { title } }
           location { title items { title } }
         }
       }`
@@ -88,7 +88,7 @@ describe('Entity tests', () => {
       ],
       query: ({space}) => gql`query {
         Space(id:"${space.id}") {
-          rootConcepts { title spaces { title } }
+          root_concepts { title spaces { title } }
           concepts { title spaces { title } }
         }
       }`

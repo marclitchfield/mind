@@ -9,7 +9,7 @@ input IdeaProps {
 }
 
 type IdeaOps {
-  post_about_collection(input: IdeaProps!): Idea!
+  post_subject_of_collection(input: IdeaProps!): Idea!
   post_described_by_concept(input: IdeaProps!): Idea!
   post_about_event(input: IdeaProps!): Idea!
   post_super_idea(input: IdeaProps!): Idea!
@@ -36,17 +36,17 @@ type Idea implements Entity {
   icon: String
   type: String!
 
-  collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "SUBJECT", direction: "OUT")
-  concept(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
-  subjectEvents(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "SUBJECT", direction: "OUT")
-  subIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUB", direction: "OUT")
-  superIdeas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUB", direction: "IN")
-  subjectItems(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "SUBJECT", direction: "OUT")
-  subjectLocations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUBJECT", direction: "OUT")
-  subjectPeople(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SUBJECT", direction: "OUT")
-  sourcePeople(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SOURCE_OF", direction: "IN")
+  subject_collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "SUBJECT", direction: "OUT")
+  description_concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
+  subject_events(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "SUBJECT", direction: "OUT")
+  sub_ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUB", direction: "OUT")
+  super_ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUB", direction: "IN")
+  subject_items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "SUBJECT", direction: "OUT")
+  subject_locations(first: Int = 10, offset: Int = 0): [Location!] @relation(name: "SUBJECT", direction: "OUT")
+  subject_people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SUBJECT", direction: "OUT")
+  source_people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "SOURCE_OF", direction: "IN")
   spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 
-  reactionsTo(first: Int = 10, offset: Int = 0): [Reaction!] @relation(name: "REACTION_TO", direction: "OUT")
-  reactionsOf(first: Int = 10, offset: Int = 0): [Reaction!] @relation(name: "REACTION_OF", direction: "IN")  
+  reactions_to(first: Int = 10, offset: Int = 0): [Reaction!] @relation(name: "REACTION_TO", direction: "OUT")
+  reactions_of(first: Int = 10, offset: Int = 0): [Reaction!] @relation(name: "REACTION_OF", direction: "IN")  
 }
