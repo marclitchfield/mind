@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Offspring tests create offspring 1`] = `
+Object {
+  "Space": Object {
+    "__typename": "Space",
+    "people": Array [
+      Object {
+        "__typename": "Person",
+        "children": Array [],
+        "offspring": Array [],
+        "parents": Array [
+          Object {
+            "__typename": "Person",
+            "title": "test parent",
+          },
+          Object {
+            "__typename": "Person",
+            "title": "test parent",
+          },
+        ],
+        "title": "test child",
+      },
+      Object {
+        "__typename": "Person",
+        "children": Array [
+          Object {
+            "__typename": "Person",
+            "parents": Array [
+              Object {
+                "__typename": "Person",
+                "title": "test parent",
+              },
+              Object {
+                "__typename": "Person",
+                "title": "test parent",
+              },
+            ],
+            "title": "test child",
+          },
+        ],
+        "offspring": Array [
+          Object {
+            "__typename": "Offspring",
+            "child": Object {
+              "__typename": "Person",
+              "title": "test child",
+            },
+            "event": Object {
+              "__typename": "Event",
+              "title": "test person",
+            },
+            "parents": Array [],
+          },
+        ],
+        "parents": Array [],
+        "title": "test parent",
+      },
+      Object {
+        "__typename": "Person",
+        "children": Array [
+          Object {
+            "__typename": "Person",
+            "parents": Array [
+              Object {
+                "__typename": "Person",
+                "title": "test parent",
+              },
+              Object {
+                "__typename": "Person",
+                "title": "test parent",
+              },
+            ],
+            "title": "test child",
+          },
+        ],
+        "offspring": Array [
+          Object {
+            "__typename": "Offspring",
+            "child": Object {
+              "__typename": "Person",
+              "title": "test child",
+            },
+            "event": Object {
+              "__typename": "Event",
+              "title": "test person",
+            },
+            "parents": Array [],
+          },
+        ],
+        "parents": Array [],
+        "title": "test parent",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Offspring tests remove offspring 1`] = `
+Object {
+  "Space": Object {
+    "__typename": "Space",
+    "people": Array [
+      Object {
+        "__typename": "Person",
+        "children": Array [],
+        "offspring": Array [],
+        "parents": Array [],
+        "title": "test child",
+      },
+      Object {
+        "__typename": "Person",
+        "children": Array [],
+        "offspring": Array [],
+        "parents": Array [],
+        "title": "test parent",
+      },
+      Object {
+        "__typename": "Person",
+        "children": Array [],
+        "offspring": Array [],
+        "parents": Array [],
+        "title": "test parent",
+      },
+    ],
+  },
+}
+`;

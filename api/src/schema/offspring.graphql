@@ -1,0 +1,28 @@
+input OffspringProps {
+  id: ID
+  parent1: ID!
+  parent2: ID!
+  childId: ID!
+  eventId: ID
+  remove: Boolean
+}
+
+type OffspringOps {
+  post(input: OffspringProps!): Offspring!
+}
+
+extend type Mutation {
+  Offspring: OffspringOps
+}
+
+extend type Query {
+  Offspring(id: ID!): Offspring
+}
+
+type Offspring {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  parents: [Person!]! @relation(name: "PARENT", direction: "IN")
+  child: Person! @relation(name: "CHILD", direction: "OUT")
+  event: Event! @relation(name: "BIRTH", direction: "OUT")
+}

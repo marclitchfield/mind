@@ -9,6 +9,7 @@ import { Item } from "./resolvers/item.resolvers"
 import { Location } from "./resolvers/location.resolvers"
 import { Collection } from "./resolvers/collection.resolvers"
 import { Reaction } from "./resolvers/reaction.resolvers"
+import { Offspring } from "./resolvers/offspring.resolvers"
 
 const neo4jgraphResolver = (type, args, context, resolvers) => neo4jgraphql(type, args, context, resolvers, false);
 
@@ -24,7 +25,8 @@ export const resolvers = {
     Item: neo4jgraphResolver,
     Location: neo4jgraphResolver,
     Collection: neo4jgraphResolver,
-    Reaction: neo4jgraphResolver
+    Reaction: neo4jgraphResolver,
+    Offspring: neo4jgraphResolver
   },
   Mutation: {
     Mind,
@@ -36,6 +38,7 @@ export const resolvers = {
     Item,
     Location,
     Collection,
-    Reaction
+    Reaction,
+    Offspring
   }
 };

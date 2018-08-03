@@ -20,7 +20,6 @@ type PersonOps {
   post_in_space(input: PersonProps!): Person!
   
   post_union(person1: ID!, person2: ID!, eventId: ID!): Boolean
-  post_offspring(parent1: ID!, parent2: ID!, childId: ID!, eventId: ID!): Boolean
 }
 
 extend type Mutation {
@@ -51,12 +50,6 @@ type Person implements Entity {
   parents: [Person!] @cypher(statement: "MATCH (this)<-[:CHILD]-(o:Offspring)<-[:PARENT_OF]-(p:Person) RETURN p")
   children: [Person!] @cypher(statement: "MATCH (this)-[:PARENT_OF]->(o:Offspring)-[:CHILD]->(p:Person) RETURN p")
   unions: [Union!] @relation(name: "PART_OF", direction: "OUT")
-}
-
-type Offspring {
-  parents: [Person!]! @relation(name: "PARENT", direction: "IN")
-  child: Person! @relation(name: "CHILD", direction: "OUT")
-  event: Event! @relation(name: "BIRTH", direction: "OUT")
 }
 
 type Union {

@@ -25,32 +25,4 @@ describe('Person tests', () => {
       }`
     });
   });
-
-  test('create offspring', () => {
-    return verifyMutations('Person tests', 'create offspring', {
-      mutations: [
-        ({space}) => gql`mutation { Person { parent1:post_in_space(input:{sourceId:"${space.id}", title: "test parent"}) { id } } }`,
-        ({space}) => gql`mutation { Person { parent2:post_in_space(input:{sourceId:"${space.id}", title: "test parent"}) { id } } }`,
-        ({space}) => gql`mutation { Person { child:post_in_space(input:{sourceId:"${space.id}", title: "test child"}) { id } } }`,        
-        ({space}) => gql`mutation { Event { event:post_in_space(input:{sourceId:"${space.id}", datetime: "2010-07-17" title: "test person"}) { id } } }`,
-        ({parent1, parent2, child, event}) => gql`mutation { Person { post_offspring(parent1:"${parent1.id}" parent2:"${parent2.id}" childId:"${child.id}" eventId:"${event.id}") } }`
-      ],
-      query: ({space}) => gql`query {
-        Space(id:"${space.id}") {
-          people {
-            title
-            offspring {
-              parents { title }
-              child { title }
-              event { title }
-            }
-            parents { title }
-            children { title parents { title }}
-          }
-        }
-      }`
-    });
-  });
-
-
 });
