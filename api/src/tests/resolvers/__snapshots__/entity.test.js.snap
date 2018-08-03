@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Query tests post entity with beforeMerge (event in space) 1`] = `
+exports[`Entity tests post entity with beforeMerge (event in space) 1`] = `
 Object {
   "Event": Object {
     "__typename": "Event",
@@ -16,7 +16,7 @@ Object {
 }
 `;
 
-exports[`Query tests post instance (item in space) 1`] = `
+exports[`Entity tests post instance (item in space) 1`] = `
 Object {
   "Item": Object {
     "__typename": "Item",
@@ -41,7 +41,7 @@ Object {
 }
 `;
 
-exports[`Query tests post properties (root concept in space) 1`] = `
+exports[`Entity tests post properties (root concept in space) 1`] = `
 Object {
   "Space": Object {
     "__typename": "Space",
@@ -83,7 +83,7 @@ Object {
 }
 `;
 
-exports[`Query tests post single cardinality (person at location) 1`] = `
+exports[`Entity tests post single cardinality (person at location) 1`] = `
 Object {
   "Person": Object {
     "__typename": "Person",
@@ -108,7 +108,7 @@ Object {
 }
 `;
 
-exports[`Query tests post single cardinality instance (item at location) 1`] = `
+exports[`Entity tests post single cardinality instance (item at location) 1`] = `
 Object {
   "Item": Object {
     "__typename": "Item",
@@ -131,7 +131,7 @@ Object {
 }
 `;
 
-exports[`Query tests post single cardinality removal (remove event at location) 1`] = `
+exports[`Entity tests post single cardinality removal (remove event at location) 1`] = `
 Object {
   "Person": Object {
     "__typename": "Person",
@@ -141,7 +141,7 @@ Object {
 }
 `;
 
-exports[`Query tests post single cardinality update (update person location) 1`] = `
+exports[`Entity tests post single cardinality update (update person location) 1`] = `
 Object {
   "Person": Object {
     "__typename": "Person",
@@ -166,7 +166,7 @@ Object {
 }
 `;
 
-exports[`Query tests simple post (idea in space) 1`] = `
+exports[`Entity tests simple post (idea in space) 1`] = `
 Object {
   "Idea": Object {
     "__typename": "Idea",
