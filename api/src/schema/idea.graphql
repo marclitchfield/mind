@@ -21,7 +21,7 @@ type IdeaOps {
   post_in_space(input: IdeaProps!): Idea!
 
   post_reaction(subjectIdeaId: ID!, responseIdeaId: ID!, type: String): Boolean
-  post_reaction_by_person(subjectIdeaId: ID!, responseIdeaId: ID!, sourcePersonId: ID!, type: String): Boolean
+  post_reaction_by_person(subjectIdeaId: ID!, responseIdeaId: ID!, personId: ID!, type: String): Boolean
   post_reaction_for_event(subjectIdeaId: ID!, responseIdeaId: ID!, eventId: ID!, type: String): Boolean
 }
 

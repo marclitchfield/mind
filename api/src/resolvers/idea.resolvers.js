@@ -1,6 +1,9 @@
 import * as resolve from '../query';
 
-const reactionMerge = 'MATCH (subject:Idea {id:$subjectIdeaId}), (response:Idea {id:$responseIdeaId}) MERGE (subject)<-[:REACTION_OF]-(reaction:Reaction {type:$type})<-[:REACTION_TO]-(response)';
+const reactionMerge = `
+  MATCH (subject:Idea {id:$subjectIdeaId}), (response:Idea {id:$responseIdeaId}) 
+  MERGE (subject)<-[:REACTION_OF]-(reaction:Reaction {type:$type})<-[:REACTION_TO]-(response)
+  `;
 
 export const Idea = () => ({
   post_about_collection: resolve.entityMerge('Idea', 'SUBJECT', 'Collection', 'OUT'),
@@ -15,6 +18,6 @@ export const Idea = () => ({
   post_in_space: resolve.entityMerge('Idea', 'CONTAINS', 'Space', 'IN', { inheritSpace: false }),
 
   post_reaction: resolve.runCypher(reactionMerge),
-  post_reaction_by_person: resolve.runCypher(reactionMerge + ' MATCH (person:Person {id: $personId}) MERGE (person)-[:SOURCE_OF]->(reaction:Reaction)'),
-  post_reaction_for_event: resolve.runCypher(reactionMerge + ' MATCH (event:Event {id: $eventId}) MERGE (event)-[:EVENT]->(reaction:Reaction)')
+  post_reaction_by_person: resolve.runCypher(reactionMerge + ' WITH reaction MATCH (person:Person {id: $personId}) MERGE (person)-[:SOURCE_OF]->(reaction)'),
+  post_reaction_for_event: resolve.runCypher(reactionMerge + ' WITH reaction MATCH (event:Event {id: $eventId}) MERGE (event)-[:EVENT]->(reaction)')
 });
