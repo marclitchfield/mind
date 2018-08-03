@@ -31,7 +31,6 @@ function input(args, id, sourceIdProp) {
     input: {
       id: id || args.input.id,
       sourceId: args.input[sourceIdProp],
-      type: args.input.type,
       remove: args.input.remove
     }
   };

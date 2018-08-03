@@ -9,11 +9,4 @@ export const Person = () => ({
   post_having_item: resolve.entityMerge('Person', 'HAS', 'Item', 'OUT'),
   post_at_location: resolve.entityMerge('Person', 'AT', 'Location', 'OUT', { cardinality: 1 }),
   post_in_space: resolve.entityMerge('Person', 'CONTAINS', 'Space', 'IN', { inheritSpace: false }),
-
-  post_union: resolve.runCypher(`
-    MATCH (p1:Person {id: $person1}), (p2:Person {id: $person2}), (e:Event {id: $eventId})
-    MERGE (p1)-[:PART_OF]->(u:Union {datetime: e.datetime})<-[:PART_OF]-(p2)
-    MERGE (u)-[:UNION]->(e)
-    MERGE (p1)-[:TIMELINE]->(e)<-[:TIMELINE]-(p2)
-  `),
 });

@@ -1,0 +1,27 @@
+input ConnectionProps {
+  id: ID
+  type: ID
+  person1: ID!
+  person2: ID!
+  eventId: ID
+  remove: Boolean
+}
+
+type ConnectionOps {
+  post(input: ConnectionProps!): Connection!
+}
+
+extend type Mutation {
+  Connection: ConnectionOps
+}
+
+extend type Query {
+  Connection(id: ID!): Connection
+}
+
+type Connection {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  participants: [Person!]! @relation(name: "PART_OF", direction: "IN")
+  event: Event! @relation(name: "ESTABLISHED", direction: "OUT")
+}

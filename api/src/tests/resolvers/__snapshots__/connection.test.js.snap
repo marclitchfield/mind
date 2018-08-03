@@ -1,16 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Person tests create union 1`] = `
+exports[`Connection tests create connection 1`] = `
 Object {
   "Space": Object {
     "__typename": "Space",
     "people": Array [
       Object {
         "__typename": "Person",
-        "title": "test person",
-        "unions": Array [
+        "connections": Array [
           Object {
-            "__typename": "Union",
+            "__typename": "Connection",
             "event": Object {
               "__typename": "Event",
               "title": "test person",
@@ -27,13 +26,13 @@ Object {
             ],
           },
         ],
+        "title": "test person",
       },
       Object {
         "__typename": "Person",
-        "title": "test person",
-        "unions": Array [
+        "connections": Array [
           Object {
-            "__typename": "Union",
+            "__typename": "Connection",
             "event": Object {
               "__typename": "Event",
               "title": "test person",
@@ -50,6 +49,27 @@ Object {
             ],
           },
         ],
+        "title": "test person",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Connection tests remove connection 1`] = `
+Object {
+  "Space": Object {
+    "__typename": "Space",
+    "people": Array [
+      Object {
+        "__typename": "Person",
+        "connections": Array [],
+        "title": "test person",
+      },
+      Object {
+        "__typename": "Person",
+        "connections": Array [],
+        "title": "test person",
       },
     ],
   },
