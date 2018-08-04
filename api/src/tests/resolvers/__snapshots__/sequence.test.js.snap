@@ -8,6 +8,40 @@ Object {
       "__typename": "Concept",
       "title": "sequence type",
     },
+    "elements": Array [
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 1",
+        },
+        "type": "Person",
+      },
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 2",
+        },
+        "type": "Person",
+      },
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 3",
+        },
+        "type": "Concept",
+      },
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 4",
+        },
+        "type": "Concept",
+      },
+    ],
     "head": Object {
       "__typename": "SequenceElement",
       "entity": Object {
