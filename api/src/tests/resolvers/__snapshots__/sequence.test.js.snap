@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Sequence tests create sequence 1`] = `
+exports[`Sequence tests create one element sequence 1`] = `
 Object {
   "Sequence": Object {
     "__typename": "Sequence",
@@ -17,13 +17,54 @@ Object {
         },
         "type": "Person",
       },
+    ],
+    "head": Object {
+      "__typename": "SequenceElement",
+      "entity": Object {
+        "__typename": "Entity",
+        "title": "element 1",
+      },
+      "next": null,
+      "type": "Person",
+    },
+    "tail": Object {
+      "__typename": "SequenceElement",
+      "entity": Object {
+        "__typename": "Entity",
+        "title": "element 1",
+      },
+      "previous": null,
+      "type": "Person",
+    },
+    "title": "test sequence",
+  },
+}
+`;
+
+exports[`Sequence tests create sequence 1`] = `
+Object {
+  "Sequence": Object {
+    "__typename": "Sequence",
+    "class": Object {
+      "__typename": "Concept",
+      "title": "sequence type",
+    },
+    "elements": Array [
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 1",
+        },
+        "type": "Concept",
+      },
       Object {
         "__typename": "SequenceElement",
         "entity": Object {
           "__typename": "Entity",
           "title": "element 2",
         },
-        "type": "Person",
+        "type": "Concept",
       },
       Object {
         "__typename": "SequenceElement",
@@ -41,6 +82,14 @@ Object {
         },
         "type": "Concept",
       },
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 5",
+        },
+        "type": "Concept",
+      },
     ],
     "head": Object {
       "__typename": "SequenceElement",
@@ -54,21 +103,210 @@ Object {
           "__typename": "Entity",
           "title": "element 2",
         },
-        "type": "Person",
+        "type": "Concept",
       },
-      "type": "Person",
+      "type": "Concept",
     },
     "tail": Object {
       "__typename": "SequenceElement",
       "entity": Object {
         "__typename": "Entity",
-        "title": "element 4",
+        "title": "element 5",
       },
       "previous": Object {
         "__typename": "SequenceElement",
         "entity": Object {
           "__typename": "Entity",
+          "title": "element 4",
+        },
+        "type": "Concept",
+      },
+      "type": "Concept",
+    },
+    "title": "test sequence",
+  },
+}
+`;
+
+exports[`Sequence tests remove element from head sequence 1`] = `
+Object {
+  "Sequence": Object {
+    "__typename": "Sequence",
+    "class": Object {
+      "__typename": "Concept",
+      "title": "sequence type",
+    },
+    "elements": Array [
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 2",
+        },
+        "type": "Concept",
+      },
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
           "title": "element 3",
+        },
+        "type": "Concept",
+      },
+    ],
+    "head": Object {
+      "__typename": "SequenceElement",
+      "entity": Object {
+        "__typename": "Entity",
+        "title": "element 2",
+      },
+      "next": Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 3",
+        },
+        "type": "Concept",
+      },
+      "type": "Concept",
+    },
+    "tail": Object {
+      "__typename": "SequenceElement",
+      "entity": Object {
+        "__typename": "Entity",
+        "title": "element 3",
+      },
+      "previous": Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 2",
+        },
+        "type": "Concept",
+      },
+      "type": "Concept",
+    },
+    "title": "test sequence",
+  },
+}
+`;
+
+exports[`Sequence tests remove element from middle of sequence 1`] = `
+Object {
+  "Sequence": Object {
+    "__typename": "Sequence",
+    "class": Object {
+      "__typename": "Concept",
+      "title": "sequence type",
+    },
+    "elements": Array [
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 1",
+        },
+        "type": "Concept",
+      },
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 3",
+        },
+        "type": "Concept",
+      },
+    ],
+    "head": Object {
+      "__typename": "SequenceElement",
+      "entity": Object {
+        "__typename": "Entity",
+        "title": "element 1",
+      },
+      "next": Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 3",
+        },
+        "type": "Concept",
+      },
+      "type": "Concept",
+    },
+    "tail": Object {
+      "__typename": "SequenceElement",
+      "entity": Object {
+        "__typename": "Entity",
+        "title": "element 3",
+      },
+      "previous": Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 1",
+        },
+        "type": "Concept",
+      },
+      "type": "Concept",
+    },
+    "title": "test sequence",
+  },
+}
+`;
+
+exports[`Sequence tests remove element from tail of sequence 1`] = `
+Object {
+  "Sequence": Object {
+    "__typename": "Sequence",
+    "class": Object {
+      "__typename": "Concept",
+      "title": "sequence type",
+    },
+    "elements": Array [
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 1",
+        },
+        "type": "Concept",
+      },
+      Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 2",
+        },
+        "type": "Concept",
+      },
+    ],
+    "head": Object {
+      "__typename": "SequenceElement",
+      "entity": Object {
+        "__typename": "Entity",
+        "title": "element 1",
+      },
+      "next": Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 2",
+        },
+        "type": "Concept",
+      },
+      "type": "Concept",
+    },
+    "tail": Object {
+      "__typename": "SequenceElement",
+      "entity": Object {
+        "__typename": "Entity",
+        "title": "element 2",
+      },
+      "previous": Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 1",
         },
         "type": "Concept",
       },

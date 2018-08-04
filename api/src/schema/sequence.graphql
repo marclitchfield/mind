@@ -8,25 +8,36 @@ input SequenceProps {
   remove: Boolean
 }
 
+input SequenceElementProps {
+  id: ID
+  sequenceId: ID!
+  sourceId: ID
+  remove: Boolean
+}
+
 type SequenceOps {
   post_in_space(input: SequenceProps!): Sequence!
-  post_next_collection(input: SequenceProps!): Sequence!
-  post_next_concept(input: SequenceProps!): Sequence!
-  post_next_event(input: SequenceProps!): Sequence!
-  post_next_idea(input: SequenceProps!): Sequence!
-  post_next_item(input: SequenceProps!): Sequence!
-  post_next_location(input: SequenceProps!): Sequence!
-  post_next_person(input: SequenceProps!): Sequence!
-  post_next_space(input: SequenceProps!): Sequence!
+}
+
+type SequenceElementOps {
+  post_next_collection(input: SequenceElementProps!): SequenceElement!
+  post_next_concept(input: SequenceElementProps!): SequenceElement!
+  post_next_event(input: SequenceElementProps!): SequenceElement!
+  post_next_idea(input: SequenceElementProps!): SequenceElement!
+  post_next_item(input: SequenceElementProps!): SequenceElement!
+  post_next_location(input: SequenceElementProps!): SequenceElement!
+  post_next_person(input: SequenceElementProps!): SequenceElement!
+  post_next_space(input: SequenceElementProps!): SequenceElement!
 }
 
 extend type Mutation {
   Sequence: SequenceOps
+  SequenceElement: SequenceElementOps
 }
 
 extend type Query {
   Sequence(id: ID!): Sequence
-  SequenceElement(id: ID!): Sequence
+  SequenceElement(id: ID!): SequenceElement
 }
 
 type Sequence {
@@ -44,6 +55,8 @@ type Sequence {
 }
 
 type SequenceElement {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
   type: String
   sequence: Sequence! @relation(name: "ELEMENT_OF", direction: "OUT")
   next: SequenceElement @relation(name: "NEXT", direction: "OUT")

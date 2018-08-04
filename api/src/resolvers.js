@@ -48,5 +48,6 @@ export const resolvers = {
     Offspring,
     Connection,
     Sequence,
+    SequenceElement
   }
 };

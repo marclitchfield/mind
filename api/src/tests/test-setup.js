@@ -52,9 +52,11 @@ async function runQuery(query) {
 
 function updateState(response) {
   Object.keys(response.data).forEach(outerKey => {
-    Object.keys(response.data[outerKey]).forEach(innerKey => {
-      state[innerKey] = response.data[outerKey][innerKey];
-    });
+    if (response.data[outerKey]) {
+      Object.keys(response.data[outerKey]).forEach(innerKey => {
+        state[innerKey] = response.data[outerKey][innerKey];
+      });
+    }
   });
 }
 
