@@ -1,0 +1,11 @@
+type Entity {
+  id: ID!
+  spaces: [Space!]
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String
+  icon: String
+}
+
+extend type Query {
+  Entity(id: ID!): Entity
+}

@@ -1,0 +1,52 @@
+input SequenceProps {
+  id: ID
+  title: String
+  icon: String
+  body: String
+  classId: ID
+  sourceId: ID!
+  remove: Boolean
+}
+
+type SequenceOps {
+  post_in_space(input: SequenceProps!): Sequence!
+  post_next_collection(input: SequenceProps!): Sequence!
+  post_next_concept(input: SequenceProps!): Sequence!
+  post_next_event(input: SequenceProps!): Sequence!
+  post_next_idea(input: SequenceProps!): Sequence!
+  post_next_item(input: SequenceProps!): Sequence!
+  post_next_location(input: SequenceProps!): Sequence!
+  post_next_person(input: SequenceProps!): Sequence!
+  post_next_space(input: SequenceProps!): Sequence!
+}
+
+extend type Mutation {
+  Sequence: SequenceOps
+}
+
+extend type Query {
+  Sequence(id: ID!): Sequence
+  SequenceElement(id: ID!): Sequence
+}
+
+type Sequence {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String!
+  icon: String
+  body: String
+  
+  class: Concept! @relation(name: "INSTANCE_OF", direction: "OUT")
+  head: SequenceElement @relation(name: "HEAD", direction: "OUT")
+  tail: SequenceElement @relation(name: "TAIL", direction: "OUT")
+  elements: [SequenceElement!] @cypher(statement: "MATCH (this)-[:HEAD]->(h:SequenceElement)-[:NEXT*0..]->(e:SequenceElement) RETURN e")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
+}
+
+type SequenceElement {
+  type: String
+  sequence: Sequence! @relation(name: "ELEMENT_OF", direction: "OUT")
+  next: SequenceElement @relation(name: "NEXT", direction: "OUT")
+  previous: SequenceElement @relation(name: "NEXT", direction: "IN")
+  entity: Entity! @relation(name: "ENTITY", direction: "OUT")
+}

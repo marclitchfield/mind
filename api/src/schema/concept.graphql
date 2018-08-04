@@ -27,7 +27,7 @@ extend type Query {
   Concept(id: ID!): Concept
 }
 
-type Concept implements Entity {
+type Concept {
   id: ID!
   created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
   title: String!

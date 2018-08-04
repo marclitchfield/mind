@@ -30,7 +30,7 @@ extend type Query {
   Item(id: ID!): Item
 }
 
-type Item implements Entity {
+type Item {
   id: ID!
   created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
   title: String!

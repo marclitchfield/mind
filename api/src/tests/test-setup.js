@@ -60,15 +60,18 @@ function updateState(response) {
 
 function handleClientError(err) {
   if (err && err.networkError && err.networkError.result && err.networkError.result.errors) {
-    const message = err.networkError.result.errors.map(formatError).join('\n');
-    throw message;
+    throw err.networkError.result.errors.map(formatError).join('\n');
+  }
+  if (err && err.graphQLErrors) {
+    throw err.graphQLErrors.map(formatError).join('\n');
   }
   throw err;
 }
 
 function formatError(graphqlError) {
   const locations = graphqlError.locations.map(loc => JSON.stringify(loc)).join('.');
-  const message = `${graphqlError.extensions.code}: ${graphqlError.message} (${locations}`;
+  const path = path && graphqlError.path.join('.');
+  const message = `${graphqlError.extensions.code}: ${graphqlError.message} (${locations}) @ ${path}`;
   return message.replace(/"/g, "'");
 }
 

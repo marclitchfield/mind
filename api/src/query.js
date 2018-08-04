@@ -1,32 +1,29 @@
 const uuid = require('uuid/v4');
+require('colors');
+
+const DEBUG = false;
 
 const wellKnownProps = ['sourceId', 'classId', 'remove'];
 
 export const entityMerge = (entityType, relationship, sourceType, direction, options) => async(args, context) => {
   const {beforeMerge, instance, cardinality, inheritSpace, relationshipProperties} = options || {};
 
-  const entityCypher = buildEntityCypher(entityType, sourceType, inheritSpace);
-  const instanceCypher = buildInstanceCypher(instance);
-  const cardinalityCypher = buildCardinalityCypher(relationship, sourceType, direction, cardinality);
-  const sourceMerge = buildSourceMerge(relationship, direction, relationshipProperties);
-
   const mergeStatement = [
-    entityCypher,
-    instanceCypher,
-    cardinalityCypher,
-    sourceMerge,
+    buildEntityCypher(entityType, sourceType, inheritSpace),
+    buildInstanceCypher(instance),
+    buildCardinalityCypher(relationship, sourceType, direction, cardinality),
+    buildSourceMerge(relationship, direction, relationshipProperties)
   ].filter(statement => statement).join('\n');
 
-  return cypherMerge(mergeStatement, {beforeMerge})(args, context);
+  return await cypherMerge(mergeStatement, {beforeMerge})(args, context);
 }
 
 export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, context) => {
   const props = Object.assign({}, args.input, { id: args.input.id || uuid()});
+  const removeStatement = props.remove ? 'DELETE source_rel WITH entity, source' : '';
   if (beforeMerge !== undefined) {
     beforeMerge(props);
   }
-  const removeStatement = props.remove ? 'DELETE source_rel WITH entity, source' : '';
-
   const propertyKeys = Object.keys(props || {}).filter(prop => 
     !wellKnownProps.includes(prop) && props[prop] !== undefined);
   const assignments = propertyKeys.map(key => 
@@ -43,28 +40,36 @@ export const cypherMerge = (mergeStatement, {beforeMerge} = {}) => async(args, c
     returnStatement
   ].join('\n');
 
-  const session = context.driver.session();
-  const result = await session.run(cypher, props);
-  const record = result.records[0];
-  return Object.assign({}, record.get('entity').properties, { created: record.get('created') });
+  return await runCypher(cypher)(props, context);
 }
 
-export const runCypher = (cypher, {beforeCypher} = {}) => async(args, context) => {
-  const props = Object.assign({}, args);
-  if (beforeCypher !== undefined) {
-    beforeCypher(props);
-  }
+export const runCypher = (cypher) => async(args, context) => {
   const session = context.driver.session();
-  await session.run(cypher, props);
+
+  if (DEBUG) {
+    console.log(('[cypher] ' + cypher).blue);
+    console.log(('[params] ' + JSON.stringify(args)).green);
+  }
+
+  const result = await session.run(cypher, args);
+  const record = result.records[0];
+  const response = record && Object.assign({},
+    record.keys.includes('entity') && record.get('entity').properties, 
+    record.keys.includes('created') && { created: record.get('created') });
+
+  if (DEBUG) {
+    console.log(('[result] ' + JSON.stringify(response || '')).magenta);
+  }
+  return response;
 }
 
 function buildEntityCypher(entityType, sourceType, inheritSpace) {
   if (inheritSpace === false) {
     return `MATCH (source:${sourceType} {id: $sourceId})
-            MERGE (entity:${entityType} {id: $id}) WITH entity, source`;
+            MERGE (entity:${entityType}:Entity {id: $id}) WITH entity, source`;
   }
   return `MATCH (space:Space)-[:CONTAINS]->(source:${sourceType} {id: $sourceId})
-          MERGE (space)-[:CONTAINS]->(entity:${entityType} {id: $id}) WITH entity, source`;
+          MERGE (space)-[:CONTAINS]->(entity:${entityType}:Entity {id: $id}) WITH entity, source`;
 }
 
 function buildInstanceCypher(instance) {

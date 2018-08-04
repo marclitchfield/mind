@@ -11,13 +11,15 @@ import { Collection } from "./resolvers/collection.resolvers"
 import { Reaction } from "./resolvers/reaction.resolvers"
 import { Offspring } from "./resolvers/offspring.resolvers"
 import { Connection } from "./resolvers/connection.resolvers"
+import { Sequence, SequenceElement } from "./resolvers/sequence.resolvers"
 
 const neo4jgraphResolver = (type, args, context, resolvers) => neo4jgraphql(type, args, context, resolvers, false);
 
 export const resolvers = {
   Query: {
-    Minds: (_parent, args, context, resolvers) => neo4jgraphResolver('Mind', args, context, resolvers, false),
     Mind: neo4jgraphResolver,
+    Minds: (_parent, args, context, resolvers) => neo4jgraphResolver('Mind', args, context, resolvers, false),
+    Entity: neo4jgraphResolver,
     Space: neo4jgraphResolver,
     Concept: neo4jgraphResolver,
     Idea: neo4jgraphResolver,
@@ -28,7 +30,9 @@ export const resolvers = {
     Collection: neo4jgraphResolver,
     Reaction: neo4jgraphResolver,
     Offspring: neo4jgraphResolver,
-    Connection: neo4jgraphResolver
+    Connection: neo4jgraphResolver,
+    Sequence: neo4jgraphResolver,
+    SequenceElement: neo4jgraphResolver,
   },
   Mutation: {
     Mind,
@@ -42,6 +46,7 @@ export const resolvers = {
     Collection,
     Reaction,
     Offspring,
-    Connection
+    Connection,
+    Sequence,
   }
 };

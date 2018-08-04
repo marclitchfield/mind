@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sequence tests create sequence 1`] = `
+Object {
+  "Sequence": Object {
+    "__typename": "Sequence",
+    "class": Object {
+      "__typename": "Concept",
+      "title": "sequence type",
+    },
+    "head": Object {
+      "__typename": "SequenceElement",
+      "entity": Object {
+        "__typename": "Entity",
+        "title": "element 1",
+      },
+      "next": Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 2",
+        },
+        "type": "Person",
+      },
+      "type": "Person",
+    },
+    "tail": Object {
+      "__typename": "SequenceElement",
+      "entity": Object {
+        "__typename": "Entity",
+        "title": "element 4",
+      },
+      "previous": Object {
+        "__typename": "SequenceElement",
+        "entity": Object {
+          "__typename": "Entity",
+          "title": "element 3",
+        },
+        "type": "Concept",
+      },
+      "type": "Concept",
+    },
+    "title": "test sequence",
+  },
+}
+`;
