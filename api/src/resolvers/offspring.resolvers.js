@@ -22,6 +22,10 @@ export const Offspring = () => ({
         input(args, args.input.childId, 'eventId'), context);
     }
 
+    if (args.input.remove) {
+      await resolve.runCypher('MATCH (o:Offspring {id: $id}) DETACH DELETE o')({ id: args.input.id }, context);
+    }
+
     return offspring;
   }
 });

@@ -18,6 +18,10 @@ export const Reaction = () => ({
         input(args, reaction.id, 'eventId'), context);
     }
 
+    if (args.input.remove) {
+      await resolve.runCypher('MATCH (r:Reaction {id: $id}) DETACH DELETE r')({ id: args.input.id }, context);
+    }
+
     return reaction;
   }
 });

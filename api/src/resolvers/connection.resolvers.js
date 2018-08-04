@@ -17,6 +17,10 @@ export const Connection = () => ({
         input(args, args.input.person2, 'eventId'), context);
     }
 
+    if (args.input.remove) {
+      await resolve.runCypher('MATCH (c:Connection {id: $id}) DETACH DELETE c')({ id: args.input.id }, context);
+    }
+
     return connection;
   }
 });
