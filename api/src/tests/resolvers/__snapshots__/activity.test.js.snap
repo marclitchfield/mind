@@ -15,7 +15,22 @@ Object {
           "__typename": "Event",
           "title": "test event",
         },
-        "item": null,
+        "item": Object {
+          "__typename": "Item",
+          "abilities": Array [
+            Object {
+              "__typename": "Ability",
+              "title": "test ability",
+            },
+          ],
+          "activities": Array [
+            Object {
+              "__typename": "Activity",
+              "title": "test ability activity",
+            },
+          ],
+          "title": "test item",
+        },
         "title": "test ability activity",
       },
     ],
@@ -39,7 +54,22 @@ Object {
           "__typename": "Event",
           "title": "test event",
         },
-        "person": null,
+        "person": Object {
+          "__typename": "Person",
+          "abilities": Array [
+            Object {
+              "__typename": "Ability",
+              "title": "test ability",
+            },
+          ],
+          "activities": Array [
+            Object {
+              "__typename": "Activity",
+              "title": "test ability activity",
+            },
+          ],
+          "title": "test person",
+        },
         "title": "test ability activity",
       },
     ],
@@ -86,7 +116,22 @@ Object {
           "__typename": "Objective",
           "title": "test objective",
         },
-        "person": null,
+        "person": Object {
+          "__typename": "Person",
+          "activities": Array [
+            Object {
+              "__typename": "Activity",
+              "title": "test objective activity",
+            },
+          ],
+          "objectives": Array [
+            Object {
+              "__typename": "Objective",
+              "title": "test objective",
+            },
+          ],
+          "title": "test person",
+        },
         "title": "test objective activity",
       },
     ],

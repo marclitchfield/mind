@@ -33,7 +33,7 @@ function post_activity(sourceEntityType) {
 }
 
 async function post_activity_for({sourceEntityType, sourceId, activityId, eventId, targetType, targetId, remove}, context) {
-  await resolve.entityMerge('Activity', 'PERFORMED', sourceEntityType, 'IN')({
+  await resolve.entityMerge('Activity', 'PERFORMED', targetType, 'IN')({
     input: {
       id: activityId,
       sourceId: targetId,
