@@ -39,7 +39,7 @@ type Item {
   description: String
 
   abilities(first: Int = 10, offset: Int = 0): [Ability!] @relation(name: "HAS", direction: "OUT")
-  ability_activities(first: Int = 10, offset: Int = 0): [AbilityActivity!] @relation(name: "PERFORMED", direction: "OUT")
+  activities(first: Int = 10, offset: Int = 0): [Activity!] @relation(name: "PERFORMED", direction: "OUT")
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "CONTAINS", direction: "IN")
   class: Concept @relation(name: "INSTANCE_OF", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
@@ -47,6 +47,7 @@ type Item {
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "OUT")
   container_items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "CONTAINS", direction: "IN")
   location: Location @relation(name: "AT", direction: "OUT")
+  objectives(first: Int = 10, offset: Int = 0): [Objective!] @relation(name: "HAS", direction: "OUT")
   owners(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "HAS", direction: "IN")
   spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 }

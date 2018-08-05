@@ -1,0 +1,39 @@
+input ActivityProps {
+  id: ID
+  sourceId: ID!
+  eventId: ID!
+  title: String
+  icon: String
+  body: String
+  personId: ID
+  itemId: ID
+  remove: Boolean
+}
+
+type ActivityOps {
+  post_for_ability(input: ActivityProps!): Activity!
+  post_for_objective(input: ActivityProps!): Activity!
+}
+
+extend type Mutation {
+  Activity: ActivityOps
+}
+
+extend type Query {
+  Activity(id: ID!): Activity
+}
+
+type Activity {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String
+  icon: String
+  body: String
+  event: Event! @relation(name: "EVENT", direction: "OUT")
+
+  ability: Ability @relation(name: "ACTIVITY_FOR", direction: "OUT")
+  objective: Objective @relation(name: "ACTIVITY_FOR", direction: "OUT")
+
+  person: Person @relation(name: "PERFORMED", direction: "IN")
+  item: Item @relation(name: "PERFORMED", direction: "IN")
+}

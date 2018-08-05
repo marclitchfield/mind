@@ -36,7 +36,7 @@ type Person {
   name: String
 
   abilities(first: Int = 10, offset: Int = 0): [Ability!] @relation(name: "HAS", direction: "OUT")
-  ability_activities(first: Int = 10, offset: Int = 0): [AbilityActivity!] @relation(name: "PERFORMED", direction: "OUT")
+  activities(first: Int = 10, offset: Int = 0): [Activity!] @relation(name: "PERFORMED", direction: "OUT")
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "HAS", direction: "OUT")
   concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")
@@ -44,6 +44,7 @@ type Person {
   subject_ideas(first: Int = 10, offset: Int = 0): [Idea!] @relation(name: "SUBJECT", direction: "IN")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "HAS", direction: "OUT")
   location: Location @relation(name: "AT", direction: "OUT")
+  objectives(first: Int = 10, offset: Int = 0): [Objective!] @relation(name: "HAS", direction: "OUT")
   spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
 
   offspring: [Offspring!] @relation(name: "PARENT_OF", direction: "OUT")

@@ -12,7 +12,9 @@ import { Reaction } from "./resolvers/reaction.resolvers"
 import { Offspring } from "./resolvers/offspring.resolvers"
 import { Connection } from "./resolvers/connection.resolvers"
 import { Sequence, SequenceElement } from "./resolvers/sequence.resolvers"
-import { Ability, AbilityActivity } from "./resolvers/ability.resolvers"
+import { Ability } from "./resolvers/ability.resolvers"
+import { Activity } from "./resolvers/activity.resolvers"
+import { Objective } from "./resolvers/objective.resolvers"
 
 const neo4jgraphResolver = (type, args, context, resolvers) => neo4jgraphql(type, args, context, resolvers, false);
 
@@ -23,7 +25,7 @@ export const resolvers = {
     Entity: neo4jgraphResolver,
     Space: neo4jgraphResolver,
     Ability: neo4jgraphResolver,
-    AbilityActivity: neo4jgraphResolver,
+    Activity: neo4jgraphResolver,
     Concept: neo4jgraphResolver,
     Idea: neo4jgraphResolver,
     Event: neo4jgraphResolver,
@@ -32,6 +34,7 @@ export const resolvers = {
     Location: neo4jgraphResolver,
     Collection: neo4jgraphResolver,
     Reaction: neo4jgraphResolver,
+    Objective: neo4jgraphResolver,
     Offspring: neo4jgraphResolver,
     Connection: neo4jgraphResolver,
     Sequence: neo4jgraphResolver,
@@ -41,7 +44,7 @@ export const resolvers = {
     Mind,
     Space,
     Ability,
-    AbilityActivity,
+    Activity,
     Concept,
     Idea,
     Event,
@@ -50,6 +53,7 @@ export const resolvers = {
     Location,
     Collection,
     Reaction,
+    Objective,
     Offspring,
     Connection,
     Sequence,

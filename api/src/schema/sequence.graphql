@@ -20,6 +20,8 @@ type SequenceOps {
 }
 
 type SequenceElementOps {
+  post_next_ability(input: SequenceElementProps!): SequenceElement!
+  post_next_activity(input: SequenceElementProps!): SequenceElement!
   post_next_collection(input: SequenceElementProps!): SequenceElement!
   post_next_concept(input: SequenceElementProps!): SequenceElement!
   post_next_event(input: SequenceElementProps!): SequenceElement!
@@ -28,6 +30,7 @@ type SequenceElementOps {
   post_next_location(input: SequenceElementProps!): SequenceElement!
   post_next_person(input: SequenceElementProps!): SequenceElement!
   post_next_space(input: SequenceElementProps!): SequenceElement!
+  post_next_objective(input: SequenceElementProps!): SequenceElement!
 }
 
 extend type Mutation {

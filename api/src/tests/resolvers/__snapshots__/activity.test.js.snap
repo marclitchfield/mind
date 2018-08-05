@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Activity tests create ability activity for item 1`] = `
+Object {
+  "Ability": Object {
+    "__typename": "Ability",
+    "activities": Array [
+      Object {
+        "__typename": "Activity",
+        "ability": Object {
+          "__typename": "Ability",
+          "title": "test ability",
+        },
+        "event": Object {
+          "__typename": "Event",
+          "title": "test event",
+        },
+        "item": null,
+        "title": "test ability activity",
+      },
+    ],
+    "title": "test ability",
+  },
+}
+`;
+
+exports[`Activity tests create ability activity for person 1`] = `
+Object {
+  "Ability": Object {
+    "__typename": "Ability",
+    "activities": Array [
+      Object {
+        "__typename": "Activity",
+        "ability": Object {
+          "__typename": "Ability",
+          "title": "test ability",
+        },
+        "event": Object {
+          "__typename": "Event",
+          "title": "test event",
+        },
+        "person": null,
+        "title": "test ability activity",
+      },
+    ],
+    "title": "test ability",
+  },
+}
+`;
+
+exports[`Activity tests create activity for ability 1`] = `
+Object {
+  "Ability": Object {
+    "__typename": "Ability",
+    "activities": Array [
+      Object {
+        "__typename": "Activity",
+        "ability": Object {
+          "__typename": "Ability",
+          "title": "test ability",
+        },
+        "event": Object {
+          "__typename": "Event",
+          "title": "test event",
+        },
+        "title": "test ability activity",
+      },
+    ],
+    "title": "test ability",
+  },
+}
+`;
+
+exports[`Activity tests create objective activity for person 1`] = `
+Object {
+  "Objective": Object {
+    "__typename": "Objective",
+    "activities": Array [
+      Object {
+        "__typename": "Activity",
+        "event": Object {
+          "__typename": "Event",
+          "title": "test event",
+        },
+        "objective": Object {
+          "__typename": "Objective",
+          "title": "test objective",
+        },
+        "person": null,
+        "title": "test objective activity",
+      },
+    ],
+    "title": "test objective",
+  },
+}
+`;
+
+exports[`Activity tests remove ability activity 1`] = `
+Object {
+  "Space": Object {
+    "__typename": "Space",
+    "abilities": Array [
+      Object {
+        "__typename": "Ability",
+        "activities": Array [],
+        "title": "test ability",
+      },
+    ],
+    "activities": Array [],
+    "title": "remove ability activity",
+  },
+}
+`;

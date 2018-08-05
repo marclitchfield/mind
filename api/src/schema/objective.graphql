@@ -1,0 +1,43 @@
+input ObjectiveProps {
+  id: ID
+  sourceId: ID
+  title: String
+  body: String
+  icon: String
+  remove: Boolean
+}
+
+type ObjectiveOps {
+  post_requires_ability(input: ObjectiveProps!): Objective!
+  post_required_by_ability(input: ObjectiveProps!): Objective!
+  post_described_by_concept(input: ObjectiveProps!): Objective!
+  post_for_item(input: ObjectiveProps!): Objective!
+  post_required_by_objective(input: ObjectiveProps!): Objective!
+  post_requires_objective(input: ObjectiveProps!): Objective!
+  post_for_person(input: ObjectiveProps!): Objective!
+  post_in_space(input: ObjectiveProps!): Objective!
+}
+
+extend type Mutation {
+  Objective: ObjectiveOps
+}
+
+extend type Query {
+  Objective(id: ID!): Objective
+}
+
+type Objective {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String!
+  icon: String
+  body: String
+
+  activities(first: Int = 10, offset: Int = 0): [Activity!] @relation(name: "ACTIVITY_FOR", direction: "IN")
+  required_abilities(first: Int = 10, offset: Int = 0): [Objective!] @relation(name: "REQUIRES", direction: "OUT")
+  description_concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "OUT")
+  owner_items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "HAS", direction: "IN")
+  required_objectives(first: Int = 10, offset: Int = 0): [Objective!] @relation(name: "REQUIRES", direction: "OUT")
+  owner_people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "HAS", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
+}

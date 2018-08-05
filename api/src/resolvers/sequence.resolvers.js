@@ -5,6 +5,8 @@ export const Sequence = () => ({
 });
 
 export const SequenceElement = () => ({
+  post_next_ability: post_next('Ability'),
+  post_next_activity: post_next('Activity'),
   post_next_collection: post_next('Collection'),
   post_next_concept: post_next('Concept'),
   post_next_event: post_next('Event'),
@@ -12,6 +14,7 @@ export const SequenceElement = () => ({
   post_next_item: post_next('Item'),
   post_next_location: post_next('Location'),
   post_next_person: post_next('Person'),
+  post_next_objective: post_next('Objective'),
 })
 
 function post_next(targetEntityType) {
