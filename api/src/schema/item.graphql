@@ -11,6 +11,7 @@ input ItemProps {
 }
 
 type ItemOps {
+  post_having_ability(input: ItemProps!): Item!
   post_in_collection(input: ItemProps!): Item!
   post_instance_of_concept(input: ItemProps!): Item!
   post_timeline_event(input: ItemProps!): Item!
@@ -18,6 +19,8 @@ type ItemOps {
   post_container_of_item(input: ItemProps!): Item!
   post_in_item(input: ItemProps!): Item!
   post_at_location(input: ItemProps!): Item!
+  post_having_objective(input: ItemProps!): Item!
+  post_for_organization(input: ItemProps!): Item!
   post_for_owner(input: ItemProps!): Item!
   post_in_space(input: ItemProps!): Item!
 }

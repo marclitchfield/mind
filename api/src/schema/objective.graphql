@@ -14,6 +14,7 @@ type ObjectiveOps {
   post_for_item(input: ObjectiveProps!): Objective!
   post_required_by_objective(input: ObjectiveProps!): Objective!
   post_requires_objective(input: ObjectiveProps!): Objective!
+  post_for_organization(input: ObjectiveProps!): Objective!
   post_for_person(input: ObjectiveProps!): Objective!
   post_in_space(input: ObjectiveProps!): Objective!
 }

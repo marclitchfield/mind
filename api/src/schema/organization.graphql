@@ -1,0 +1,44 @@
+input OrganizationProps {
+  id: ID
+  sourceId: ID
+  title: String
+  body: String
+  icon: String
+  remove: Boolean
+}
+
+type OrganizationOps {
+  post_having_ability(input: OrganizationProps!): Organization!
+  post_having_collection(input: OrganizationProps!): Organization!
+  post_having_item(input: OrganizationProps!): Organization!
+  post_containing_person(input: OrganizationProps!): Organization!
+  post_having_objective(input: OrganizationProps!): Organization!
+  post_in_organization(input: OrganizationProps!): Organization!
+  post_containing_organization(input: OrganizationProps!): Organization!
+  post_in_space(input: OrganizationProps!): Organization!
+}
+
+extend type Mutation {
+  Organization: OrganizationOps
+}
+
+extend type Query {
+  Organization(id: ID!): Organization
+}
+
+type Organization {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String!
+  icon: String
+  body: String
+
+  activities(first: Int = 10, offset: Int = 0): [Activity!] @relation(name: "PERFORMED", direction: "OUT")
+  collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "HAS", direction: "OUT")
+  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "HAS", direction: "OUT")
+  people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "CONTAINS", direction: "OUT")
+  objectives(first: Int = 10, offset: Int = 0): [Objective!] @relation(name: "HAS", direction: "OUT")
+  organizations(first: Int = 10, offset: Int = 0): [Organization!] @relation(name: "CONTAINS", direction: "OUT")
+  containing_organizations(first: Int = 10, offset: Int = 0): [Organization!] @relation(name: "CONTAINS", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
+}

@@ -7,6 +7,7 @@ export const Objective = () => ({
   post_for_item: resolve.entityMerge('Objective', 'HAS', 'Item', 'IN'),
   post_required_by_objective: resolve.entityMerge('Objective', 'REQUIRES', 'Objective', 'IN'),
   post_requires_objective: resolve.entityMerge('Objective', 'REQUIRES', 'Objective', 'OUT'),
+  post_for_organization: resolve.entityMerge('Objective', 'HAS', 'Organization', 'IN'),
   post_for_person: resolve.entityMerge('Objective', 'HAS', 'Person', 'IN'),
   post_in_space: resolve.entityMerge('Objective', 'CONTAINS', 'Space', 'IN', { inheritSpace: false })
 });

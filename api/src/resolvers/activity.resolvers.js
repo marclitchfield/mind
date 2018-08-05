@@ -20,6 +20,9 @@ function post_activity(sourceEntityType) {
     if (args.input.itemId) {
       await post_activity_for({ sourceEntityType, sourceId, activityId, eventId, targetType: 'Item', targetId: args.input.itemId, remove }, context);
     }
+    if (args.input.organizationId) {
+      await post_activity_for({ sourceEntityType, sourceId, activityId, eventId, targetType: 'Organization', targetId: args.input.organizationId, remove }, context);
+    }
 
     if (remove === true) {
       await resolve.runCypher('MATCH (a:Activity {id: $id}) DETACH DELETE a')({ id: args.input.id }, context);

@@ -10,6 +10,7 @@ input PersonProps {
 }
 
 type PersonOps {
+  post_having_ability(input: PersonProps!): Person!
   post_having_collection(input: PersonProps!): Person!
   post_described_by_concept(input: PersonProps!): Person!
   post_timeline_of_event(input: PersonProps!): Person!
@@ -17,6 +18,8 @@ type PersonOps {
   post_subject_of_idea(input: PersonProps!): Person!
   post_having_item(input: PersonProps!): Person!
   post_at_location(input: PersonProps!): Person!
+  post_having_objective(input: PersonProps!): Person!
+  post_in_organization(input: PersonProps!): Person!
   post_in_space(input: PersonProps!): Person!
 }
 

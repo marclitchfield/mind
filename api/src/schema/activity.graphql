@@ -6,6 +6,7 @@ input ActivityProps {
   icon: String
   body: String
   personId: ID
+  organizationId: ID
   itemId: ID
   remove: Boolean
 }
@@ -36,4 +37,5 @@ type Activity {
 
   person: Person @relation(name: "PERFORMED", direction: "IN")
   item: Item @relation(name: "PERFORMED", direction: "IN")
+  organization: Item @relation(name: "PERFORMED", direction: "IN")
 }

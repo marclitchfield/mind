@@ -15,6 +15,7 @@ type AbilityOps {
   post_for_person(input: AbilityProps!): Ability!
   post_required_by_objective(input: AbilityProps!): Ability!
   post_requires_objective(input: AbilityProps!): Ability!
+  post_for_organization(input: AbilityProps!): Ability!
   post_in_space(input: AbilityProps!): Ability!
 }
 
