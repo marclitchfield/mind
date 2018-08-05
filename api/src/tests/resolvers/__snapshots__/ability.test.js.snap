@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ability tests create ability 1`] = `
+Object {
+  "Space": Object {
+    "__typename": "Space",
+    "abilities": Array [
+      Object {
+        "__typename": "Ability",
+        "title": "test ability",
+      },
+    ],
+    "title": "create ability",
+  },
+}
+`;
+
+exports[`Ability tests create ability activity for item 1`] = `
+Object {
+  "Space": Object {
+    "__typename": "Space",
+    "abilities": Array [
+      Object {
+        "__typename": "Ability",
+        "activities": Array [],
+        "title": "test ability",
+      },
+    ],
+    "title": "create ability activity for item",
+  },
+}
+`;
+
+exports[`Ability tests create ability activity for person 1`] = `
+Object {
+  "Space": Object {
+    "__typename": "Space",
+    "abilities": Array [
+      Object {
+        "__typename": "Ability",
+        "activities": Array [],
+        "title": "test ability",
+      },
+    ],
+    "title": "create ability activity for person",
+  },
+}
+`;
+
+exports[`Ability tests remove ability activity 1`] = `
+Object {
+  "Space": Object {
+    "__typename": "Space",
+    "abilities": Array [
+      Object {
+        "__typename": "Ability",
+        "activities": Array [],
+        "title": "test ability",
+      },
+    ],
+    "title": "remove ability activity",
+  },
+}
+`;

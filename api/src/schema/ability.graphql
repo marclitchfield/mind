@@ -1,0 +1,71 @@
+input AbilityProps {
+  id: ID
+  sourceId: ID
+  title: String
+  body: String
+  icon: String
+  remove: Boolean
+}
+
+input AbilityActivityProps {
+  id: ID
+  title: String
+  icon: String
+  body: String  
+  sourceId: ID!
+  abilityId: ID!
+  eventId: ID!
+  remove: Boolean
+}
+
+type AbilityOps {
+  post_described_by_concept(input: AbilityProps!): Ability!
+  post_required_by_ability(input: AbilityProps!): Ability!
+  post_requires_ability(input: AbilityProps!): Ability!
+  post_for_item(input: AbilityProps!): Ability!
+  post_for_person(input: AbilityProps!): Ability!
+  post_in_space(input: AbilityProps!): Ability!
+}
+
+type AbilityActivityOps {
+  post_for_person(input: AbilityActivityProps!): AbilityActivity!
+  post_for_item(input: AbilityActivityProps!): AbilityActivity!
+}
+
+extend type Mutation {
+  Ability: AbilityOps
+  AbilityActivity: AbilityActivityOps
+}
+
+extend type Query {
+  Ability(id: ID!): Ability
+  AbilityActivity(id: ID!): AbilityActivity
+}
+
+type Ability {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String!
+  icon: String
+  body: String
+
+  description_concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "OUT")
+  required_abilities(first: Int = 10, offset: Int = 0): [Ability!] @relation(name: "REQUIRES", direction: "OUT")
+  activities(first: Int = 10, offset: Int = 0): [AbilityActivity!] @relation(name: "REQUIRES", direction: "OUT")
+  items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "HAS", direction: "IN")
+  people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "HAS", direction: "IN")
+  spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
+}
+
+type AbilityActivity {
+  id: ID!
+  created: String! @cypher(statement: "RETURN apoc.date.format(this.created)")
+  title: String
+  icon: String
+  body: String
+  ability: Ability! @relation(name: "ACTIVITY_FOR", direction: "OUT")
+
+  event: Event! @relation(name: "PERFORMED_AT", direction: "OUT")
+  person: Person @relation(name: "PERFORMED_BY", direction: "OUT")
+  item: Item @relation(name: "PERFORMED_BY", direction: "OUT")
+}

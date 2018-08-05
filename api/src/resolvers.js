@@ -12,6 +12,7 @@ import { Reaction } from "./resolvers/reaction.resolvers"
 import { Offspring } from "./resolvers/offspring.resolvers"
 import { Connection } from "./resolvers/connection.resolvers"
 import { Sequence, SequenceElement } from "./resolvers/sequence.resolvers"
+import { Ability, AbilityActivity } from "./resolvers/ability.resolvers"
 
 const neo4jgraphResolver = (type, args, context, resolvers) => neo4jgraphql(type, args, context, resolvers, false);
 
@@ -21,6 +22,8 @@ export const resolvers = {
     Minds: (_parent, args, context, resolvers) => neo4jgraphResolver('Mind', args, context, resolvers, false),
     Entity: neo4jgraphResolver,
     Space: neo4jgraphResolver,
+    Ability: neo4jgraphResolver,
+    AbilityActivity: neo4jgraphResolver,
     Concept: neo4jgraphResolver,
     Idea: neo4jgraphResolver,
     Event: neo4jgraphResolver,
@@ -37,6 +40,8 @@ export const resolvers = {
   Mutation: {
     Mind,
     Space,
+    Ability,
+    AbilityActivity,
     Concept,
     Idea,
     Event,
