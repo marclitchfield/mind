@@ -35,7 +35,15 @@ describe('Ability tests', () => {
               title
               ability { title }
               event { title }
-              person { title }
+              person { 
+                title
+                abilities {
+                  title
+                }
+                ability_activities {
+                  title
+                }
+              }
             }
           }
         }
@@ -61,7 +69,15 @@ describe('Ability tests', () => {
               title
               ability { title }
               event { title }
-              item { title }
+              item {
+                title
+                abilities {
+                  title
+                }
+                ability_activities {
+                  title
+                }                
+              }
             }
           }
         }

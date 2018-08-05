@@ -38,6 +38,8 @@ type Item {
   type: String
   description: String
 
+  abilities(first: Int = 10, offset: Int = 0): [Ability!] @relation(name: "HAS", direction: "OUT")
+  ability_activities(first: Int = 10, offset: Int = 0): [AbilityActivity!] @relation(name: "PERFORMED", direction: "OUT")
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "CONTAINS", direction: "IN")
   class: Concept @relation(name: "INSTANCE_OF", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")

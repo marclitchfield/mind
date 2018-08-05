@@ -35,6 +35,8 @@ type Person {
   icon: String
   name: String
 
+  abilities(first: Int = 10, offset: Int = 0): [Ability!] @relation(name: "HAS", direction: "OUT")
+  ability_activities(first: Int = 10, offset: Int = 0): [AbilityActivity!] @relation(name: "PERFORMED", direction: "OUT")
   collections(first: Int = 10, offset: Int = 0): [Collection!] @relation(name: "HAS", direction: "OUT")
   concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "DESCRIBED_BY", direction: "OUT")
   timeline(first: Int = 10, offset: Int = 0): [Event!] @relation(name: "TIMELINE", direction: "OUT")

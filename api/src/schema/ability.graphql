@@ -51,7 +51,7 @@ type Ability {
 
   description_concepts(first: Int = 10, offset: Int = 0): [Concept!] @relation(name: "SUB", direction: "OUT")
   required_abilities(first: Int = 10, offset: Int = 0): [Ability!] @relation(name: "REQUIRES", direction: "OUT")
-  activities(first: Int = 10, offset: Int = 0): [AbilityActivity!] @relation(name: "REQUIRES", direction: "OUT")
+  activities(first: Int = 10, offset: Int = 0): [AbilityActivity!] @relation(name: "ACTIVITY_FOR", direction: "IN")
   items(first: Int = 10, offset: Int = 0): [Item!] @relation(name: "HAS", direction: "IN")
   people(first: Int = 10, offset: Int = 0): [Person!] @relation(name: "HAS", direction: "IN")
   spaces(first: Int = 10, offset: Int = 0): [Space!] @relation(name: "CONTAINS", direction: "IN")
@@ -65,7 +65,7 @@ type AbilityActivity {
   body: String
   ability: Ability! @relation(name: "ACTIVITY_FOR", direction: "OUT")
 
-  event: Event! @relation(name: "PERFORMED_AT", direction: "OUT")
-  person: Person @relation(name: "PERFORMED_BY", direction: "OUT")
-  item: Item @relation(name: "PERFORMED_BY", direction: "OUT")
+  event: Event! @relation(name: "EVENT", direction: "OUT")
+  person: Person @relation(name: "PERFORMED", direction: "IN")
+  item: Item @relation(name: "PERFORMED", direction: "IN")
 }

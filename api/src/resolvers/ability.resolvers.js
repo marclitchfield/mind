@@ -18,8 +18,20 @@ function post_activity(sourceEntityType) {
   return async(args, context) => {
     const activity = await resolve.entityMerge('AbilityActivity', 'EVENT', 'Event', 'OUT')(input(args, args.input.id, args.input.eventId), context);
     await resolve.entityMerge('AbilityActivity', 'ACTIVITY_FOR', 'Ability', 'OUT')(input(args, activity.id, args.input.abilityId), context);
-    await resolve.entityMerge('AbilityActivity', 'PERFORMED', sourceEntityType, 'OUT')(input(args, activity.id, args.input.sourceId), context);
-    await resolve.entityMerge(sourceEntityType, 'TIMELINE', 'Event', 'OUT')(input(args, args.input.sourceId, args.input.eventId), context);
+    await resolve.entityMerge('AbilityActivity', 'PERFORMED', sourceEntityType, 'IN')(input(args, activity.id, args.input.sourceId), context);
+    await resolve.entityMerge(sourceEntityType, 'TIMELINE', 'Event', 'OUT')({
+      input: {
+        id: args.input.sourceId,
+        sourceId: args.input.eventId,
+        remove: args.input.remove
+      }
+    }, context);
+    await resolve.entityMerge(sourceEntityType, 'HAS', 'Ability', 'OUT')({
+      input: {
+        id: args.input.sourceId,
+        sourceId: args.input.abilityId
+      }
+    }, context);
 
     if (args.input.remove === true) {
       await resolve.runCypher('MATCH (aa:AbilityActivity {id: $id}) DETACH DELETE aa')({ id: args.input.id }, context);
@@ -33,6 +45,9 @@ function input(args, id, sourceId) {
     input: Object.assign({}, args.input, {
       id,
       sourceId,
+      eventId: undefined,
+      personId: undefined,
+      itemId: undefined
     })
   };
 }
